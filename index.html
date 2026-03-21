@@ -382,26 +382,21 @@
     flex: 1;
     overflow-y: auto;
     padding: 20px;
-    font-size: 15px;
-    line-height: 1.8;
     -webkit-overflow-scrolling: touch;
   }
 
-  .preview-content h2 {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--accent);
-    margin-top: 24px;
-    margin-bottom: 8px;
-  }
-
-  .preview-content h2:first-child {
-    margin-top: 0;
-  }
-
-  .preview-content p {
-    margin-bottom: 12px;
+  .preview-content textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    border: none;
+    background: transparent;
     color: var(--text);
+    font-size: 15px;
+    line-height: 1.8;
+    resize: none;
+    outline: none;
+    font-family: inherit;
   }
 
   .preview-title {
@@ -599,7 +594,7 @@
       <div class="label">文件名</div>
       <div class="filename" id="previewFilename"></div>
     </div>
-    <div class="preview-content" id="previewContent"></div>
+    <div class="preview-content"><textarea id="previewContent"></textarea></div>
   </div>
 
   <!-- Footer: changes based on state -->
@@ -925,24 +920,8 @@ function showPreview() {
   document.getElementById('previewFooter').classList.remove('hidden');
   document.getElementById('previewFilename').textContent = currentFilename;
 
-  // Render markdown (simple conversion)
-  const content = currentMarkdown
-    // Remove frontmatter
-    .replace(/^---[\s\S]*?---\n*/, '')
-    // Bold date line
-    .replace(/^\*\*(.+?)\*\*$/gm, '<p style="color:var(--text-dim);font-size:13px;margin-bottom:16px;">$1</p>')
-    // Headers
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    // Paragraphs
-    .split('\n\n')
-    .map(block => {
-      if (block.startsWith('<h2>') || block.startsWith('<p style')) return block;
-      if (block.trim() === '') return '';
-      return `<p>${block.replace(/\n/g, '<br>')}</p>`;
-    })
-    .join('');
-
-  document.getElementById('previewContent').innerHTML = content;
+  // Show raw markdown in editable textarea
+  document.getElementById('previewContent').value = currentMarkdown;
 }
 
 function backToEdit() {
@@ -963,10 +942,13 @@ function saveToObsidian() {
   // File path within the vault (without .md — Obsidian adds it)
   const notePath = `entries/${year}/${today}`;
 
+  // Read the (possibly edited) content from the preview textarea
+  const finalMarkdown = document.getElementById('previewContent').value;
+
   // Build the Obsidian URL — always append (creates file if it doesn't exist)
   const obsidianUrl = `obsidian://new?vault=${encodeURIComponent('reflection-vault')}`
     + `&file=${encodeURIComponent(notePath)}`
-    + `&content=${encodeURIComponent(currentMarkdown)}`
+    + `&content=${encodeURIComponent(finalMarkdown)}`
     + '&append=true';
 
   // Open Obsidian — it will create/append the file in the vault
