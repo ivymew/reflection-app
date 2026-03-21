@@ -914,8 +914,6 @@ function showPreview() {
   document.getElementById('processingArea').style.display = 'none';
   document.getElementById('previewArea').style.display = 'flex';
   document.getElementById('previewFooter').classList.remove('hidden');
-  document.getElementById('previewFilename').textContent = currentFilename;
-
   // Show raw markdown in editable textarea
   document.getElementById('previewContent').value = currentMarkdown;
 }
