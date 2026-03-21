@@ -896,17 +896,18 @@ title: "简短标题，用顿号分隔几个关键词"
     const data = await response.json();
     currentMarkdown = data.content[0].text;
 
+    // Filename is always date-based — no dependency on AI-generated title
+    currentFilename = `${todayStr}.md`;
+
     if (isAppend) {
-      // Append mode: prepend newlines for separation, reuse existing filename
+      // Append mode: prepend newlines for separation
       currentMarkdown = '\n\n' + currentMarkdown;
-      const savedFilename = localStorage.getItem('reflection_today_filename');
-      currentTitle = savedFilename ? savedFilename.replace(/^\d{4}-\d{2}-\d{2}\s*/, '').replace(/\.md$/, '') : '日记';
-      currentFilename = savedFilename || `${todayStr} ${currentTitle}.md`;
+      const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
+      currentTitle = titleMatch ? titleMatch[1] : '';
     } else {
       // New file mode: extract title from frontmatter
       const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
       currentTitle = titleMatch ? titleMatch[1] : '日记';
-      currentFilename = `${todayStr} ${currentTitle}.md`;
     }
 
     // Show preview
@@ -960,25 +961,19 @@ function saveToObsidian() {
   const isAppend = (lastWriteDate === today);
 
   // File path within the vault (without .md — Obsidian adds it)
-  const notePath = `entries/${year}/${currentFilename.replace(/\.md$/, '')}`;
+  const notePath = `entries/${year}/${today}`;
 
-  // Build the Obsidian URL
-  let obsidianUrl = `obsidian://new?vault=${encodeURIComponent('reflection-vault')}`
+  // Build the Obsidian URL — always append (creates file if it doesn't exist)
+  const obsidianUrl = `obsidian://new?vault=${encodeURIComponent('reflection-vault')}`
     + `&file=${encodeURIComponent(notePath)}`
-    + `&content=${encodeURIComponent(currentMarkdown)}`;
-
-  if (isAppend) {
-    obsidianUrl += '&append=true';
-  } else {
-    obsidianUrl += '&overwrite=true';
-  }
+    + `&content=${encodeURIComponent(currentMarkdown)}`
+    + '&append=true';
 
   // Open Obsidian — it will create/append the file in the vault
   window.location.href = obsidianUrl;
 
-  // Track that we've written today, and remember the filename
+  // Track that we've written today
   localStorage.setItem('reflection_last_write_date', today);
-  localStorage.setItem('reflection_today_filename', currentFilename);
 
   setTimeout(() => showSuccess(), 800);
 }
