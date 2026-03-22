@@ -4,38 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F9F8F4">
 <meta name="apple-mobile-web-app-title" content="Reflection">
-<link rel="manifest" href="data:application/json,{%22name%22:%22Reflection%22,%22short_name%22:%22Reflection%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230a0a0a%22,%22theme_color%22:%22%230a0a0a%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a0a' width='100' height='100'/><text y='.9em' font-size='90'>📝</text></svg>">
+<link rel="manifest" href="data:application/json,{%22name%22:%22Reflection%22,%22short_name%22:%22Reflection%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23F9F8F4%22,%22theme_color%22:%22%23F9F8F4%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23F9F8F4' width='100' height='100'/><text y='.9em' font-size='90'>📝</text></svg>">
 <title>Reflection</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500;700&family=Space+Mono&display=swap');
+
   :root {
-    --bg: #0a0a0a;
-    --surface: #161616;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
-    --text: #e8e8e8;
-    --text-dim: #888;
-    --accent: #c9a87c;
-    --accent-dim: rgba(201, 168, 124, 0.15);
-    --danger: #e05555;
-    --radius: 12px;
+    --bg-paper: #F9F8F4;
+    --ink: #2C3333;
+    --ink-light: rgba(44, 51, 51, 0.4);
+    --accent-red: #D64545;
+    --accent-red-dim: rgba(214, 69, 69, 0.1);
+    --line-blue: #DAE4EE;
+    --border: rgba(44, 51, 51, 0.12);
+    --radius: 4px;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --font-serif: 'Noto Serif JP', serif;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'Space Mono', monospace;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: var(--font-serif);
+    background: var(--bg-paper);
+    color: var(--ink);
     min-height: 100dvh;
     padding-top: var(--safe-top);
     padding-bottom: var(--safe-bottom);
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Texture Overlay ── */
+  .texture-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   }
 
   /* ── Lock Screen ── */
@@ -46,43 +59,51 @@
     justify-content: center;
     min-height: 100dvh;
     padding: 24px;
+    position: relative;
+    z-index: 10;
   }
 
   #lockScreen h1 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 300;
     letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    color: var(--ink);
   }
 
   #lockScreen p {
-    color: var(--text-dim);
-    font-size: 15px;
-    margin-bottom: 32px;
+    font-family: var(--font-sans);
+    color: var(--ink-light);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 40px;
   }
 
   .pin-input {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: 16px;
+    margin-bottom: 32px;
   }
 
   .pin-dot {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
-    border: 2px solid var(--border);
+    border: 1.5px solid var(--border);
     transition: all 0.2s;
   }
 
   .pin-dot.filled {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: var(--accent-red);
+    border-color: var(--accent-red);
   }
 
   .pin-dot.error {
-    border-color: var(--danger);
-    background: var(--danger);
+    border-color: var(--accent-red);
+    background: var(--accent-red);
+    opacity: 0.5;
   }
 
   .numpad {
@@ -96,8 +117,9 @@
     height: 72px;
     border-radius: 50%;
     border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-serif);
     font-size: 24px;
     font-weight: 300;
     cursor: pointer;
@@ -106,84 +128,245 @@
   }
 
   .numpad button:active {
-    background: var(--surface2);
+    background: rgba(44, 51, 51, 0.05);
     transform: scale(0.95);
   }
 
   .numpad button.fn {
     border: none;
     background: transparent;
-    font-size: 13px;
-    color: var(--text-dim);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
   }
 
   .numpad button.fn:active {
-    color: var(--text);
+    color: var(--ink);
   }
 
-  /* ── Setup Screen ── */
-  #setupScreen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 24px;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-
-  #setupScreen h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  #setupScreen .subtitle {
-    color: var(--text-dim);
-    font-size: 14px;
-    margin-bottom: 32px;
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  .setup-field {
+  /* ── Shared Form Styles ── */
+  .field {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
-  .setup-field label {
+  .field label {
     display: block;
-    font-size: 13px;
-    color: var(--text-dim);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
     margin-bottom: 8px;
-    font-weight: 500;
   }
 
-  .setup-field input {
+  .field input,
+  .field select {
     width: 100%;
     padding: 14px 16px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-size: 16px;
+    background: white;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
     outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%232C3333' stroke-opacity='0.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  .field input:focus,
+  .field select:focus {
+    border-color: var(--accent-red);
+  }
+
+  .field input::placeholder {
+    color: rgba(44, 51, 51, 0.25);
+  }
+
+  .field textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
     transition: border-color 0.2s;
   }
 
-  .setup-field input:focus {
-    border-color: var(--accent);
+  .field textarea:focus {
+    border-color: var(--accent-red);
   }
 
-  .setup-field input::placeholder {
-    color: #555;
+  .field textarea::placeholder {
+    color: rgba(44, 51, 51, 0.25);
   }
 
-  .setup-field .hint {
-    font-size: 12px;
-    color: #555;
-    margin-top: 6px;
+  .field .hint {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+
+  /* ── Toggle Switch ── */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+  }
+
+  .toggle-row .toggle-label {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .toggle-row .toggle-sublabel {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .toggle-switch input:checked + .toggle-track {
+    background: var(--accent-red);
+  }
+
+  .toggle-switch input:checked + .toggle-track::after {
+    transform: translateX(20px);
+  }
+
+  /* ── Section Divider ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0 24px;
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+
+  /* ── Collapsible Advanced ── */
+  .advanced-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+    cursor: pointer;
+    padding: 12px 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .advanced-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.2s;
+    font-size: 10px;
+  }
+
+  .advanced-toggle.open .arrow {
+    transform: rotate(90deg);
+  }
+
+  .advanced-body {
+    display: none;
+    padding-top: 16px;
+  }
+
+  .advanced-body.open {
+    display: block;
+  }
+
+  .template-btns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .template-btn {
+    padding: 6px 14px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--ink-light);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s;
+  }
+
+  .template-btn:active {
+    background: rgba(44, 51, 51, 0.05);
+    color: var(--ink);
   }
 
   /* ── Buttons ── */
@@ -191,16 +374,19 @@
     padding: 14px 28px;
     border-radius: var(--radius);
     border: none;
-    font-size: 16px;
+    font-family: var(--font-sans);
+    font-size: 12px;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
     cursor: pointer;
     transition: all 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
 
   .btn-primary {
-    background: var(--accent);
-    color: #0a0a0a;
+    background: var(--accent-red);
+    color: white;
     width: 100%;
   }
 
@@ -210,15 +396,96 @@
   }
 
   .btn-primary:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
   }
 
   .btn-ghost {
     background: transparent;
-    color: var(--text-dim);
-    font-size: 14px;
+    color: var(--ink-light);
+    font-size: 11px;
     padding: 8px 16px;
+  }
+
+  .btn-secondary {
+    background: white;
+    color: var(--ink);
+    border: 1px solid var(--border);
+  }
+
+  /* ── Setup / Onboarding Screen ── */
+  #setupScreen {
+    display: none;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: 24px 20px;
+    padding-bottom: calc(24px + var(--safe-bottom));
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  #setupScreen h1 {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    padding-top: 40px;
+  }
+
+  #setupScreen .subtitle {
+    font-family: var(--font-sans);
+    color: var(--ink-light);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* ── Settings Page ── */
+  #settingsPage {
+    display: none;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding: 0 20px 24px;
+    padding-bottom: calc(24px + var(--safe-bottom));
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .settings-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 0 24px;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-paper);
+    z-index: 5;
+  }
+
+  .settings-header h2 {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 300;
+  }
+
+  .back-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
   }
 
   /* ── Main App ── */
@@ -226,75 +493,92 @@
     display: none;
     flex-direction: column;
     min-height: 100dvh;
+    position: relative;
+    z-index: 10;
   }
 
   .app-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
+    padding: 24px 20px 16px;
   }
 
-  .app-header h2 {
-    font-size: 18px;
-    font-weight: 600;
+  .app-header .date-large {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: var(--ink);
   }
 
-  .app-header .date {
-    font-size: 13px;
-    color: var(--text-dim);
+  .app-header .meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-light);
+    margin-top: 6px;
   }
 
   .header-actions {
     display: flex;
     gap: 8px;
+    margin-top: 4px;
   }
 
   .icon-btn {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 50%;
     border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-dim);
+    background: transparent;
+    color: var(--ink-light);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+    transition: all 0.15s;
   }
 
   .icon-btn:active {
-    background: var(--surface2);
+    background: rgba(44, 51, 51, 0.05);
   }
 
   /* ── Pillars ── */
   .pillars {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
+    padding: 0 20px 16px;
   }
 
   .pillars-title {
-    font-size: 12px;
-    color: var(--text-dim);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    color: var(--ink-light);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2em;
     margin-bottom: 10px;
   }
 
   .pillar-tags {
     display: flex;
-    flex-wrap: wrap;
+    overflow-x: auto;
     gap: 8px;
+    padding-bottom: 4px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
+  .pillar-tags::-webkit-scrollbar { display: none; }
 
   .pillar-tag {
-    padding: 6px 12px;
+    flex-shrink: 0;
+    padding: 8px 14px;
     border-radius: 20px;
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 13px;
+    border: 1px solid var(--border);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    opacity: 0.6;
     white-space: nowrap;
   }
 
@@ -304,6 +588,13 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    position: relative;
+  }
+
+  .lined-paper-bg {
+    background-image: linear-gradient(var(--line-blue) 1px, transparent 1px);
+    background-size: 100% 32px;
+    background-position: 0 0;
   }
 
   .input-area textarea {
@@ -311,16 +602,16 @@
     min-height: 200px;
     border: none;
     background: transparent;
-    color: var(--text);
+    color: var(--ink);
+    font-family: var(--font-serif);
     font-size: 16px;
-    line-height: 1.7;
+    line-height: 32px;
     resize: none;
     outline: none;
-    font-family: inherit;
   }
 
   .input-area textarea::placeholder {
-    color: #444;
+    color: rgba(44, 51, 51, 0.25);
   }
 
   .input-footer {
@@ -329,6 +620,7 @@
     display: flex;
     gap: 12px;
     padding-bottom: calc(16px + var(--safe-bottom));
+    background: var(--bg-paper);
   }
 
   .input-footer .btn {
@@ -336,8 +628,9 @@
   }
 
   .char-count {
-    font-size: 12px;
-    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-light);
     text-align: right;
     padding: 4px 0;
   }
@@ -354,20 +647,23 @@
   }
 
   .spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent-red);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
   .processing p {
-    color: var(--text-dim);
-    font-size: 15px;
+    font-family: var(--font-sans);
+    color: var(--ink-light);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   /* ── Preview ── */
@@ -391,29 +687,12 @@
     min-height: 300px;
     border: none;
     background: transparent;
-    color: var(--text);
+    color: var(--ink);
+    font-family: var(--font-serif);
     font-size: 15px;
-    line-height: 1.8;
+    line-height: 32px;
     resize: none;
     outline: none;
-    font-family: inherit;
-  }
-
-  .preview-title {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .preview-title .label {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-bottom: 4px;
-  }
-
-  .preview-title .filename {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--accent);
   }
 
   .preview-footer {
@@ -422,59 +701,38 @@
     display: flex;
     gap: 12px;
     padding-bottom: calc(16px + var(--safe-bottom));
+    background: var(--bg-paper);
   }
 
   .preview-footer .btn { flex: 1; }
 
-  .btn-secondary {
-    background: var(--surface);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-
-  /* ── Settings Modal ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 100;
-    align-items: flex-end;
+  /* ── Success ── */
+  .success-check {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
     justify-content: center;
-  }
-
-  .modal-overlay.show {
-    display: flex;
-  }
-
-  .modal {
-    background: var(--surface);
-    border-radius: 16px 16px 0 0;
-    width: 100%;
-    max-width: 500px;
-    max-height: 80dvh;
-    overflow-y: auto;
-    padding: 24px 20px;
-    padding-bottom: calc(24px + var(--safe-bottom));
-  }
-
-  .modal h3 {
-    font-size: 18px;
-    font-weight: 600;
     margin-bottom: 20px;
+    color: #4CAF50;
+    font-size: 24px;
   }
 
-  .modal .setup-field {
-    margin-bottom: 16px;
+  .success-text {
+    font-size: 15px;
+    color: var(--ink);
+    margin-bottom: 6px;
+    font-family: var(--font-serif);
   }
 
-  .modal-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
+  .success-filename {
+    color: var(--accent-red);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-bottom: 28px;
   }
-
-  .modal-actions .btn { flex: 1; }
 
   /* ── Toast ── */
   .toast {
@@ -482,14 +740,17 @@
     top: calc(20px + var(--safe-top));
     left: 50%;
     transform: translateX(-50%) translateY(-100px);
-    background: var(--surface2);
-    color: var(--text);
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    font-size: 14px;
+    background: white;
+    color: var(--ink);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    letter-spacing: 0.02em;
     z-index: 200;
     transition: transform 0.3s ease;
     border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   }
 
   .toast.show {
@@ -497,8 +758,80 @@
   }
 
   .toast.error {
-    border-color: var(--danger);
-    color: var(--danger);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+  }
+
+  /* ── Record Area (Audio Mode) ── */
+  #recordArea {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .record-btn {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: transparent;
+    color: var(--ink-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: all 0.2s;
+    margin-bottom: 20px;
+  }
+
+  .record-btn:active {
+    transform: scale(0.95);
+  }
+
+  .record-btn.recording {
+    border-color: var(--accent-red);
+    background: var(--accent-red-dim);
+    color: var(--accent-red);
+    animation: pulse-ring 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(214, 69, 69, 0.2); }
+    50% { box-shadow: 0 0 0 16px rgba(214, 69, 69, 0); }
+  }
+
+  .record-status {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .record-status.recording {
+    color: var(--accent-red);
+  }
+
+  .record-timer {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+
+  .record-hint {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-top: 12px;
   }
 
   /* ── Utilities ── */
@@ -506,6 +839,9 @@
 </style>
 </head>
 <body>
+
+<!-- Texture Overlay -->
+<div class="texture-overlay"></div>
 
 <!-- Toast -->
 <div id="toast" class="toast"></div>
@@ -536,61 +872,256 @@
   </div>
 </div>
 
-<!-- Setup Screen (first time) -->
+<!-- Onboarding Screen -->
 <div id="setupScreen">
-  <h1>Setup</h1>
-  <p class="subtitle">First time setup: set a PIN and API key</p>
-  <div class="setup-field">
+  <h1>Welcome</h1>
+  <p class="subtitle">Set up your journal in a few steps. You can change everything later in Settings.</p>
+
+  <!-- PIN -->
+  <div class="section-title">Security</div>
+  <div class="field">
     <label>Set a 4-digit PIN</label>
     <input type="password" id="setupPin" inputmode="numeric" maxlength="4" placeholder="••••" pattern="[0-9]*">
   </div>
-  <div class="setup-field">
-    <label>Claude API Key</label>
-    <input type="password" id="setupApiKey" placeholder="sk-ant-..." autocomplete="off">
-    <div class="hint">Stored locally in your browser, never sent to any server</div>
+
+  <hr class="section-divider">
+
+  <!-- Input Mode -->
+  <div class="section-title">Input Mode</div>
+  <div class="field">
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Built-in audio recording</div>
+        <div class="toggle-sublabel">Turn off if you use a local transcription tool</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="setupAudioMode" onchange="onAudioModeToggle('setup')">
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+    <div class="hint">Text mode: type or use an external tool (Typeless, iOS Dictation, etc.). Audio mode: record directly in the app.</div>
   </div>
-  <button class="btn btn-primary" id="setupSubmit" onclick="completeSetup()">Get Started</button>
+
+  <hr class="section-divider">
+
+  <!-- API Keys -->
+  <div class="section-title">API Keys</div>
+  <div class="field">
+    <label>LLM Provider</label>
+    <select id="setupProvider">
+      <option value="anthropic">Anthropic (Claude)</option>
+      <option value="openai">OpenAI (GPT)</option>
+      <option value="gemini">Google (Gemini)</option>
+    </select>
+    <div class="hint">Used to organize your journal entries</div>
+  </div>
+  <div class="field">
+    <label>LLM API Key</label>
+    <input type="password" id="setupLlmKey" placeholder="sk-..." autocomplete="off">
+    <div class="hint">Stored locally in your browser, never sent to any server except the provider</div>
+  </div>
+  <div class="field" id="setupWhisperKeyField" style="display:none">
+    <label>OpenAI API Key (for Whisper)</label>
+    <input type="password" id="setupWhisperKey" placeholder="sk-..." autocomplete="off">
+    <div class="hint">Needed for audio transcription. If your LLM provider is also OpenAI, this uses the same key.</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Vault -->
+  <div class="section-title">Obsidian Vault</div>
+  <div class="field">
+    <label>Vault Name</label>
+    <input type="text" id="setupVaultName" value="reflection-vault" placeholder="reflection-vault">
+    <div class="hint">The exact name of your Obsidian vault</div>
+  </div>
+  <div class="field">
+    <label>Entry Path Pattern</label>
+    <input type="text" id="setupEntryPath" value="entries/YYYY/" placeholder="entries/YYYY/">
+    <div class="hint">YYYY will be replaced with the current year</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Reflection Prompt -->
+  <div class="section-title">Reflection Prompt</div>
+  <div class="field">
+    <label>Your guiding pillars</label>
+    <textarea id="setupReflectionPrompt" rows="4" placeholder="One pillar per line, e.g.&#10;Fit & Looking Good&#10;Always Learning&#10;Less Anxious">Fit & Looking Good
+Always Learning
+Less Anxious
+Find the Life I Want</textarea>
+    <div class="hint">Shown at the top of the app as reminders. One per line.</div>
+  </div>
+
+  <!-- Advanced -->
+  <button class="advanced-toggle" onclick="toggleAdvanced('setup')">
+    <span class="arrow">&#9654;</span> Advanced Settings
+  </button>
+  <div id="setupAdvanced" class="advanced-body">
+    <div class="field">
+      <label>System Prompt (sent to AI)</label>
+      <div class="template-btns">
+        <button class="template-btn" onclick="loadTemplate('setup', 'zh')">Chinese Template</button>
+        <button class="template-btn" onclick="loadTemplate('setup', 'en')">English Template</button>
+      </div>
+      <textarea id="setupSystemPrompt" rows="10" placeholder="Instructions for how AI should organize your journal..."></textarea>
+      <div class="hint">Controls how the AI organizes your journal entries. Leave blank to use the default.</div>
+    </div>
+  </div>
+
+  <div style="height: 16px"></div>
+  <button class="btn btn-primary" onclick="completeSetup()">Get Started</button>
+  <div style="height: 24px"></div>
+</div>
+
+<!-- Settings Page -->
+<div id="settingsPage">
+  <div class="settings-header">
+    <button class="back-btn" onclick="hideSettings()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    </button>
+    <h2>Settings</h2>
+  </div>
+
+  <!-- Input Mode -->
+  <div class="section-title">Input Mode</div>
+  <div class="field">
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Built-in audio recording</div>
+        <div class="toggle-sublabel">Turn off if you use a local transcription tool</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="settingsAudioMode" onchange="onAudioModeToggle('settings')">
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- API Keys -->
+  <div class="section-title">API Keys</div>
+  <div class="field">
+    <label>LLM Provider</label>
+    <select id="settingsProvider" onchange="onProviderChange('settings')">
+      <option value="anthropic">Anthropic (Claude)</option>
+      <option value="openai">OpenAI (GPT)</option>
+      <option value="gemini">Google (Gemini)</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>LLM API Key</label>
+    <input type="password" id="settingsLlmKey" placeholder="sk-..." autocomplete="off">
+  </div>
+  <div class="field" id="settingsWhisperKeyField" style="display:none">
+    <label>OpenAI API Key (for Whisper)</label>
+    <input type="password" id="settingsWhisperKey" placeholder="sk-..." autocomplete="off">
+    <div class="hint">Needed for audio transcription. If your LLM provider is also OpenAI, this uses the same key.</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Vault -->
+  <div class="section-title">Obsidian Vault</div>
+  <div class="field">
+    <label>Vault Name</label>
+    <input type="text" id="settingsVaultName" placeholder="reflection-vault">
+  </div>
+  <div class="field">
+    <label>Entry Path Pattern</label>
+    <input type="text" id="settingsEntryPath" placeholder="entries/YYYY/">
+    <div class="hint">YYYY will be replaced with the current year</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Reflection Prompt -->
+  <div class="section-title">Reflection Prompt</div>
+  <div class="field">
+    <label>Your guiding pillars</label>
+    <textarea id="settingsReflectionPrompt" rows="4" placeholder="One pillar per line"></textarea>
+    <div class="hint">Shown at the top of the app as reminders. One per line.</div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- PIN -->
+  <div class="section-title">Security</div>
+  <div class="field">
+    <label>Change PIN (leave blank to keep current)</label>
+    <input type="password" id="settingsPin" inputmode="numeric" maxlength="4" placeholder="New 4-digit PIN" pattern="[0-9]*">
+  </div>
+
+  <!-- Advanced -->
+  <button class="advanced-toggle" onclick="toggleAdvanced('settings')">
+    <span class="arrow">&#9654;</span> Advanced Settings
+  </button>
+  <div id="settingsAdvanced" class="advanced-body">
+    <div class="field">
+      <label>System Prompt (sent to AI)</label>
+      <div class="template-btns">
+        <button class="template-btn" onclick="loadTemplate('settings', 'zh')">Chinese Template</button>
+        <button class="template-btn" onclick="loadTemplate('settings', 'en')">English Template</button>
+      </div>
+      <textarea id="settingsSystemPrompt" rows="10" placeholder="Instructions for how AI should organize your journal..."></textarea>
+    </div>
+  </div>
+
+  <div style="height: 16px"></div>
+  <div style="display:flex;gap:12px;">
+    <button class="btn btn-secondary" style="flex:1" onclick="hideSettings()">Cancel</button>
+    <button class="btn btn-primary" style="flex:1" onclick="saveSettings()">Save</button>
+  </div>
+  <div style="height: 24px"></div>
 </div>
 
 <!-- Main App -->
 <div id="mainApp">
   <div class="app-header">
     <div>
-      <h2>Today's Reflection</h2>
-      <div class="date" id="todayDate"></div>
+      <div class="date-large" id="todayDateLarge"></div>
+      <div class="meta" id="todayMeta"></div>
     </div>
     <div class="header-actions">
       <button class="icon-btn" onclick="showSettings()" title="Settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
 
   <div class="pillars">
-    <div class="pillars-title">My Ideal Self</div>
-    <div class="pillar-tags">
-      <span class="pillar-tag">Fit & Looking Good</span>
-      <span class="pillar-tag">Always Learning</span>
-      <span class="pillar-tag">Less Anxious</span>
-      <span class="pillar-tag">Find the Life I Want</span>
-    </div>
+    <div class="pillars-title">My Reflections for the Day</div>
+    <div class="pillar-tags" id="pillarTags"></div>
   </div>
 
   <!-- Input State -->
-  <div id="inputArea" class="input-area">
+  <div id="inputArea" class="input-area lined-paper-bg">
     <textarea id="journalInput" placeholder="What happened today? Any thoughts or feelings?&#10;&#10;Just say whatever comes to mind, AI will organize it..."></textarea>
     <div class="char-count"><span id="charCount">0</span> chars</div>
+  </div>
+
+  <!-- Record State (Audio Mode) -->
+  <div id="recordArea">
+    <button class="record-btn" id="recordBtn" onclick="toggleRecording()">
+      <svg id="micIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      <svg id="stopIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+    </button>
+    <div class="record-timer" id="recordTimer">0:00</div>
+    <div class="record-status" id="recordStatus">Tap to record</div>
+    <div class="record-hint">Speak freely — AI will organize your thoughts</div>
   </div>
 
   <!-- Processing State -->
   <div id="processingArea" class="processing">
     <div class="spinner"></div>
-    <p>AI is organizing your thoughts...</p>
+    <p>Organizing your thoughts...</p>
   </div>
 
   <!-- Preview State -->
   <div id="previewArea">
-    <div class="preview-content"><textarea id="previewContent"></textarea></div>
+    <div class="preview-content lined-paper-bg"><textarea id="previewContent"></textarea></div>
   </div>
 
   <!-- Footer: changes based on state -->
@@ -600,36 +1131,17 @@
     </button>
   </div>
 
-  <div id="previewFooter" class="input-footer hidden">
+  <div id="previewFooter" class="preview-footer hidden">
     <button class="btn btn-secondary" onclick="backToEdit()">Back to Edit</button>
     <button class="btn btn-primary" onclick="saveToObsidian()">Save to Obsidian</button>
   </div>
 
   <!-- Success State -->
   <div id="successArea" class="processing hidden">
-    <div style="font-size:48px;margin-bottom:16px;">&#10003;</div>
-    <p style="font-size:17px;color:var(--text);margin-bottom:8px;">Saved!</p>
-    <p id="successFilename" style="color:var(--accent);font-size:14px;margin-bottom:24px;"></p>
+    <div class="success-check">&#10003;</div>
+    <p class="success-text">Saved</p>
+    <p class="success-filename" id="successFilename"></p>
     <button class="btn btn-ghost" onclick="resetAll()">Write Another</button>
-  </div>
-</div>
-
-<!-- Settings Modal -->
-<div id="settingsModal" class="modal-overlay" onclick="if(event.target===this)hideSettings()">
-  <div class="modal">
-    <h3>Settings</h3>
-    <div class="setup-field">
-      <label>Claude API Key</label>
-      <input type="password" id="settingsApiKey" placeholder="sk-ant-..." autocomplete="off">
-    </div>
-    <div class="setup-field">
-      <label>Change PIN (leave blank to keep current)</label>
-      <input type="password" id="settingsPin" inputmode="numeric" maxlength="4" placeholder="New 4-digit PIN" pattern="[0-9]*">
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="hideSettings()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
-    </div>
   </div>
 </div>
 
@@ -639,6 +1151,120 @@ let pinBuffer = '';
 let currentMarkdown = '';
 let currentFilename = '';
 let currentTitle = '';
+
+// ── Default Prompts ──
+const SYSTEM_PROMPT_ZH = `你是用户的日记整理助手。你的任务是把用户用语音输入的原始内容整理成结构清晰的日记。
+
+## 最重要的规则
+
+**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用用户说过的话来组织日记。如果用户只说了两句话，日记就应该只有两句话的内容。不要为了让日记"看起来更完整"而编造任何细节、感受、或描述。宁可短，也不能多。
+
+## 输出格式
+
+你的输出必须是纯 markdown。frontmatter 中的日期必须严格使用下面给定的值，不要自己推算：
+
+---
+date: {date}
+title: "简短标题，用顿号分隔几个关键词"
+---
+
+**{date}，{display_date}**
+
+## 小节标题
+
+正文...
+
+## 整理规则
+
+1. **日期**：必须使用上面给出的 date 值
+2. **标题**：用顿号连接 2-3 个今天的关键词
+3. **小节**：根据内容自然分段，每段一个小标题。如果内容很少，1-2 个小节就够了
+4. **语言**：保持用户本人的语言风格，不要美化、不要鸡汤
+5. **忠实原文**：只整理结构和修正语音输入的错别字，不改写、不润色、不扩写
+6. **不要加任何用户没说的内容**
+
+只输出 markdown，不要加任何解释。`;
+
+const SYSTEM_PROMPT_ZH_APPEND = `你是用户的日记追加助手。用户今天已经写过日记了，现在要追加新的内容。
+
+## 最重要的规则
+
+**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用用户说过的话来组织内容。如果用户只说了一句话，输出就应该只有一句话。宁可短，也不能多。
+
+## 输出格式
+
+只输出新的小节，不要输出 frontmatter（---date/title---），不要输出日期行。直接从 ## 小节标题开始。
+
+## 整理规则
+
+1. **不要输出 frontmatter 和日期**，直接从 ## 开始
+2. **小节**：根据内容分段，内容少就 1 个小节
+3. **语言**：保持用户本人的语言风格
+4. **忠实原文**：只整理结构和修正错别字，不改写、不润色、不扩写
+5. **不要加任何用户没说的内容**
+
+只输出 markdown，不要加任何解释。`;
+
+const SYSTEM_PROMPT_EN = `You are a journal organization assistant. Your task is to organize the user's raw voice-input content into a well-structured journal entry.
+
+## Most Important Rule
+
+**Never add, expand, or infer any content the user didn't say.** You can only use what they said to organize the journal. If they only said two sentences, the journal should only contain two sentences. Better short than fabricated.
+
+## Output Format
+
+Your output must be pure markdown. The date in frontmatter must strictly use the given values:
+
+---
+date: {date}
+title: "Short title with 2-3 key topics"
+---
+
+**{date}, {display_date}**
+
+## Section Title
+
+Content...
+
+## Rules
+
+1. **Date**: Must use the provided date values, do not guess
+2. **Title**: Connect 2-3 keywords from today's entry
+3. **Sections**: Naturally divide content. If there's little content, 1-2 sections is enough
+4. **Language**: Keep the user's original language and tone — do not embellish
+5. **Faithful to original**: Only organize structure and fix typos. Do not rewrite or expand
+6. **Never add anything the user didn't say**
+
+Output only markdown, no explanations.`;
+
+const SYSTEM_PROMPT_EN_APPEND = `You are a journal append assistant. The user already wrote a journal entry today and wants to add more.
+
+## Most Important Rule
+
+**Never add, expand, or infer any content the user didn't say.** If they only said one sentence, the output should only be one sentence. Better short than fabricated.
+
+## Output Format
+
+Only output new sections. Do NOT output frontmatter (---date/title---) or date line. Start directly with ## Section Title.
+
+## Rules
+
+1. **No frontmatter or date** — start directly with ##
+2. **Sections**: Divide by content. If short, just 1 section
+3. **Language**: Keep the user's original tone
+4. **Faithful**: Only organize and fix typos. Do not rewrite or expand
+5. **Never add anything the user didn't say**
+
+Output only markdown, no explanations.`;
+
+// ── Config Helpers ──
+function getConfig(key, fallback) {
+  return localStorage.getItem('reflection_' + key) || fallback;
+}
+
+function setConfig(key, value) {
+  localStorage.setItem('reflection_' + key, value);
+}
 
 // ── Utilities ──
 function toast(msg, isError = false) {
@@ -663,15 +1289,26 @@ function getTodayDisplay() {
   return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
+function getTodayLargeDisplay() {
+  const d = new Date();
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return `${months[d.getMonth()]} ${d.getDate()}`;
+}
+
+function getTodayMeta() {
+  const d = new Date();
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayOfYear = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
+  return `${days[d.getDay()]} — No. ${String(dayOfYear).padStart(3, '0')} — ${d.getFullYear()}`;
+}
+
 async function hashPin(pin) {
-  // crypto.subtle is only available on HTTPS or localhost
   if (crypto.subtle) {
     const encoder = new TextEncoder();
     const data = encoder.encode(pin + '_reflection_salt');
     const hash = await crypto.subtle.digest('SHA-256', data);
     return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
-  // Fallback for HTTP: simple hash (less secure, but this is a personal app)
   let h = 0;
   const str = pin + '_reflection_salt';
   for (let i = 0; i < str.length; i++) {
@@ -680,22 +1317,61 @@ async function hashPin(pin) {
   return 'fallback_' + Math.abs(h).toString(16);
 }
 
+// ── Audio Mode / Provider Toggle Logic ──
+function onAudioModeToggle(prefix) {
+  const isAudio = document.getElementById(prefix + 'AudioMode').checked;
+  const providerEl = document.getElementById(prefix + 'Provider');
+  const provider = providerEl ? providerEl.value : 'anthropic';
+  updateWhisperKeyVisibility(prefix, isAudio, provider);
+}
+
+function onProviderChange(prefix) {
+  const isAudio = document.getElementById(prefix + 'AudioMode').checked;
+  const provider = document.getElementById(prefix + 'Provider').value;
+  updateWhisperKeyVisibility(prefix, isAudio, provider);
+}
+
+function updateWhisperKeyVisibility(prefix, isAudio, provider) {
+  const field = document.getElementById(prefix + 'WhisperKeyField');
+  if (!field) return;
+  // Show Whisper key field if audio mode is on AND provider is NOT OpenAI
+  // (If provider is OpenAI, the LLM key is used for both)
+  field.style.display = (isAudio && provider !== 'openai') ? 'block' : 'none';
+}
+
+// ── Advanced Settings Toggle ──
+function toggleAdvanced(prefix) {
+  const btn = event.currentTarget;
+  const body = document.getElementById(prefix + 'Advanced');
+  btn.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// ── Template Loading ──
+function loadTemplate(prefix, lang) {
+  const textarea = document.getElementById(prefix + 'SystemPrompt');
+  if (lang === 'zh') {
+    textarea.value = SYSTEM_PROMPT_ZH;
+  } else {
+    textarea.value = SYSTEM_PROMPT_EN;
+  }
+}
+
 // ── PIN Lock ──
 function initApp() {
   const stored = localStorage.getItem('reflection_pin_hash');
   if (!stored) {
-    // First time - show setup
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'flex';
+    // Wire up provider change in setup too
+    document.getElementById('setupProvider').addEventListener('change', () => onProviderChange('setup'));
   }
-  // Otherwise show lock screen (default)
 }
 
 async function pinPress(digit) {
   if (pinBuffer.length >= 4) return;
   pinBuffer += digit;
 
-  // Update dots
   document.querySelectorAll('.pin-dot').forEach((dot, i) => {
     dot.classList.toggle('filled', i < pinBuffer.length);
   });
@@ -704,11 +1380,9 @@ async function pinPress(digit) {
     const hash = await hashPin(pinBuffer);
     const stored = localStorage.getItem('reflection_pin_hash');
     if (hash === stored) {
-      // Success
       document.getElementById('lockScreen').style.display = 'none';
       showMainApp();
     } else {
-      // Error
       document.querySelectorAll('.pin-dot').forEach(d => {
         d.classList.remove('filled');
         d.classList.add('error');
@@ -735,23 +1409,49 @@ function pinDelete() {
   });
 }
 
+// ── Onboarding ──
 async function completeSetup() {
   try {
     const pin = document.getElementById('setupPin').value;
-    const apiKey = document.getElementById('setupApiKey').value.trim();
+    const llmKey = document.getElementById('setupLlmKey').value.trim();
+    const provider = document.getElementById('setupProvider').value;
+    const isAudio = document.getElementById('setupAudioMode').checked;
 
     if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
       toast('Please enter a 4-digit PIN', true);
       return;
     }
-    if (!apiKey || apiKey.length < 10) {
-      toast('Please enter a valid API key', true);
+    if (!llmKey || llmKey.length < 10) {
+      toast('Please enter a valid LLM API key', true);
       return;
     }
 
+    // If audio mode and provider isn't OpenAI, check Whisper key
+    if (isAudio && provider !== 'openai') {
+      const whisperKey = document.getElementById('setupWhisperKey').value.trim();
+      if (!whisperKey || whisperKey.length < 10) {
+        toast('Please enter a valid OpenAI API key for Whisper', true);
+        return;
+      }
+      setConfig('whisper_key', whisperKey);
+    }
+
     const hash = await hashPin(pin);
-    localStorage.setItem('reflection_pin_hash', hash);
-    localStorage.setItem('reflection_api_key', apiKey);
+    setConfig('pin_hash', hash);
+    setConfig('llm_provider', provider);
+    setConfig('llm_key', llmKey);
+    setConfig('input_mode', isAudio ? 'audio' : 'text');
+    setConfig('vault_name', document.getElementById('setupVaultName').value.trim() || 'reflection-vault');
+    setConfig('entry_path', document.getElementById('setupEntryPath').value.trim() || 'entries/YYYY/');
+    setConfig('reflection_prompt', document.getElementById('setupReflectionPrompt').value.trim());
+
+    const sysPrompt = document.getElementById('setupSystemPrompt').value.trim();
+    if (sysPrompt) {
+      setConfig('system_prompt', sysPrompt);
+    }
+
+    // Migrate old key name if needed
+    localStorage.removeItem('reflection_api_key');
 
     document.getElementById('setupScreen').style.display = 'none';
     showMainApp();
@@ -764,7 +1464,11 @@ async function completeSetup() {
 // ── Main App ──
 function showMainApp() {
   document.getElementById('mainApp').style.display = 'flex';
-  document.getElementById('todayDate').textContent = getTodayDisplay();
+  document.getElementById('todayDateLarge').textContent = getTodayLargeDisplay();
+  document.getElementById('todayMeta').textContent = getTodayMeta();
+
+  renderPillarTags();
+  applyInputMode();
 
   const textarea = document.getElementById('journalInput');
   textarea.addEventListener('input', () => {
@@ -773,149 +1477,434 @@ function showMainApp() {
   });
 }
 
-// ── AI Integration ──
-async function submitReflection() {
-  const input = document.getElementById('journalInput').value.trim();
-  if (input.length < 10) return;
+function applyInputMode() {
+  const isAudio = getConfig('input_mode', 'text') === 'audio';
+  document.getElementById('inputArea').style.display = isAudio ? 'none' : 'flex';
+  document.getElementById('inputFooter').style.display = isAudio ? 'none' : 'flex';
+  document.getElementById('recordArea').style.display = isAudio ? 'flex' : 'none';
+}
 
-  const apiKey = localStorage.getItem('reflection_api_key');
-  if (!apiKey) {
-    toast('Please set your API key first', true);
+function renderPillarTags() {
+  const prompt = getConfig('reflection_prompt', 'Fit & Looking Good\nAlways Learning\nLess Anxious\nFind the Life I Want');
+  const container = document.getElementById('pillarTags');
+  container.innerHTML = '';
+  prompt.split('\n').filter(line => line.trim()).forEach(line => {
+    const tag = document.createElement('span');
+    tag.className = 'pillar-tag';
+    tag.textContent = line.trim();
+    container.appendChild(tag);
+  });
+}
+
+// ── Settings Page ──
+function showSettings() {
+  document.getElementById('mainApp').style.display = 'none';
+
+  // Fill fields from localStorage
+  document.getElementById('settingsAudioMode').checked = getConfig('input_mode', 'text') === 'audio';
+  document.getElementById('settingsProvider').value = getConfig('llm_provider', 'anthropic');
+  document.getElementById('settingsLlmKey').value = getConfig('llm_key', '');
+  document.getElementById('settingsWhisperKey').value = getConfig('whisper_key', '');
+  document.getElementById('settingsVaultName').value = getConfig('vault_name', 'reflection-vault');
+  document.getElementById('settingsEntryPath').value = getConfig('entry_path', 'entries/YYYY/');
+  document.getElementById('settingsReflectionPrompt').value = getConfig('reflection_prompt', '');
+  document.getElementById('settingsSystemPrompt').value = getConfig('system_prompt', '');
+  document.getElementById('settingsPin').value = '';
+
+  // Update conditional visibility
+  onAudioModeToggle('settings');
+
+  document.getElementById('settingsPage').style.display = 'flex';
+}
+
+function hideSettings() {
+  document.getElementById('settingsPage').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'flex';
+
+  // Reapply input mode (may have changed)
+  applyInputMode();
+
+  // Reset advanced section
+  const advBtn = document.querySelector('#settingsPage .advanced-toggle');
+  const advBody = document.getElementById('settingsAdvanced');
+  if (advBtn) advBtn.classList.remove('open');
+  if (advBody) advBody.classList.remove('open');
+}
+
+async function saveSettings() {
+  const llmKey = document.getElementById('settingsLlmKey').value.trim();
+  const provider = document.getElementById('settingsProvider').value;
+  const isAudio = document.getElementById('settingsAudioMode').checked;
+
+  if (!llmKey || llmKey.length < 10) {
+    toast('Please enter a valid LLM API key', true);
     return;
   }
 
-  // Switch to processing state
-  document.getElementById('inputArea').style.display = 'none';
-  document.getElementById('inputFooter').style.display = 'none';
-  document.getElementById('processingArea').style.display = 'flex';
+  if (isAudio && provider !== 'openai') {
+    const whisperKey = document.getElementById('settingsWhisperKey').value.trim();
+    if (!whisperKey || whisperKey.length < 10) {
+      toast('Please enter a valid OpenAI API key for Whisper', true);
+      return;
+    }
+    setConfig('whisper_key', whisperKey);
+  }
 
+  setConfig('llm_provider', provider);
+  setConfig('llm_key', llmKey);
+  setConfig('input_mode', isAudio ? 'audio' : 'text');
+  setConfig('vault_name', document.getElementById('settingsVaultName').value.trim() || 'reflection-vault');
+  setConfig('entry_path', document.getElementById('settingsEntryPath').value.trim() || 'entries/YYYY/');
+  setConfig('reflection_prompt', document.getElementById('settingsReflectionPrompt').value.trim());
+
+  const sysPrompt = document.getElementById('settingsSystemPrompt').value.trim();
+  setConfig('system_prompt', sysPrompt);
+
+  // PIN change
+  const newPin = document.getElementById('settingsPin').value;
+  if (newPin) {
+    if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
+      toast('PIN must be 4 digits', true);
+      return;
+    }
+    const hash = await hashPin(newPin);
+    setConfig('pin_hash', hash);
+  }
+
+  renderPillarTags();
+  hideSettings();
+  toast('Settings saved');
+}
+
+// ── Multi-Provider API Calls ──
+function getSystemPrompt(isAppend) {
+  const customPrompt = getConfig('system_prompt', '');
   const todayStr = getToday();
   const todayDisplay = getTodayDisplay();
 
-  // Check if we've already written today
-  const lastWriteDate = localStorage.getItem('reflection_last_write_date');
-  const isAppend = (lastWriteDate === todayStr);
+  if (customPrompt) {
+    // Replace placeholders in custom prompt
+    let prompt = customPrompt
+      .replace(/\{date\}/g, todayStr)
+      .replace(/\{display_date\}/g, todayDisplay);
+    // For append, modify the custom prompt
+    if (isAppend) {
+      prompt += '\n\nIMPORTANT: The user already wrote today. Only output new ## sections. Do NOT output frontmatter or date line.';
+    }
+    return prompt;
+  }
 
-  let systemPrompt;
+  // Default prompts based on language detection
+  // Check if reflection prompt has Chinese characters to guess language
+  const reflectionPrompt = getConfig('reflection_prompt', '');
+  const hasChinese = /[\u4e00-\u9fff]/.test(reflectionPrompt);
 
-  if (isAppend) {
-    // ── APPEND MODE: only generate new sections ──
-    systemPrompt = `你是 Zheng 的日记追加助手。他今天已经写过日记了，现在要追加新的内容。
-
-## 最重要的规则
-
-**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用他说过的话来组织内容。如果他只说了一句话，输出就应该只有一句话。宁可短，也不能多。
-
-## 输出格式
-
-只输出新的小节，不要输出 frontmatter（---date/title---），不要输出日期行。直接从 ## 小节标题开始。
-
-例如：
-
-## 小节标题
-
-正文内容...
-
-## 整理规则
-
-1. **不要输出 frontmatter 和日期**，直接从 ## 开始
-2. **小节**：根据内容分段，内容少就 1 个小节
-3. **语言**：保持他本人的语言风格——中英混杂、口语化、真实
-4. **忠实原文**：只整理结构和修正错别字，不改写、不润色、不扩写
-5. **不要加任何他没说的内容**
-
-只输出 markdown，不要加任何解释。`;
+  if (hasChinese) {
+    if (isAppend) {
+      return SYSTEM_PROMPT_ZH_APPEND;
+    }
+    return SYSTEM_PROMPT_ZH.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
   } else {
-    // ── NEW FILE MODE: full journal with frontmatter ──
-    systemPrompt = `你是 Zheng 的日记整理助手。你的任务是把他用语音输入的原始内容整理成结构清晰的日记。
+    if (isAppend) {
+      return SYSTEM_PROMPT_EN_APPEND;
+    }
+    return SYSTEM_PROMPT_EN.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
+  }
+}
 
-## 最重要的规则
+async function callLLM(systemPrompt, userMessage) {
+  const provider = getConfig('llm_provider', 'anthropic');
+  const apiKey = getConfig('llm_key', '');
 
-**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用他说过的话来组织日记。如果他只说了两句话，日记就应该只有两句话的内容。不要为了让日记"看起来更完整"而编造任何细节、感受、或描述。宁可短，也不能多。
+  if (provider === 'anthropic') {
+    return callAnthropic(apiKey, systemPrompt, userMessage);
+  } else if (provider === 'openai') {
+    return callOpenAI(apiKey, systemPrompt, userMessage);
+  } else if (provider === 'gemini') {
+    return callGemini(apiKey, systemPrompt, userMessage);
+  }
+  throw new Error('Unknown provider: ' + provider);
+}
 
-## 输出格式
+async function callAnthropic(apiKey, systemPrompt, userMessage) {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4096,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userMessage }]
+    })
+  });
 
-你的输出必须是纯 markdown。frontmatter 中的日期必须严格使用下面给定的值，不要自己推算：
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `Anthropic API error ${response.status}`);
+  }
 
----
-date: ${todayStr}
-title: "简短标题，用顿号分隔几个关键词"
----
+  const data = await response.json();
+  return data.content[0].text;
+}
 
-**${todayStr}，${todayDisplay}**
+async function callOpenAI(apiKey, systemPrompt, userMessage) {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userMessage }
+      ],
+      max_tokens: 4096
+    })
+  });
 
-## 小节标题
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `OpenAI API error ${response.status}`);
+  }
 
-正文...
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
 
-## 整理规则
+async function callGemini(apiKey, systemPrompt, userMessage) {
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system_instruction: { parts: [{ text: systemPrompt }] },
+      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
+      generationConfig: { maxOutputTokens: 4096 }
+    })
+  });
 
-1. **日期**：必须使用上面给出的 date: ${todayStr}，显示日期用 ${todayDisplay}，不要自己编日期
-2. **标题**：用顿号连接 2-3 个今天的关键词，风格参考："奶茶、新机会、和过一天算一天"
-3. **小节**：根据内容自然分段，每段一个小标题。如果内容很少，1-2 个小节就够了，不要硬凑
-4. **语言**：保持他本人的语言风格——中英混杂、口语化、真实。不要美化、不要鸡汤
-5. **忠实原文**：只整理结构和修正语音输入的错别字，不改写、不润色、不扩写。他说"好激动"就写"好激动"，不要扩展成"感到非常激动和期待"
-6. **不要加任何他没说的内容**：包括但不限于——不要加描述、不要加感受、不要加评论、不要加总结、不要加展望
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    const msg = err.error?.message || `Gemini API error ${response.status}`;
+    throw new Error(msg);
+  }
 
-只输出 markdown，不要加任何解释。`;
+  const data = await response.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+// ── Audio Recording ──
+let mediaRecorder = null;
+let audioChunks = [];
+let recordingStartTime = null;
+let recordingTimerInterval = null;
+
+function getWhisperKey() {
+  const provider = getConfig('llm_provider', 'anthropic');
+  if (provider === 'openai') {
+    return getConfig('llm_key', '');
+  }
+  return getConfig('whisper_key', '');
+}
+
+async function toggleRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    audioChunks = [];
+
+    // Use webm on most browsers, mp4 on Safari
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+      ? 'audio/webm;codecs=opus'
+      : 'audio/mp4';
+    mediaRecorder = new MediaRecorder(stream, { mimeType });
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) audioChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      clearInterval(recordingTimerInterval);
+      const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
+      processAudioRecording(audioBlob);
+    };
+
+    mediaRecorder.start(1000); // collect in 1s chunks
+
+    // Update UI
+    const btn = document.getElementById('recordBtn');
+    const status = document.getElementById('recordStatus');
+    btn.classList.add('recording');
+    status.classList.add('recording');
+    status.textContent = 'Recording — tap to stop';
+    document.getElementById('micIcon').style.display = 'none';
+    document.getElementById('stopIcon').style.display = 'block';
+
+    // Timer
+    recordingStartTime = Date.now();
+    recordingTimerInterval = setInterval(updateRecordTimer, 1000);
+    updateRecordTimer();
+
+  } catch (err) {
+    if (err.name === 'NotAllowedError') {
+      toast('Microphone access denied — check your browser settings', true);
+    } else {
+      toast('Could not start recording: ' + err.message, true);
+    }
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+  }
+}
+
+function updateRecordTimer() {
+  const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+  const mins = Math.floor(elapsed / 60);
+  const secs = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('recordTimer').textContent = `${mins}:${secs}`;
+}
+
+function resetRecordUI() {
+  const btn = document.getElementById('recordBtn');
+  const status = document.getElementById('recordStatus');
+  btn.classList.remove('recording');
+  status.classList.remove('recording');
+  status.textContent = 'Tap to record';
+  document.getElementById('micIcon').style.display = 'block';
+  document.getElementById('stopIcon').style.display = 'none';
+  document.getElementById('recordTimer').textContent = '0:00';
+}
+
+async function processAudioRecording(audioBlob) {
+  // Hide record area, show processing
+  document.getElementById('recordArea').style.display = 'none';
+  document.getElementById('processingArea').style.display = 'flex';
+  document.querySelector('#processingArea p').textContent = 'Transcribing...';
+
+  const whisperKey = getWhisperKey();
+  if (!whisperKey) {
+    toast('No OpenAI API key set for Whisper transcription', true);
+    backToInput();
+    return;
   }
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    // Step 1: Transcribe with Whisper
+    const ext = audioBlob.type.includes('mp4') ? 'mp4' : 'webm';
+    const formData = new FormData();
+    formData.append('file', audioBlob, `recording.${ext}`);
+    formData.append('model', 'gpt-4o-mini-transcribe');
+
+    const transcribeResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: [{
-          role: 'user',
-          content: `以下是我今天用语音输入记录的内容，请帮我整理成日记：\n\n${input}`
-        }]
-      })
+      headers: { 'Authorization': `Bearer ${whisperKey}` },
+      body: formData
     });
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `API error ${response.status}`);
+    if (!transcribeResponse.ok) {
+      const err = await transcribeResponse.json().catch(() => ({}));
+      throw new Error(err.error?.message || `Whisper API error ${transcribeResponse.status}`);
     }
 
-    const data = await response.json();
-    currentMarkdown = data.content[0].text;
+    const transcribeData = await transcribeResponse.json();
+    const transcribedText = transcribeData.text;
 
-    // Filename is always date-based — no dependency on AI-generated title
+    if (!transcribedText || transcribedText.trim().length < 5) {
+      toast('Could not transcribe audio — try speaking louder or longer', true);
+      backToInput();
+      return;
+    }
+
+    // Step 2: Send to LLM for organization
+    document.querySelector('#processingArea p').textContent = 'Organizing your thoughts...';
+    await organizeAndPreview(transcribedText);
+
+  } catch (err) {
+    toast(err.message, true);
+    backToInput();
+  }
+}
+
+function backToInput() {
+  document.getElementById('processingArea').style.display = 'none';
+  const isAudio = getConfig('input_mode', 'text') === 'audio';
+  if (isAudio) {
+    resetRecordUI();
+    document.getElementById('recordArea').style.display = 'flex';
+  } else {
+    document.getElementById('inputArea').style.display = 'flex';
+    document.getElementById('inputFooter').style.display = 'flex';
+  }
+}
+
+// ── AI Integration ──
+async function organizeAndPreview(text) {
+  const todayStr = getToday();
+  const lastWriteDate = getConfig('last_write_date', '');
+  const isAppend = (lastWriteDate === todayStr);
+
+  const systemPrompt = getSystemPrompt(isAppend);
+  const userMessage = `以下是我今天记录的内容，请帮我整理成日记：\n\n${text}`;
+
+  try {
+    currentMarkdown = await callLLM(systemPrompt, userMessage);
     currentFilename = `${todayStr}.md`;
 
     if (isAppend) {
-      // Append mode: prepend newlines for separation
       currentMarkdown = '\n\n' + currentMarkdown;
       const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
       currentTitle = titleMatch ? titleMatch[1] : '';
     } else {
-      // New file mode: extract title from frontmatter
       const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
-      currentTitle = titleMatch ? titleMatch[1] : '日记';
+      currentTitle = titleMatch ? titleMatch[1] : 'Journal';
     }
 
-    // Show preview
     showPreview();
-
   } catch (err) {
     toast(err.message, true);
-    backToEdit();
+    backToInput();
   }
+}
+
+async function submitReflection() {
+  const input = document.getElementById('journalInput').value.trim();
+  if (input.length < 10) return;
+
+  const apiKey = getConfig('llm_key', '');
+  if (!apiKey) {
+    toast('Please set your API key in Settings', true);
+    return;
+  }
+
+  document.getElementById('inputArea').style.display = 'none';
+  document.getElementById('inputFooter').style.display = 'none';
+  document.getElementById('processingArea').style.display = 'flex';
+  document.querySelector('#processingArea p').textContent = 'Organizing your thoughts...';
+
+  await organizeAndPreview(input);
 }
 
 function showPreview() {
   document.getElementById('processingArea').style.display = 'none';
   document.getElementById('previewArea').style.display = 'flex';
   document.getElementById('previewFooter').classList.remove('hidden');
-  // Show raw markdown in editable textarea
   document.getElementById('previewContent').value = currentMarkdown;
 }
 
@@ -923,34 +1912,31 @@ function backToEdit() {
   document.getElementById('processingArea').style.display = 'none';
   document.getElementById('previewArea').style.display = 'none';
   document.getElementById('previewFooter').classList.add('hidden');
-  document.getElementById('inputArea').style.display = 'flex';
-  document.getElementById('inputFooter').style.display = 'flex';
+  backToInput();
 }
 
 // ── File Save via Obsidian URL Scheme ──
 function saveToObsidian() {
   const today = getToday();
   const year = today.slice(0, 4);
-  const lastWriteDate = localStorage.getItem('reflection_last_write_date');
+  const lastWriteDate = getConfig('last_write_date', '');
   const isAppend = (lastWriteDate === today);
 
-  // File path within the vault (without .md — Obsidian adds it)
-  const notePath = `entries/${year}/${today}`;
+  const vaultName = getConfig('vault_name', 'reflection-vault');
+  const entryPathPattern = getConfig('entry_path', 'entries/YYYY/');
+  const entryPath = entryPathPattern.replace('YYYY', year);
+  const notePath = `${entryPath}${today}`;
 
-  // Read the (possibly edited) content from the preview textarea
   const finalMarkdown = document.getElementById('previewContent').value;
 
-  // Build the Obsidian URL — always append (creates file if it doesn't exist)
-  const obsidianUrl = `obsidian://new?vault=${encodeURIComponent('reflection-vault')}`
+  const obsidianUrl = `obsidian://new?vault=${encodeURIComponent(vaultName)}`
     + `&file=${encodeURIComponent(notePath)}`
     + `&content=${encodeURIComponent(finalMarkdown)}`
     + '&append=true';
 
-  // Open Obsidian — it will create/append the file in the vault
   window.location.href = obsidianUrl;
 
-  // Track that we've written today
-  localStorage.setItem('reflection_last_write_date', today);
+  setConfig('last_write_date', today);
 
   setTimeout(() => showSuccess(), 800);
 }
@@ -969,49 +1955,16 @@ function resetAll() {
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('successArea').classList.add('hidden');
   document.getElementById('successArea').style.display = 'none';
+  resetRecordUI();
   currentMarkdown = '';
   currentFilename = '';
   currentTitle = '';
   backToEdit();
 }
 
-// ── Settings ──
-function showSettings() {
-  document.getElementById('settingsApiKey').value = localStorage.getItem('reflection_api_key') || '';
-  document.getElementById('settingsPin').value = '';
-  document.getElementById('settingsModal').classList.add('show');
-}
-
-function hideSettings() {
-  document.getElementById('settingsModal').classList.remove('show');
-}
-
-async function saveSettings() {
-  const apiKey = document.getElementById('settingsApiKey').value.trim();
-  const newPin = document.getElementById('settingsPin').value;
-
-  if (apiKey) {
-    localStorage.setItem('reflection_api_key', apiKey);
-  }
-
-  if (newPin) {
-    if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-      toast('PIN must be 4 digits', true);
-      return;
-    }
-    const hash = await hashPin(newPin);
-    localStorage.setItem('reflection_pin_hash', hash);
-  }
-
-  hideSettings();
-  toast('Settings saved');
-}
-
 // ── PWA: Request persistent storage ──
 if (navigator.storage && navigator.storage.persist) {
-  navigator.storage.persist().then(granted => {
-    if (granted) console.log('Persistent storage granted');
-  });
+  navigator.storage.persist();
 }
 
 // ── Add to Home Screen prompt ──
@@ -1022,16 +1975,16 @@ function checkStandalone() {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const banner = document.createElement('div');
       banner.id = 'pwaBanner';
-      banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:16px 20px;z-index:50;padding-bottom:calc(16px + var(--safe-bottom));';
+      banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:var(--bg-paper);border-top:1px solid var(--border);padding:16px 20px;z-index:60;padding-bottom:calc(16px + var(--safe-bottom));font-family:var(--font-sans);';
       banner.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-          <div style="font-size:14px;font-weight:500;color:var(--text);">Add to Home Screen</div>
-          <button onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')" style="background:none;border:none;color:var(--text-dim);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;">×</button>
+          <div style="font-size:12px;font-weight:500;color:var(--ink);text-transform:uppercase;letter-spacing:0.1em;">Add to Home Screen</div>
+          <button onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')" style="background:none;border:none;color:var(--ink-light);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;">×</button>
         </div>
-        <div style="font-size:13px;color:var(--text-dim);line-height:1.5;">
+        <div style="font-size:12px;color:var(--ink-light);line-height:1.6;">
           ${isIOS
-            ? 'To keep your API key saved, add this app to your home screen:<br>Tap <span style="font-size:16px;">⎋</span> (share button) at the bottom of Safari → <strong>Add to Home Screen</strong>'
-            : 'To keep your API key saved, add this app to your home screen from your browser menu.'}
+            ? 'Tap the share button at the bottom of Safari, then <strong>Add to Home Screen</strong>'
+            : 'Add this app to your home screen from your browser menu.'}
         </div>
       `;
       document.body.appendChild(banner);
