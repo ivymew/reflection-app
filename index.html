@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -513,7 +513,7 @@
 <!-- Lock Screen -->
 <div id="lockScreen">
   <h1>Reflection</h1>
-  <p>输入密码</p>
+  <p>Enter PIN</p>
   <div class="pin-input">
     <div class="pin-dot" data-i="0"></div>
     <div class="pin-dot" data-i="1"></div>
@@ -530,62 +530,62 @@
     <button onclick="pinPress('7')">7</button>
     <button onclick="pinPress('8')">8</button>
     <button onclick="pinPress('9')">9</button>
-    <button class="fn" onclick="pinClear()">清除</button>
+    <button class="fn" onclick="pinClear()">Clear</button>
     <button onclick="pinPress('0')">0</button>
-    <button class="fn" onclick="pinDelete()">删除</button>
+    <button class="fn" onclick="pinDelete()">Delete</button>
   </div>
 </div>
 
 <!-- Setup Screen (first time) -->
 <div id="setupScreen">
-  <h1>设置</h1>
-  <p class="subtitle">首次使用，需要设置密码和 API Key</p>
+  <h1>Setup</h1>
+  <p class="subtitle">First time setup: set a PIN and API key</p>
   <div class="setup-field">
-    <label>设置 4 位数字密码</label>
+    <label>Set a 4-digit PIN</label>
     <input type="password" id="setupPin" inputmode="numeric" maxlength="4" placeholder="••••" pattern="[0-9]*">
   </div>
   <div class="setup-field">
     <label>Claude API Key</label>
     <input type="password" id="setupApiKey" placeholder="sk-ant-..." autocomplete="off">
-    <div class="hint">存在浏览器本地，不会发送到任何服务器</div>
+    <div class="hint">Stored locally in your browser, never sent to any server</div>
   </div>
-  <button class="btn btn-primary" id="setupSubmit" onclick="completeSetup()">开始使用</button>
+  <button class="btn btn-primary" id="setupSubmit" onclick="completeSetup()">Get Started</button>
 </div>
 
 <!-- Main App -->
 <div id="mainApp">
   <div class="app-header">
     <div>
-      <h2>今日反思</h2>
+      <h2>Today's Reflection</h2>
       <div class="date" id="todayDate"></div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" onclick="showSettings()" title="设置">
+      <button class="icon-btn" onclick="showSettings()" title="Settings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
 
   <div class="pillars">
-    <div class="pillars-title">理想中的自己</div>
+    <div class="pillars-title">My Ideal Self</div>
     <div class="pillar-tags">
-      <span class="pillar-tag">更 fit、好看</span>
-      <span class="pillar-tag">有在学习</span>
-      <span class="pillar-tag">不焦虑</span>
-      <span class="pillar-tag">找到想要的生活</span>
+      <span class="pillar-tag">Fit & Looking Good</span>
+      <span class="pillar-tag">Always Learning</span>
+      <span class="pillar-tag">Less Anxious</span>
+      <span class="pillar-tag">Find the Life I Want</span>
     </div>
   </div>
 
   <!-- Input State -->
   <div id="inputArea" class="input-area">
-    <textarea id="journalInput" placeholder="今天发生了什么？有什么想法和感受？&#10;&#10;想到什么就说什么，AI 会帮你整理..."></textarea>
-    <div class="char-count"><span id="charCount">0</span> 字</div>
+    <textarea id="journalInput" placeholder="What happened today? Any thoughts or feelings?&#10;&#10;Just say whatever comes to mind, AI will organize it..."></textarea>
+    <div class="char-count"><span id="charCount">0</span> chars</div>
   </div>
 
   <!-- Processing State -->
   <div id="processingArea" class="processing">
     <div class="spinner"></div>
-    <p>AI 正在整理你的想法...</p>
+    <p>AI is organizing your thoughts...</p>
   </div>
 
   <!-- Preview State -->
@@ -596,39 +596,39 @@
   <!-- Footer: changes based on state -->
   <div id="inputFooter" class="input-footer">
     <button class="btn btn-primary" id="submitBtn" onclick="submitReflection()" disabled>
-      整理并保存
+      Organize & Save
     </button>
   </div>
 
   <div id="previewFooter" class="input-footer hidden">
-    <button class="btn btn-secondary" onclick="backToEdit()">返回修改</button>
-    <button class="btn btn-primary" onclick="saveToObsidian()">保存到 Obsidian</button>
+    <button class="btn btn-secondary" onclick="backToEdit()">Back to Edit</button>
+    <button class="btn btn-primary" onclick="saveToObsidian()">Save to Obsidian</button>
   </div>
 
   <!-- Success State -->
   <div id="successArea" class="processing hidden">
     <div style="font-size:48px;margin-bottom:16px;">&#10003;</div>
-    <p style="font-size:17px;color:var(--text);margin-bottom:8px;">已保存！</p>
+    <p style="font-size:17px;color:var(--text);margin-bottom:8px;">Saved!</p>
     <p id="successFilename" style="color:var(--accent);font-size:14px;margin-bottom:24px;"></p>
-    <button class="btn btn-ghost" onclick="resetAll()">写新的</button>
+    <button class="btn btn-ghost" onclick="resetAll()">Write Another</button>
   </div>
 </div>
 
 <!-- Settings Modal -->
 <div id="settingsModal" class="modal-overlay" onclick="if(event.target===this)hideSettings()">
   <div class="modal">
-    <h3>设置</h3>
+    <h3>Settings</h3>
     <div class="setup-field">
       <label>Claude API Key</label>
       <input type="password" id="settingsApiKey" placeholder="sk-ant-..." autocomplete="off">
     </div>
     <div class="setup-field">
-      <label>修改密码（留空则不修改）</label>
-      <input type="password" id="settingsPin" inputmode="numeric" maxlength="4" placeholder="新的 4 位密码" pattern="[0-9]*">
+      <label>Change PIN (leave blank to keep current)</label>
+      <input type="password" id="settingsPin" inputmode="numeric" maxlength="4" placeholder="New 4-digit PIN" pattern="[0-9]*">
     </div>
     <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="hideSettings()">取消</button>
-      <button class="btn btn-primary" onclick="saveSettings()">保存</button>
+      <button class="btn btn-secondary" onclick="hideSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
     </div>
   </div>
 </div>
@@ -658,8 +658,9 @@ function getToday() {
 
 function getTodayDisplay() {
   const d = new Date();
-  const days = ['日', '一', '二', '三', '四', '五', '六'];
-  return `${d.getMonth() + 1}月${d.getDate()}日，星期${days[d.getDay()]}`;
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
 async function hashPin(pin) {
@@ -740,11 +741,11 @@ async function completeSetup() {
     const apiKey = document.getElementById('setupApiKey').value.trim();
 
     if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-      toast('请输入 4 位数字密码', true);
+      toast('Please enter a 4-digit PIN', true);
       return;
     }
     if (!apiKey || apiKey.length < 10) {
-      toast('请输入有效的 API Key', true);
+      toast('Please enter a valid API key', true);
       return;
     }
 
@@ -754,9 +755,9 @@ async function completeSetup() {
 
     document.getElementById('setupScreen').style.display = 'none';
     showMainApp();
-    toast('设置完成！');
+    toast('Setup complete!');
   } catch (err) {
-    toast('设置失败: ' + err.message, true);
+    toast('Setup failed: ' + err.message, true);
   }
 }
 
@@ -779,7 +780,7 @@ async function submitReflection() {
 
   const apiKey = localStorage.getItem('reflection_api_key');
   if (!apiKey) {
-    toast('请先设置 API Key', true);
+    toast('Please set your API key first', true);
     return;
   }
 
@@ -881,7 +882,7 @@ title: "简短标题，用顿号分隔几个关键词"
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || `API 错误 ${response.status}`);
+      throw new Error(err.error?.message || `API error ${response.status}`);
     }
 
     const data = await response.json();
@@ -995,7 +996,7 @@ async function saveSettings() {
 
   if (newPin) {
     if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-      toast('密码必须是 4 位数字', true);
+      toast('PIN must be 4 digits', true);
       return;
     }
     const hash = await hashPin(newPin);
@@ -1003,7 +1004,7 @@ async function saveSettings() {
   }
 
   hideSettings();
-  toast('设置已保存');
+  toast('Settings saved');
 }
 
 // ── PWA: Request persistent storage ──
