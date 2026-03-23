@@ -356,7 +356,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .advanced-toggle .arrow { display: inline-block; transition: transform 0.2s; font-size: var(--text-xs); }
+  .advanced-toggle .arrow { display: inline-block; transition: transform 0.2s; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid var(--ink-light); }
   .advanced-toggle.open .arrow { transform: rotate(90deg); }
   .advanced-body { display: none; padding-top: 16px; }
   .advanced-body.open { display: block; }
@@ -1010,7 +1010,7 @@
   <hr class="section-divider">
 
   <button class="advanced-toggle" onclick="toggleAdvanced('settings', event)">
-    <span class="arrow">&#9654;</span> Advanced
+    <span class="arrow"></span> Advanced
   </button>
   <div id="settingsAdvanced" class="advanced-body">
     <div class="field">
