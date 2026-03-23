@@ -444,6 +444,15 @@
 
   .settings-header h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 300; }
 
+  .settings-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .settings-actions .btn { flex: 1; }
+
   .back-btn {
     width: 44px;
     height: 44px;
@@ -467,8 +476,16 @@
   .app-header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 16px 20px 0;
+  }
+
+  .app-wordmark {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink-light);
+    letter-spacing: 0.02em;
   }
 
   .icon-btn {
@@ -490,7 +507,7 @@
 
   /* ── Pillars (Hero) ── */
   .pillars-hero {
-    padding: 20px 24px 28px;
+    padding: 28px 24px 0;
     text-align: left;
   }
 
@@ -521,10 +538,6 @@
     line-height: 1.4;
   }
 
-  .pillars-divider {
-    margin: 0 24px;
-    border-top: 1px solid var(--border);
-  }
 
   /* ── Input Area ── */
   .input-area {
@@ -606,7 +619,7 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  .processing p {
+  .processing p:not(.success-text):not(.success-date) {
     font-family: var(--font-sans);
     color: var(--ink-light);
     font-size: 12px;
@@ -660,43 +673,44 @@
   .preview-footer .btn { flex: 1; }
 
   /* ── Success ── */
-  .success-check {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    border: 2px solid var(--success);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: var(--success);
-    font-size: 24px;
+  .success-text {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 8px;
   }
 
-  .success-text { font-size: 15px; color: var(--ink); margin-bottom: 6px; font-family: var(--font-serif); }
-  .success-date { color: var(--ink-light); font-family: var(--font-mono); font-size: 11px; margin-bottom: 28px; }
+  .success-date { color: var(--ink-light); font-family: var(--font-mono); font-size: 10px; margin-bottom: 32px; }
 
-  /* ── Toast ── */
+  /* ── Toast (Paper Note style) ── */
   .toast {
     position: fixed;
     top: calc(20px + var(--safe-top));
-    left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: var(--bg-surface);
+    left: 20px;
+    right: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    transform: translateY(-120px);
+    background: var(--bg-paper);
     color: var(--ink);
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    letter-spacing: 0.02em;
+    padding: 14px 20px;
+    border-radius: 0;
+    font-family: var(--font-serif);
+    font-size: 14px;
+    line-height: 1.5;
     z-index: 200;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
     border: 1px solid var(--border);
-    box-shadow: 0 4px 16px var(--shadow-toast);
+    box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.04);
+    opacity: 0;
   }
 
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.error { border-color: var(--accent-red); color: var(--accent-red); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .toast.error {
+    border-bottom: 2px solid var(--accent-red);
+  }
 
   /* ── Record Area (Audio Mode) ── */
   #recordArea {
@@ -924,17 +938,16 @@
     </div>
   </div>
 
-  <div style="height: 16px"></div>
-  <div style="display:flex;gap:12px;">
-    <button class="btn btn-secondary" style="flex:1" onclick="hideSettings()">Cancel</button>
-    <button class="btn btn-primary" style="flex:1" onclick="saveSettings()">Save</button>
+  <div class="settings-actions">
+    <button class="btn btn-secondary" onclick="hideSettings()">Cancel</button>
+    <button class="btn btn-primary" onclick="saveSettings()">Save</button>
   </div>
-  <div style="height: 24px"></div>
 </div>
 
 <!-- Main App -->
 <div id="mainApp" class="screen">
   <div class="app-header">
+    <div class="app-wordmark">Sotto</div>
     <button class="icon-btn" onclick="showSettings()" title="Settings" aria-label="Settings">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
@@ -945,11 +958,10 @@
     <div class="pillars-greeting" id="pillarsGreeting"></div>
     <div class="pillar-questions" id="pillarQuestions"></div>
   </div>
-  <div class="pillars-divider"></div>
 
   <!-- Input State (Text Mode) -->
   <div id="inputArea" class="input-area">
-    <textarea id="journalInput" placeholder="What's on your mind?"></textarea>
+    <textarea id="journalInput"></textarea>
     <div class="char-count" id="charCountWrap"><span id="charCount">0</span> chars</div>
   </div>
 
@@ -988,8 +1000,7 @@
 
   <!-- Success State -->
   <div id="successArea" class="processing hidden">
-    <div class="success-check">&#10003;</div>
-    <p class="success-text">Saved to Obsidian!</p>
+    <p class="success-text">Tucked away.</p>
     <p class="success-date" id="successDate"></p>
     <button class="btn btn-ghost" onclick="resetAll()">Done</button>
   </div>
@@ -1602,20 +1613,15 @@ function saveToObsidian() {
   setTimeout(showSuccess, 800);
 }
 
-let successTimer = null;
-
 function showSuccess() {
   document.getElementById('previewArea').style.display = 'none';
   document.getElementById('previewFooter').classList.add('hidden');
   document.getElementById('successArea').classList.remove('hidden');
   document.getElementById('successArea').style.display = 'flex';
   document.getElementById('successDate').textContent = getTodayDisplay();
-  // Auto-return after 4 seconds
-  successTimer = setTimeout(resetAll, 4000);
 }
 
 function resetAll() {
-  if (successTimer) { clearTimeout(successTimer); successTimer = null; }
   document.getElementById('journalInput').value = '';
   document.getElementById('charCount').textContent = '0';
   document.getElementById('charCountWrap').classList.remove('visible');
