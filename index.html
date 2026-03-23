@@ -2,34 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F9F8F4">
-<meta name="apple-mobile-web-app-title" content="Reflection">
-<link rel="manifest" href="data:application/json,{%22name%22:%22Reflection%22,%22short_name%22:%22Reflection%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23F9F8F4%22,%22theme_color%22:%22%23F9F8F4%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
+<meta name="apple-mobile-web-app-title" content="Sotto">
+<link rel="manifest" href="data:application/json,{%22name%22:%22Sotto%22,%22short_name%22:%22Sotto%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23F9F8F4%22,%22theme_color%22:%22%23F9F8F4%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23F9F8F4' width='100' height='100'/><text y='.9em' font-size='90'>📝</text></svg>">
-<title>Reflection</title>
+<title>Sotto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500;700&family=Space+Mono&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500;700&family=Space+Mono&display=swap');
 
   :root {
     --bg-paper: #F9F8F4;
+    --bg-surface: #FFFFFF;
+    --bg-surface-dim: rgba(44, 51, 51, 0.05);
     --ink: #2C3333;
     --ink-light: rgba(44, 51, 51, 0.4);
+    --ink-placeholder: rgba(44, 51, 51, 0.25);
     --accent-red: #D64545;
     --accent-red-dim: rgba(214, 69, 69, 0.1);
     --line-blue: #DAE4EE;
     --border: rgba(44, 51, 51, 0.12);
+    --border-heavy: rgba(44, 51, 51, 0.12);
+    --border-light: rgba(44, 51, 51, 0.08);
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-toast: rgba(0, 0, 0, 0.06);
+    --success: #4CAF50;
+    --btn-text: #FFFFFF;
     --radius: 4px;
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
-    --font-serif: 'Noto Serif JP', serif;
+    --font-serif: 'Noto Serif SC', serif;
     --font-sans: 'Inter', sans-serif;
     --font-mono: 'Space Mono', monospace;
   }
 
+  /* ── Dark Theme ── */
+  [data-theme="dark"] {
+    --bg-paper: #2A2520;
+    --bg-surface: #332E28;
+    --bg-surface-dim: rgba(242, 239, 232, 0.05);
+    --ink: #F2EFE8;
+    --ink-light: rgba(242, 239, 232, 0.45);
+    --ink-placeholder: rgba(242, 239, 232, 0.25);
+    --accent-red: #E07A5F;
+    --accent-red-dim: rgba(224, 122, 95, 0.15);
+    --line-blue: #3A3530;
+    --border: rgba(242, 239, 232, 0.1);
+    --border-heavy: rgba(242, 239, 232, 0.12);
+    --border-light: rgba(242, 239, 232, 0.06);
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-toast: rgba(0, 0, 0, 0.3);
+    --success: #66BB6A;
+    --btn-text: #2A2520;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg-paper: #2A2520;
+      --bg-surface: #332E28;
+      --bg-surface-dim: rgba(242, 239, 232, 0.05);
+      --ink: #F2EFE8;
+      --ink-light: rgba(242, 239, 232, 0.45);
+      --ink-placeholder: rgba(242, 239, 232, 0.25);
+      --accent-red: #E07A5F;
+      --accent-red-dim: rgba(224, 122, 95, 0.15);
+      --line-blue: #3A3530;
+      --border: rgba(242, 239, 232, 0.1);
+      --border-heavy: rgba(242, 239, 232, 0.12);
+      --border-light: rgba(242, 239, 232, 0.06);
+      --shadow: rgba(0, 0, 0, 0.3);
+      --shadow-toast: rgba(0, 0, 0, 0.3);
+      --success: #66BB6A;
+      --btn-text: #2A2520;
+    }
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── Focus Visible ── */
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  .custom-select-trigger:focus-visible,
+  .toggle-track:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+  }
+
+  .toggle-switch input:focus-visible + .toggle-track {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+  }
 
   body {
     font-family: var(--font-serif);
@@ -49,6 +116,18 @@
     z-index: 50;
     opacity: 0.12;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    background-repeat: repeat;
+  }
+
+  [data-theme="dark"] .texture-overlay {
+    opacity: 0.04;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .texture-overlay {
+      opacity: 0.04;
+    }
   }
 
   /* ── Lock Screen ── */
@@ -128,7 +207,7 @@
   }
 
   .numpad button:active {
-    background: rgba(44, 51, 51, 0.05);
+    background: var(--bg-surface-dim);
     transform: scale(0.95);
   }
 
@@ -162,13 +241,12 @@
     margin-bottom: 8px;
   }
 
-  .field input,
-  .field select {
+  .field input {
     width: 100%;
     padding: 14px 16px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    background: white;
+    background: var(--bg-surface);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 15px;
@@ -178,20 +256,102 @@
     appearance: none;
   }
 
-  .field select {
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%232C3333' stroke-opacity='0.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
+  /* Custom dropdown */
+  .custom-select {
+    position: relative;
+    width: 100%;
   }
 
-  .field input:focus,
-  .field select:focus {
+  .custom-select-trigger {
+    width: 100%;
+    padding: 14px 40px 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+  }
+
+  .custom-select-trigger::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 6px;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%232C3333' stroke-opacity='0.4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform 0.2s;
+  }
+
+  .custom-select.open .custom-select-trigger::after {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .custom-select.open .custom-select-trigger {
+    border-color: var(--accent-red);
+  }
+
+  .custom-select-options {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px var(--shadow);
+    z-index: 100;
+    overflow: hidden;
+  }
+
+  .custom-select.open .custom-select-options {
+    display: block;
+  }
+
+  .custom-select-option {
+    padding: 14px 16px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .custom-select-option:hover {
+    background: var(--bg-surface-dim);
+  }
+
+  .custom-select-option.selected {
+    color: var(--accent-red);
+  }
+
+  /* Dark mode arrow */
+  [data-theme="dark"] .custom-select-trigger::after {
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23F2EFE8' stroke-opacity='0.45' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .custom-select-trigger::after {
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23F2EFE8' stroke-opacity='0.45' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+  }
+
+  .field input:focus {
     border-color: var(--accent-red);
   }
 
   .field input::placeholder {
-    color: rgba(44, 51, 51, 0.25);
+    color: var(--ink-placeholder);
   }
 
   .field textarea {
@@ -199,7 +359,7 @@
     padding: 14px 16px;
     border-radius: var(--radius);
     border: 1px solid var(--border);
-    background: white;
+    background: var(--bg-surface);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 14px;
@@ -215,7 +375,7 @@
   }
 
   .field textarea::placeholder {
-    color: rgba(44, 51, 51, 0.25);
+    color: var(--ink-placeholder);
   }
 
   .field .hint {
@@ -279,10 +439,10 @@
     left: 3px;
     width: 22px;
     height: 22px;
-    background: white;
+    background: var(--bg-surface);
     border-radius: 50%;
     transition: transform 0.2s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px var(--shadow);
   }
 
   .toggle-switch input:checked + .toggle-track {
@@ -302,7 +462,7 @@
 
   .section-title {
     font-family: var(--font-sans);
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     color: var(--ink-light);
@@ -365,7 +525,7 @@
   }
 
   .template-btn:active {
-    background: rgba(44, 51, 51, 0.05);
+    background: var(--bg-surface-dim);
     color: var(--ink);
   }
 
@@ -386,8 +546,12 @@
 
   .btn-primary {
     background: var(--accent-red);
-    color: white;
+    color: var(--btn-text);
     width: 100%;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
   }
 
   .btn-primary:active {
@@ -407,10 +571,18 @@
     padding: 8px 16px;
   }
 
+  .btn-ghost:hover {
+    color: var(--ink);
+  }
+
   .btn-secondary {
-    background: white;
+    background: var(--bg-surface);
     color: var(--ink);
     border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-red);
   }
 
   /* ── Setup / Onboarding Screen ── */
@@ -474,8 +646,8 @@
   }
 
   .back-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: transparent;
@@ -527,8 +699,8 @@
   }
 
   .icon-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 1px solid var(--border);
     background: transparent;
@@ -542,12 +714,20 @@
   }
 
   .icon-btn:active {
-    background: rgba(44, 51, 51, 0.05);
+    background: var(--bg-surface-dim);
   }
 
   /* ── Pillars ── */
   .pillars {
-    padding: 0 20px 16px;
+    padding: 0 20px 14px;
+    margin-bottom: 0;
+  }
+
+  .pillars-divider {
+    margin: 0 20px;
+    border-top: 2px solid var(--border-heavy);
+    border-bottom: 1px solid var(--border-light);
+    height: 5px;
   }
 
   .pillars-title {
@@ -561,25 +741,18 @@
 
   .pillar-tags {
     display: flex;
-    overflow-x: auto;
-    gap: 8px;
-    padding-bottom: 4px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    flex-direction: column;
+    gap: 6px;
   }
-  .pillar-tags::-webkit-scrollbar { display: none; }
 
   .pillar-tag {
-    flex-shrink: 0;
-    padding: 8px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
     font-family: var(--font-sans);
-    font-size: 11px;
-    letter-spacing: 0.02em;
+    font-size: 12px;
+    letter-spacing: 0.01em;
     color: var(--ink);
-    opacity: 0.6;
-    white-space: nowrap;
+    opacity: 0.5;
+    padding-left: 12px;
+    border-left: 2px solid var(--accent-red);
   }
 
   /* ── Input Area ── */
@@ -589,12 +762,6 @@
     display: flex;
     flex-direction: column;
     position: relative;
-  }
-
-  .lined-paper-bg {
-    background-image: linear-gradient(var(--line-blue) 1px, transparent 1px);
-    background-size: 100% 32px;
-    background-position: 0 0;
   }
 
   .input-area textarea {
@@ -611,7 +778,7 @@
   }
 
   .input-area textarea::placeholder {
-    color: rgba(44, 51, 51, 0.25);
+    color: var(--ink-placeholder);
   }
 
   .input-footer {
@@ -714,12 +881,12 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    border: 2px solid #4CAF50;
+    border: 2px solid var(--success);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    color: #4CAF50;
+    color: var(--success);
     font-size: 24px;
   }
 
@@ -743,7 +910,7 @@
     top: calc(20px + var(--safe-top));
     left: 50%;
     transform: translateX(-50%) translateY(-100px);
-    background: white;
+    background: var(--bg-surface);
     color: var(--ink);
     padding: 10px 20px;
     border-radius: 20px;
@@ -751,9 +918,9 @@
     font-size: 12px;
     letter-spacing: 0.02em;
     z-index: 200;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border: 1px solid var(--border);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 16px var(--shadow-toast);
   }
 
   .toast.show {
@@ -800,12 +967,23 @@
     border-color: var(--accent-red);
     background: var(--accent-red-dim);
     color: var(--accent-red);
+    --pulse-color: rgba(214, 69, 69, 0.2);
     animation: pulse-ring 1.5s ease-in-out infinite;
   }
 
+  [data-theme="dark"] .record-btn.recording {
+    --pulse-color: rgba(224, 122, 95, 0.25);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .record-btn.recording {
+      --pulse-color: rgba(224, 122, 95, 0.25);
+    }
+  }
+
   @keyframes pulse-ring {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(214, 69, 69, 0.2); }
-    50% { box-shadow: 0 0 0 16px rgba(214, 69, 69, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color, rgba(214, 69, 69, 0.2)); }
+    50% { box-shadow: 0 0 0 16px transparent; }
   }
 
   .record-status {
@@ -837,6 +1015,62 @@
     margin-top: 12px;
   }
 
+  /* ── PWA Banner ── */
+  .pwa-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-paper);
+    border-top: 1px solid var(--border);
+    padding: 16px 20px;
+    padding-bottom: calc(16px + var(--safe-bottom));
+    z-index: 60;
+    font-family: var(--font-sans);
+  }
+
+  .pwa-banner-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .pwa-banner-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .pwa-banner-close {
+    background: none;
+    border: none;
+    color: var(--ink-light);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  .pwa-banner-body {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  /* ── Reduced Motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; border-top-color: var(--accent-red); }
+    .record-btn.recording { animation: none; }
+    .toast { transition-duration: 0.01s; }
+    .pin-dot, .toggle-track, .toggle-track::after,
+    .custom-select-trigger::after, .advanced-toggle .arrow {
+      transition-duration: 0.01s;
+    }
+  }
+
   /* ── Utilities ── */
   .hidden { display: none !important; }
 </style>
@@ -851,36 +1085,51 @@
 
 <!-- Lock Screen -->
 <div id="lockScreen">
-  <h1>Reflection</h1>
+  <h1>Sotto</h1>
   <p>Enter PIN</p>
-  <div class="pin-input">
+  <div class="pin-input" role="status" aria-live="polite" aria-label="PIN entry">
     <div class="pin-dot" data-i="0"></div>
     <div class="pin-dot" data-i="1"></div>
     <div class="pin-dot" data-i="2"></div>
     <div class="pin-dot" data-i="3"></div>
   </div>
-  <div class="numpad">
-    <button onclick="pinPress('1')">1</button>
-    <button onclick="pinPress('2')">2</button>
-    <button onclick="pinPress('3')">3</button>
-    <button onclick="pinPress('4')">4</button>
-    <button onclick="pinPress('5')">5</button>
-    <button onclick="pinPress('6')">6</button>
-    <button onclick="pinPress('7')">7</button>
-    <button onclick="pinPress('8')">8</button>
-    <button onclick="pinPress('9')">9</button>
-    <button class="fn" onclick="pinClear()">Clear</button>
-    <button onclick="pinPress('0')">0</button>
-    <button class="fn" onclick="pinDelete()">Delete</button>
+  <div class="numpad" role="group" aria-label="Number pad">
+    <button aria-label="1" onclick="pinPress('1')">1</button>
+    <button aria-label="2" onclick="pinPress('2')">2</button>
+    <button aria-label="3" onclick="pinPress('3')">3</button>
+    <button aria-label="4" onclick="pinPress('4')">4</button>
+    <button aria-label="5" onclick="pinPress('5')">5</button>
+    <button aria-label="6" onclick="pinPress('6')">6</button>
+    <button aria-label="7" onclick="pinPress('7')">7</button>
+    <button aria-label="8" onclick="pinPress('8')">8</button>
+    <button aria-label="9" onclick="pinPress('9')">9</button>
+    <button class="fn" aria-label="Clear PIN" onclick="pinClear()">Clear</button>
+    <button aria-label="0" onclick="pinPress('0')">0</button>
+    <button class="fn" aria-label="Delete last digit" onclick="pinDelete()">Delete</button>
   </div>
 </div>
 
 <!-- Onboarding Screen -->
 <div id="setupScreen">
   <h1>Welcome</h1>
-  <p class="subtitle">Set up your journal in a few steps. You can change everything later in Settings.</p>
+  <p class="subtitle">Let's set up your space. Everything can be adjusted later.</p>
 
   <!-- PIN -->
+  <div class="section-title">Appearance</div>
+  <div class="field">
+    <label>Theme</label>
+    <div class="custom-select" id="setupTheme" data-value="auto">
+      <div class="custom-select-trigger">Auto (follow system)</div>
+      <div class="custom-select-options">
+        <div class="custom-select-option selected" data-value="auto">Auto (follow system)</div>
+        <div class="custom-select-option" data-value="light">Light</div>
+        <div class="custom-select-option" data-value="dark">Dark</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
   <div class="section-title">Security</div>
   <div class="field">
     <label>Set a 4-digit PIN</label>
@@ -894,15 +1143,15 @@
   <div class="field">
     <div class="toggle-row">
       <div>
-        <div class="toggle-label">Built-in audio recording</div>
-        <div class="toggle-sublabel">Turn off if you use a local transcription tool</div>
+        <div class="toggle-label">Record your voice</div>
+        <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
       </div>
       <label class="toggle-switch">
         <input type="checkbox" id="setupAudioMode" onchange="onAudioModeToggle('setup')">
         <span class="toggle-track"></span>
       </label>
     </div>
-    <div class="hint">Text mode: type or use an external tool (Typeless, iOS Dictation, etc.). Audio mode: record directly in the app.</div>
+    <div class="hint">When off, you type or use your own voice tools. When on, the app records and transcribes for you.</div>
   </div>
 
   <hr class="section-divider">
@@ -910,23 +1159,26 @@
   <!-- API Keys -->
   <div class="section-title">API Keys</div>
   <div class="field">
-    <label>LLM Provider</label>
-    <select id="setupProvider">
-      <option value="anthropic">Anthropic (Claude)</option>
-      <option value="openai">OpenAI (GPT)</option>
-      <option value="gemini">Google (Gemini)</option>
-    </select>
+    <label>AI Service</label>
+    <div class="custom-select" id="setupProvider" data-value="anthropic">
+      <div class="custom-select-trigger">Anthropic (Claude)</div>
+      <div class="custom-select-options">
+        <div class="custom-select-option selected" data-value="anthropic">Anthropic (Claude)</div>
+        <div class="custom-select-option" data-value="openai">OpenAI (GPT)</div>
+        <div class="custom-select-option" data-value="gemini">Google (Gemini)</div>
+      </div>
+    </div>
     <div class="hint">Used to organize your journal entries</div>
   </div>
   <div class="field">
-    <label>LLM API Key</label>
+    <label>API Key</label>
     <input type="password" id="setupLlmKey" placeholder="sk-..." autocomplete="off">
-    <div class="hint">Stored locally in your browser, never sent to any server except the provider</div>
+    <div class="hint">Stays on your device. Only shared with your chosen provider.</div>
   </div>
   <div class="field" id="setupWhisperKeyField" style="display:none">
-    <label>OpenAI API Key (for Whisper)</label>
+    <label>OpenAI Key (for voice transcription)</label>
     <input type="password" id="setupWhisperKey" placeholder="sk-..." autocomplete="off">
-    <div class="hint">Needed for audio transcription. If your LLM provider is also OpenAI, this uses the same key.</div>
+    <div class="hint">Needed for voice transcription. If you chose OpenAI above, the same key is used.</div>
   </div>
 
   <hr class="section-divider">
@@ -939,31 +1191,31 @@
     <div class="hint">The exact name of your Obsidian vault</div>
   </div>
   <div class="field">
-    <label>Entry Path Pattern</label>
+    <label>Where to save entries</label>
     <input type="text" id="setupEntryPath" value="entries/YYYY/" placeholder="entries/YYYY/">
-    <div class="hint">YYYY will be replaced with the current year</div>
+    <div class="hint">The year updates automatically.</div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- Reflection Prompt -->
-  <div class="section-title">Reflection Prompt</div>
+  <!-- Journal Prompts -->
+  <div class="section-title">Journal Prompts</div>
   <div class="field">
-    <label>Your guiding pillars</label>
-    <textarea id="setupReflectionPrompt" rows="4" placeholder="One pillar per line, e.g.&#10;Fit & Looking Good&#10;Always Learning&#10;Less Anxious">Fit & Looking Good
-Always Learning
-Less Anxious
-Find the Life I Want</textarea>
-    <div class="hint">Shown at the top of the app as reminders. One per line.</div>
+    <label>Your guiding questions</label>
+    <textarea id="setupReflectionPrompt" rows="4" placeholder="One question per line, e.g.&#10;What did I do today?&#10;What went well / not well?&#10;What did I learn?">What did I do today?
+What went well / not well?
+What did I learn?
+What's on my mind for tomorrow?</textarea>
+    <div class="hint">Shown before you start journaling, to help you think about what to say. One per line.</div>
   </div>
 
   <!-- Advanced -->
-  <button class="advanced-toggle" onclick="toggleAdvanced('setup')">
+  <button class="advanced-toggle" onclick="toggleAdvanced('setup', event)">
     <span class="arrow">&#9654;</span> Advanced Settings
   </button>
   <div id="setupAdvanced" class="advanced-body">
     <div class="field">
-      <label>System Prompt (sent to AI)</label>
+      <label>Custom Instructions</label>
       <div class="template-btns">
         <button class="template-btn" onclick="loadTemplate('setup', 'zh')">Chinese Template</button>
         <button class="template-btn" onclick="loadTemplate('setup', 'en')">English Template</button>
@@ -987,13 +1239,29 @@ Find the Life I Want</textarea>
     <h2>Settings</h2>
   </div>
 
+  <!-- Appearance -->
+  <div class="section-title">Appearance</div>
+  <div class="field">
+    <label>Theme</label>
+    <div class="custom-select" id="settingsTheme" data-value="auto">
+      <div class="custom-select-trigger">Auto (follow system)</div>
+      <div class="custom-select-options">
+        <div class="custom-select-option selected" data-value="auto">Auto (follow system)</div>
+        <div class="custom-select-option" data-value="light">Light</div>
+        <div class="custom-select-option" data-value="dark">Dark</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
   <!-- Input Mode -->
   <div class="section-title">Input Mode</div>
   <div class="field">
     <div class="toggle-row">
       <div>
-        <div class="toggle-label">Built-in audio recording</div>
-        <div class="toggle-sublabel">Turn off if you use a local transcription tool</div>
+        <div class="toggle-label">Record your voice</div>
+        <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
       </div>
       <label class="toggle-switch">
         <input type="checkbox" id="settingsAudioMode" onchange="onAudioModeToggle('settings')">
@@ -1007,21 +1275,24 @@ Find the Life I Want</textarea>
   <!-- API Keys -->
   <div class="section-title">API Keys</div>
   <div class="field">
-    <label>LLM Provider</label>
-    <select id="settingsProvider" onchange="onProviderChange('settings')">
-      <option value="anthropic">Anthropic (Claude)</option>
-      <option value="openai">OpenAI (GPT)</option>
-      <option value="gemini">Google (Gemini)</option>
-    </select>
+    <label>AI Service</label>
+    <div class="custom-select" id="settingsProvider" data-value="anthropic">
+      <div class="custom-select-trigger">Anthropic (Claude)</div>
+      <div class="custom-select-options">
+        <div class="custom-select-option selected" data-value="anthropic">Anthropic (Claude)</div>
+        <div class="custom-select-option" data-value="openai">OpenAI (GPT)</div>
+        <div class="custom-select-option" data-value="gemini">Google (Gemini)</div>
+      </div>
+    </div>
   </div>
   <div class="field">
-    <label>LLM API Key</label>
+    <label>API Key</label>
     <input type="password" id="settingsLlmKey" placeholder="sk-..." autocomplete="off">
   </div>
   <div class="field" id="settingsWhisperKeyField" style="display:none">
-    <label>OpenAI API Key (for Whisper)</label>
+    <label>OpenAI Key (for voice transcription)</label>
     <input type="password" id="settingsWhisperKey" placeholder="sk-..." autocomplete="off">
-    <div class="hint">Needed for audio transcription. If your LLM provider is also OpenAI, this uses the same key.</div>
+    <div class="hint">Needed for voice transcription. If you chose OpenAI above, the same key is used.</div>
   </div>
 
   <hr class="section-divider">
@@ -1033,19 +1304,19 @@ Find the Life I Want</textarea>
     <input type="text" id="settingsVaultName" placeholder="reflection-vault">
   </div>
   <div class="field">
-    <label>Entry Path Pattern</label>
+    <label>Where to save entries</label>
     <input type="text" id="settingsEntryPath" placeholder="entries/YYYY/">
-    <div class="hint">YYYY will be replaced with the current year</div>
+    <div class="hint">The year updates automatically.</div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- Reflection Prompt -->
-  <div class="section-title">Reflection Prompt</div>
+  <!-- Journal Prompts -->
+  <div class="section-title">Journal Prompts</div>
   <div class="field">
-    <label>Your guiding pillars</label>
-    <textarea id="settingsReflectionPrompt" rows="4" placeholder="One pillar per line"></textarea>
-    <div class="hint">Shown at the top of the app as reminders. One per line.</div>
+    <label>Your guiding questions</label>
+    <textarea id="settingsReflectionPrompt" rows="4" placeholder="One question per line"></textarea>
+    <div class="hint">Shown before you start journaling, to help you think about what to say. One per line.</div>
   </div>
 
   <hr class="section-divider">
@@ -1058,12 +1329,12 @@ Find the Life I Want</textarea>
   </div>
 
   <!-- Advanced -->
-  <button class="advanced-toggle" onclick="toggleAdvanced('settings')">
+  <button class="advanced-toggle" onclick="toggleAdvanced('settings', event)">
     <span class="arrow">&#9654;</span> Advanced Settings
   </button>
   <div id="settingsAdvanced" class="advanced-body">
     <div class="field">
-      <label>System Prompt (sent to AI)</label>
+      <label>Custom Instructions</label>
       <div class="template-btns">
         <button class="template-btn" onclick="loadTemplate('settings', 'zh')">Chinese Template</button>
         <button class="template-btn" onclick="loadTemplate('settings', 'en')">English Template</button>
@@ -1088,20 +1359,21 @@ Find the Life I Want</textarea>
       <div class="meta" id="todayMeta"></div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" onclick="showSettings()" title="Settings">
+      <button class="icon-btn" onclick="showSettings()" title="Settings" aria-label="Settings">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
 
   <div class="pillars">
-    <div class="pillars-title">My Reflections for the Day</div>
+    <div class="pillars-title">Think about...</div>
     <div class="pillar-tags" id="pillarTags"></div>
   </div>
+  <div class="pillars-divider"></div>
 
   <!-- Input State -->
-  <div id="inputArea" class="input-area lined-paper-bg">
-    <textarea id="journalInput" placeholder="What happened today? Any thoughts or feelings?&#10;&#10;Just say whatever comes to mind, AI will organize it..."></textarea>
+  <div id="inputArea" class="input-area">
+    <textarea id="journalInput" placeholder="What's on your mind tonight?&#10;&#10;Just say whatever comes to mind. I'll organize it for you."></textarea>
     <div class="char-count"><span id="charCount">0</span> chars</div>
   </div>
 
@@ -1112,8 +1384,8 @@ Find the Life I Want</textarea>
       <svg id="stopIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
     </button>
     <div class="record-timer" id="recordTimer">0:00</div>
-    <div class="record-status" id="recordStatus">Tap to record</div>
-    <div class="record-hint">Speak freely — AI will organize your thoughts</div>
+    <div class="record-status" id="recordStatus">Tap to speak</div>
+    <div class="record-hint">Speak naturally. Don't worry about organizing — I'll handle that.</div>
   </div>
 
   <!-- Processing State -->
@@ -1124,7 +1396,7 @@ Find the Life I Want</textarea>
 
   <!-- Preview State -->
   <div id="previewArea">
-    <div class="preview-content lined-paper-bg"><textarea id="previewContent"></textarea></div>
+    <div class="preview-content"><textarea id="previewContent"></textarea></div>
   </div>
 
   <!-- Footer: changes based on state -->
@@ -1142,13 +1414,88 @@ Find the Life I Want</textarea>
   <!-- Success State -->
   <div id="successArea" class="processing hidden">
     <div class="success-check">&#10003;</div>
-    <p class="success-text">Saved</p>
+    <p class="success-text">Saved to Obsidian!</p>
     <p class="success-filename" id="successFilename"></p>
-    <button class="btn btn-ghost" onclick="resetAll()">Write Another</button>
+    <button class="btn btn-ghost" onclick="resetAll()">Journal Again</button>
   </div>
 </div>
 
 <script>
+// ── Theme ──
+function applyTheme(choice) {
+  setConfig('theme', choice);
+  if (choice === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  } else if (choice === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  const isDark = choice === 'dark' || (choice === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  document.querySelector('meta[name="theme-color"]').content = isDark ? '#2A2520' : '#F9F8F4';
+  // Sync both custom dropdowns
+  setCustomSelect('setupTheme', choice);
+  setCustomSelect('settingsTheme', choice);
+}
+
+// ── Custom Select ──
+function setCustomSelect(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.dataset.value = value;
+  const trigger = el.querySelector('.custom-select-trigger');
+  const options = el.querySelectorAll('.custom-select-option');
+  options.forEach(opt => {
+    opt.classList.toggle('selected', opt.dataset.value === value);
+    if (opt.dataset.value === value) {
+      trigger.textContent = opt.textContent;
+    }
+  });
+}
+
+document.addEventListener('click', function(e) {
+  // Toggle dropdown open/close
+  const trigger = e.target.closest('.custom-select-trigger');
+  if (trigger) {
+    const select = trigger.parentElement;
+    // Close all other dropdowns first
+    document.querySelectorAll('.custom-select.open').forEach(s => {
+      if (s !== select) s.classList.remove('open');
+    });
+    select.classList.toggle('open');
+    e.stopPropagation();
+    return;
+  }
+  // Handle option click
+  const option = e.target.closest('.custom-select-option');
+  if (option) {
+    const select = option.closest('.custom-select');
+    const value = option.dataset.value;
+    select.classList.remove('open');
+    setCustomSelect(select.id, value);
+    // Fire the change action
+    if (select.id === 'setupTheme' || select.id === 'settingsTheme') {
+      applyTheme(value);
+    }
+    if (select.id === 'setupProvider') {
+      onProviderChange('setup');
+    }
+    if (select.id === 'settingsProvider') {
+      onProviderChange('settings');
+    }
+    return;
+  }
+  // Click outside — close all
+  document.querySelectorAll('.custom-select.open').forEach(s => s.classList.remove('open'));
+});
+
+// Apply saved theme immediately
+(function() {
+  const saved = localStorage.getItem('reflection_theme') || 'auto';
+  if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  else if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+})();
+
 // ── State ──
 let pinBuffer = '';
 let currentMarkdown = '';
@@ -1324,13 +1671,13 @@ async function hashPin(pin) {
 function onAudioModeToggle(prefix) {
   const isAudio = document.getElementById(prefix + 'AudioMode').checked;
   const providerEl = document.getElementById(prefix + 'Provider');
-  const provider = providerEl ? providerEl.value : 'anthropic';
+  const provider = providerEl ? providerEl.dataset.value : 'anthropic';
   updateWhisperKeyVisibility(prefix, isAudio, provider);
 }
 
 function onProviderChange(prefix) {
   const isAudio = document.getElementById(prefix + 'AudioMode').checked;
-  const provider = document.getElementById(prefix + 'Provider').value;
+  const provider = document.getElementById(prefix + 'Provider').dataset.value;
   updateWhisperKeyVisibility(prefix, isAudio, provider);
 }
 
@@ -1343,8 +1690,8 @@ function updateWhisperKeyVisibility(prefix, isAudio, provider) {
 }
 
 // ── Advanced Settings Toggle ──
-function toggleAdvanced(prefix) {
-  const btn = event.currentTarget;
+function toggleAdvanced(prefix, e) {
+  const btn = e.currentTarget;
   const body = document.getElementById(prefix + 'Advanced');
   btn.classList.toggle('open');
   body.classList.toggle('open');
@@ -1366,8 +1713,7 @@ function initApp() {
   if (!stored) {
     document.getElementById('lockScreen').style.display = 'none';
     document.getElementById('setupScreen').style.display = 'flex';
-    // Wire up provider change in setup too
-    document.getElementById('setupProvider').addEventListener('change', () => onProviderChange('setup'));
+    // Provider change is handled by custom-select click handler
   }
 }
 
@@ -1417,7 +1763,7 @@ async function completeSetup() {
   try {
     const pin = document.getElementById('setupPin').value;
     const llmKey = document.getElementById('setupLlmKey').value.trim();
-    const provider = document.getElementById('setupProvider').value;
+    const provider = document.getElementById('setupProvider').dataset.value;
     const isAudio = document.getElementById('setupAudioMode').checked;
 
     if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
@@ -1425,7 +1771,7 @@ async function completeSetup() {
       return;
     }
     if (!llmKey || llmKey.length < 10) {
-      toast('Please enter a valid LLM API key', true);
+      toast("API key doesn't look right. Check and try again.", true);
       return;
     }
 
@@ -1433,7 +1779,7 @@ async function completeSetup() {
     if (isAudio && provider !== 'openai') {
       const whisperKey = document.getElementById('setupWhisperKey').value.trim();
       if (!whisperKey || whisperKey.length < 10) {
-        toast('Please enter a valid OpenAI API key for Whisper', true);
+        toast("OpenAI key for voice transcription doesn't look right. Check and try again.", true);
         return;
       }
       setConfig('whisper_key', whisperKey);
@@ -1458,9 +1804,9 @@ async function completeSetup() {
 
     document.getElementById('setupScreen').style.display = 'none';
     showMainApp();
-    toast('Setup complete!');
+    toast("You're all set.");
   } catch (err) {
-    toast('Setup failed: ' + err.message, true);
+    toast('Something went wrong:' + err.message, true);
   }
 }
 
@@ -1488,7 +1834,7 @@ function applyInputMode() {
 }
 
 function renderPillarTags() {
-  const prompt = getConfig('reflection_prompt', 'Fit & Looking Good\nAlways Learning\nLess Anxious\nFind the Life I Want');
+  const prompt = getConfig('reflection_prompt', 'What did I do today?\nWhat went well / not well?\nWhat did I learn?\nWhat\'s on my mind for tomorrow?');
   const container = document.getElementById('pillarTags');
   container.innerHTML = '';
   prompt.split('\n').filter(line => line.trim()).forEach(line => {
@@ -1504,8 +1850,9 @@ function showSettings() {
   document.getElementById('mainApp').style.display = 'none';
 
   // Fill fields from localStorage
+  setCustomSelect('settingsTheme', getConfig('theme', 'auto'));
   document.getElementById('settingsAudioMode').checked = getConfig('input_mode', 'text') === 'audio';
-  document.getElementById('settingsProvider').value = getConfig('llm_provider', 'anthropic');
+  setCustomSelect('settingsProvider', getConfig('llm_provider', 'anthropic'));
   document.getElementById('settingsLlmKey').value = getConfig('llm_key', '');
   document.getElementById('settingsWhisperKey').value = getConfig('whisper_key', '');
   document.getElementById('settingsVaultName').value = getConfig('vault_name', 'reflection-vault');
@@ -1536,18 +1883,18 @@ function hideSettings() {
 
 async function saveSettings() {
   const llmKey = document.getElementById('settingsLlmKey').value.trim();
-  const provider = document.getElementById('settingsProvider').value;
+  const provider = document.getElementById('settingsProvider').dataset.value;
   const isAudio = document.getElementById('settingsAudioMode').checked;
 
   if (!llmKey || llmKey.length < 10) {
-    toast('Please enter a valid LLM API key', true);
+    toast("API key doesn't look right. Check and try again.", true);
     return;
   }
 
   if (isAudio && provider !== 'openai') {
     const whisperKey = document.getElementById('settingsWhisperKey').value.trim();
     if (!whisperKey || whisperKey.length < 10) {
-      toast('Please enter a valid OpenAI API key for Whisper', true);
+      toast("OpenAI key for voice transcription doesn't look right. Check and try again.", true);
       return;
     }
     setConfig('whisper_key', whisperKey);
@@ -1753,7 +2100,7 @@ async function startRecording() {
     const status = document.getElementById('recordStatus');
     btn.classList.add('recording');
     status.classList.add('recording');
-    status.textContent = 'Recording — tap to stop';
+    status.textContent = "Recording... tap when you're done";
     document.getElementById('micIcon').style.display = 'none';
     document.getElementById('stopIcon').style.display = 'block';
 
@@ -1764,7 +2111,7 @@ async function startRecording() {
 
   } catch (err) {
     if (err.name === 'NotAllowedError') {
-      toast('Microphone access denied — check your browser settings', true);
+      toast('Microphone is blocked. Allow access in your browser to record.', true);
     } else {
       toast('Could not start recording: ' + err.message, true);
     }
@@ -1789,7 +2136,7 @@ function resetRecordUI() {
   const status = document.getElementById('recordStatus');
   btn.classList.remove('recording');
   status.classList.remove('recording');
-  status.textContent = 'Tap to record';
+  status.textContent = 'Tap to speak';
   document.getElementById('micIcon').style.display = 'block';
   document.getElementById('stopIcon').style.display = 'none';
   document.getElementById('recordTimer').textContent = '0:00';
@@ -1799,11 +2146,11 @@ async function processAudioRecording(audioBlob) {
   // Hide record area, show processing
   document.getElementById('recordArea').style.display = 'none';
   document.getElementById('processingArea').style.display = 'flex';
-  document.querySelector('#processingArea p').textContent = 'Transcribing...';
+  document.querySelector('#processingArea p').textContent = 'Listening...';
 
   const whisperKey = getWhisperKey();
   if (!whisperKey) {
-    toast('No OpenAI API key set for Whisper transcription', true);
+    toast('No OpenAI key found. Add one in Settings.', true);
     backToInput();
     return;
   }
@@ -1830,7 +2177,7 @@ async function processAudioRecording(audioBlob) {
     const transcribedText = transcribeData.text;
 
     if (!transcribedText || transcribedText.trim().length < 5) {
-      toast('Could not transcribe audio — try speaking louder or longer', true);
+      toast("Couldn't catch that. Try speaking a bit louder or longer.", true);
       backToInput();
       return;
     }
@@ -1892,7 +2239,7 @@ async function submitReflection() {
 
   const apiKey = getConfig('llm_key', '');
   if (!apiKey) {
-    toast('Please set your API key in Settings', true);
+    toast('No API key found. Add one in Settings.', true);
     return;
   }
 
@@ -1992,13 +2339,13 @@ function checkStandalone() {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const banner = document.createElement('div');
       banner.id = 'pwaBanner';
-      banner.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:var(--bg-paper);border-top:1px solid var(--border);padding:16px 20px;z-index:60;padding-bottom:calc(16px + var(--safe-bottom));font-family:var(--font-sans);';
+      banner.className = 'pwa-banner';
       banner.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-          <div style="font-size:12px;font-weight:500;color:var(--ink);text-transform:uppercase;letter-spacing:0.1em;">Add to Home Screen</div>
-          <button onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')" style="background:none;border:none;color:var(--ink-light);font-size:18px;cursor:pointer;padding:0 4px;line-height:1;">×</button>
+        <div class="pwa-banner-header">
+          <div class="pwa-banner-title">Add to Home Screen</div>
+          <button class="pwa-banner-close" onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')">×</button>
         </div>
-        <div style="font-size:12px;color:var(--ink-light);line-height:1.6;">
+        <div class="pwa-banner-body">
           ${isIOS
             ? 'Tap the share button at the bottom of Safari, then <strong>Add to Home Screen</strong>'
             : 'Add this app to your home screen from your browser menu.'}
