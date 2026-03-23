@@ -7,8 +7,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#F9F8F4">
 <meta name="apple-mobile-web-app-title" content="Sotto">
-<link rel="manifest" href="data:application/json,{%22name%22:%22Sotto%22,%22short_name%22:%22Sotto%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%23F9F8F4%22,%22theme_color%22:%22%23F9F8F4%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22}]}">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23F9F8F4' width='100' height='100'/><text y='.9em' font-size='90'>📝</text></svg>">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180x180.png">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167x167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180x180.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16x16.png">
+<link rel="shortcut icon" href="favicon.ico">
 <title>Sotto</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1354,7 +1360,7 @@ function loadTemplate(prefix, lang) {
   textarea.value = lang === 'zh' ? SYSTEM_PROMPT_ZH : SYSTEM_PROMPT_EN;
 }
 
-const DEFAULT_REFLECTION_PROMPT = "What did I do today?\nWhat went well / not well?\nWhat did I learn?\nWhat's on my mind for tomorrow?";
+const DEFAULT_REFLECTION_PROMPT = "What did I do today?\nWhat went well / not well?\nWhat's on my mind for tomorrow?";
 
 function resetReflectionPrompt() {
   document.getElementById('settingsReflectionPrompt').value = DEFAULT_REFLECTION_PROMPT;
@@ -1779,6 +1785,11 @@ function checkStandalone() {
 
 initApp();
 checkStandalone();
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
