@@ -14,7 +14,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500;700&family=Space+Mono&display=swap">
 <style>
-
   :root {
     --bg-paper: #F9F8F4;
     --bg-surface: #FFFFFF;
@@ -87,8 +86,7 @@
   button:focus-visible,
   input:focus-visible,
   textarea:focus-visible,
-  .custom-select-trigger:focus-visible,
-  .toggle-track:focus-visible {
+  .custom-select-trigger:focus-visible {
     outline: 2px solid var(--accent-red);
     outline-offset: 2px;
   }
@@ -120,109 +118,32 @@
     background-repeat: repeat;
   }
 
-  [data-theme="dark"] .texture-overlay {
-    opacity: 0.04;
-  }
-
+  [data-theme="dark"] .texture-overlay { opacity: 0.04; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .texture-overlay {
-      opacity: 0.04;
-    }
+    :root:not([data-theme="light"]) .texture-overlay { opacity: 0.04; }
   }
 
-  /* ── Lock Screen ── */
-  #lockScreen {
-    display: flex;
+  /* ── Screens: fade transitions ── */
+  .screen {
+    display: none;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100dvh;
-    padding: 24px;
     position: relative;
     z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
 
-  #lockScreen h1 {
-    font-family: var(--font-serif);
-    font-size: 36px;
-    font-weight: 300;
-    letter-spacing: -0.5px;
-    margin-bottom: 8px;
-    color: var(--ink);
-  }
-
-  #lockScreen p {
-    font-family: var(--font-sans);
-    color: var(--ink-light);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 40px;
-  }
-
-  .pin-input {
+  .screen.active {
     display: flex;
-    gap: 16px;
-    margin-bottom: 32px;
+    opacity: 1;
   }
 
-  .pin-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    transition: all 0.2s;
+  .screen.fade-in {
+    opacity: 1;
   }
 
-  .pin-dot.filled {
-    background: var(--accent-red);
-    border-color: var(--accent-red);
-  }
-
-  .pin-dot.error {
-    border-color: var(--accent-red);
-    background: var(--accent-red);
-    opacity: 0.5;
-  }
-
-  .numpad {
-    display: grid;
-    grid-template-columns: repeat(3, 72px);
-    gap: 12px;
-  }
-
-  .numpad button {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--ink);
-    font-family: var(--font-serif);
-    font-size: 24px;
-    font-weight: 300;
-    cursor: pointer;
-    transition: all 0.15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .numpad button:active {
-    background: var(--bg-surface-dim);
-    transform: scale(0.95);
-  }
-
-  .numpad button.fn {
-    border: none;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-light);
-  }
-
-  .numpad button.fn:active {
-    color: var(--ink);
+  .screen.fade-out {
+    opacity: 0;
   }
 
   /* ── Shared Form Styles ── */
@@ -256,11 +177,39 @@
     appearance: none;
   }
 
-  /* Custom dropdown */
-  .custom-select {
-    position: relative;
+  .field input:focus { border-color: var(--accent-red); }
+  .field input::placeholder { color: var(--ink-placeholder); }
+
+  .field textarea {
     width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.2s;
   }
+
+  .field textarea:focus { border-color: var(--accent-red); }
+  .field textarea::placeholder { color: var(--ink-placeholder); }
+
+  .field .hint {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+
+  /* ── Custom Select ── */
+  .custom-select { position: relative; width: 100%; }
 
   .custom-select-trigger {
     width: 100%;
@@ -292,13 +241,8 @@
     transition: transform 0.2s;
   }
 
-  .custom-select.open .custom-select-trigger::after {
-    transform: translateY(-50%) rotate(180deg);
-  }
-
-  .custom-select.open .custom-select-trigger {
-    border-color: var(--accent-red);
-  }
+  .custom-select.open .custom-select-trigger::after { transform: translateY(-50%) rotate(180deg); }
+  .custom-select.open .custom-select-trigger { border-color: var(--accent-red); }
 
   .custom-select-options {
     display: none;
@@ -314,9 +258,7 @@
     overflow: hidden;
   }
 
-  .custom-select.open .custom-select-options {
-    display: block;
-  }
+  .custom-select.open .custom-select-options { display: block; }
 
   .custom-select-option {
     padding: 14px 16px;
@@ -327,64 +269,16 @@
     transition: background 0.15s;
   }
 
-  .custom-select-option:hover {
-    background: var(--bg-surface-dim);
-  }
+  .custom-select-option:hover { background: var(--bg-surface-dim); }
+  .custom-select-option.selected { color: var(--accent-red); }
 
-  .custom-select-option.selected {
-    color: var(--accent-red);
-  }
-
-  /* Dark mode arrow */
   [data-theme="dark"] .custom-select-trigger::after {
     background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23F2EFE8' stroke-opacity='0.45' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   }
-
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .custom-select-trigger::after {
       background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23F2EFE8' stroke-opacity='0.45' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     }
-  }
-
-  .field input:focus {
-    border-color: var(--accent-red);
-  }
-
-  .field input::placeholder {
-    color: var(--ink-placeholder);
-  }
-
-  .field textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: var(--bg-surface);
-    color: var(--ink);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.6;
-    outline: none;
-    resize: vertical;
-    min-height: 80px;
-    transition: border-color 0.2s;
-  }
-
-  .field textarea:focus {
-    border-color: var(--accent-red);
-  }
-
-  .field textarea::placeholder {
-    color: var(--ink-placeholder);
-  }
-
-  .field .hint {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    color: var(--ink-light);
-    margin-top: 8px;
-    letter-spacing: 0.02em;
-    line-height: 1.5;
   }
 
   /* ── Toggle Switch ── */
@@ -395,33 +289,11 @@
     padding: 14px 0;
   }
 
-  .toggle-row .toggle-label {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    color: var(--ink);
-  }
+  .toggle-row .toggle-label { font-family: var(--font-sans); font-size: 14px; color: var(--ink); }
+  .toggle-row .toggle-sublabel { font-family: var(--font-sans); font-size: 11px; color: var(--ink-light); margin-top: 2px; letter-spacing: 0.02em; }
 
-  .toggle-row .toggle-sublabel {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    color: var(--ink-light);
-    margin-top: 2px;
-    letter-spacing: 0.02em;
-  }
-
-  .toggle-switch {
-    position: relative;
-    width: 48px;
-    height: 28px;
-    flex-shrink: 0;
-    margin-left: 16px;
-  }
-
-  .toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
+  .toggle-switch { position: relative; width: 48px; height: 28px; flex-shrink: 0; margin-left: 16px; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
 
   .toggle-track {
     position: absolute;
@@ -445,29 +317,12 @@
     box-shadow: 0 1px 3px var(--shadow);
   }
 
-  .toggle-switch input:checked + .toggle-track {
-    background: var(--accent-red);
-  }
-
-  .toggle-switch input:checked + .toggle-track::after {
-    transform: translateX(20px);
-  }
+  .toggle-switch input:checked + .toggle-track { background: var(--accent-red); }
+  .toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); }
 
   /* ── Section Divider ── */
-  .section-divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 8px 0 24px;
-  }
-
-  .section-title {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: var(--ink-light);
-    margin-bottom: 16px;
-  }
+  .section-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0 24px; }
+  .section-title { font-family: var(--font-sans); font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-light); margin-bottom: 16px; }
 
   /* ── Collapsible Advanced ── */
   .advanced-toggle {
@@ -486,31 +341,12 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .advanced-toggle .arrow {
-    display: inline-block;
-    transition: transform 0.2s;
-    font-size: 10px;
-  }
+  .advanced-toggle .arrow { display: inline-block; transition: transform 0.2s; font-size: 10px; }
+  .advanced-toggle.open .arrow { transform: rotate(90deg); }
+  .advanced-body { display: none; padding-top: 16px; }
+  .advanced-body.open { display: block; }
 
-  .advanced-toggle.open .arrow {
-    transform: rotate(90deg);
-  }
-
-  .advanced-body {
-    display: none;
-    padding-top: 16px;
-  }
-
-  .advanced-body.open {
-    display: block;
-  }
-
-  .template-btns {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
+  .template-btns { display: flex; gap: 8px; margin-bottom: 12px; }
   .template-btn {
     padding: 6px 14px;
     border-radius: 16px;
@@ -523,11 +359,7 @@
     -webkit-tap-highlight-color: transparent;
     transition: all 0.15s;
   }
-
-  .template-btn:active {
-    background: var(--bg-surface-dim);
-    color: var(--ink);
-  }
+  .template-btn:active { background: var(--bg-surface-dim); color: var(--ink); }
 
   /* ── Buttons ── */
   .btn {
@@ -544,88 +376,59 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-primary {
-    background: var(--accent-red);
-    color: var(--btn-text);
-    width: 100%;
-  }
+  .btn-primary { background: var(--accent-red); color: var(--btn-text); width: 100%; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.3; cursor: not-allowed; }
 
-  .btn-primary:hover {
-    opacity: 0.85;
-  }
+  .btn-ghost { background: transparent; color: var(--ink-light); font-size: 11px; padding: 8px 16px; }
+  .btn-ghost:hover { color: var(--ink); }
 
-  .btn-primary:active {
-    transform: scale(0.98);
-    opacity: 0.9;
-  }
+  .btn-secondary { background: var(--bg-surface); color: var(--ink); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--accent-red); }
 
-  .btn-primary:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--ink-light);
-    font-size: 11px;
-    padding: 8px 16px;
-  }
-
-  .btn-ghost:hover {
-    color: var(--ink);
-  }
-
-  .btn-secondary {
-    background: var(--bg-surface);
-    color: var(--ink);
-    border: 1px solid var(--border);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent-red);
-  }
-
-  /* ── Setup / Onboarding Screen ── */
+  /* ── Onboarding ── */
   #setupScreen {
-    display: none;
-    flex-direction: column;
     min-height: 100dvh;
-    padding: 24px 20px;
-    padding-bottom: calc(24px + var(--safe-bottom));
-    max-width: 500px;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    max-width: 420px;
     margin: 0 auto;
-    position: relative;
-    z-index: 10;
+    text-align: center;
   }
 
   #setupScreen h1 {
     font-family: var(--font-serif);
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 300;
+    letter-spacing: -0.5px;
     margin-bottom: 8px;
-    padding-top: 40px;
   }
 
   #setupScreen .subtitle {
     font-family: var(--font-sans);
     color: var(--ink-light);
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    margin-bottom: 32px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    margin-bottom: 48px;
     line-height: 1.6;
+  }
+
+  #setupScreen .field { text-align: left; }
+
+  .setup-section {
+    width: 100%;
+    margin-bottom: 8px;
   }
 
   /* ── Settings Page ── */
   #settingsPage {
-    display: none;
-    flex-direction: column;
     min-height: 100dvh;
     padding: 0 20px 24px;
     padding-bottom: calc(24px + var(--safe-bottom));
     max-width: 500px;
     margin: 0 auto;
-    position: relative;
-    z-index: 10;
   }
 
   .settings-header {
@@ -639,11 +442,7 @@
     z-index: 5;
   }
 
-  .settings-header h2 {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    font-weight: 300;
-  }
+  .settings-header h2 { font-family: var(--font-serif); font-size: 24px; font-weight: 300; }
 
   .back-btn {
     width: 44px;
@@ -662,40 +461,14 @@
 
   /* ── Main App ── */
   #mainApp {
-    display: none;
-    flex-direction: column;
     min-height: 100dvh;
-    position: relative;
-    z-index: 10;
   }
 
   .app-header {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 24px 20px 16px;
-  }
-
-  .app-header .date-large {
-    font-family: var(--font-serif);
-    font-size: 36px;
-    font-weight: 300;
-    letter-spacing: -0.5px;
-    line-height: 1;
-    color: var(--ink);
-  }
-
-  .app-header .meta {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--ink-light);
-    margin-top: 6px;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 16px 20px 0;
   }
 
   .icon-btn {
@@ -713,52 +486,50 @@
     transition: all 0.15s;
   }
 
-  .icon-btn:active {
-    background: var(--bg-surface-dim);
+  .icon-btn:active { background: var(--bg-surface-dim); }
+
+  /* ── Pillars (Hero) ── */
+  .pillars-hero {
+    padding: 20px 24px 28px;
+    text-align: left;
   }
 
-  /* ── Pillars ── */
-  .pillars {
-    padding: 0 20px 14px;
-    margin-bottom: 0;
+  .pillars-greeting {
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -0.3px;
+    color: var(--ink);
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  .pillar-questions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pillar-question {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--ink);
+    opacity: 0.55;
+    padding-left: 14px;
+    border-left: 2px solid var(--accent-red);
+    line-height: 1.4;
   }
 
   .pillars-divider {
-    margin: 0 20px;
-    border-top: 2px solid var(--border-heavy);
-    border-bottom: 1px solid var(--border-light);
-    height: 5px;
-  }
-
-  .pillars-title {
-    font-family: var(--font-sans);
-    font-size: 10px;
-    color: var(--ink-light);
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 10px;
-  }
-
-  .pillar-tags {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .pillar-tag {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: var(--ink);
-    opacity: 0.5;
-    padding-left: 12px;
-    border-left: 2px solid var(--accent-red);
+    margin: 0 24px;
+    border-top: 1px solid var(--border);
   }
 
   /* ── Input Area ── */
   .input-area {
     flex: 1;
-    padding: 20px;
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -766,20 +537,30 @@
 
   .input-area textarea {
     flex: 1;
-    min-height: 200px;
+    min-height: 160px;
     border: none;
     background: transparent;
     color: var(--ink);
     font-family: var(--font-serif);
     font-size: 16px;
-    line-height: 32px;
+    line-height: 28px;
     resize: none;
     outline: none;
   }
 
-  .input-area textarea::placeholder {
-    color: var(--ink-placeholder);
+  .input-area textarea::placeholder { color: var(--ink-placeholder); }
+
+  .char-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-light);
+    text-align: right;
+    padding: 4px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
   }
+
+  .char-count.visible { opacity: 1; }
 
   .input-footer {
     position: sticky;
@@ -793,17 +574,14 @@
     z-index: 5;
   }
 
-  .input-footer .btn {
-    flex: 1;
+  .input-footer .btn { flex: 1; }
+
+  /* ── Inner State Transitions ── */
+  .state-area {
+    transition: opacity 0.2s ease;
   }
 
-  .char-count {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--ink-light);
-    text-align: right;
-    padding: 4px 0;
-  }
+  .state-area.fading { opacity: 0; }
 
   /* ── Processing State ── */
   .processing {
@@ -840,13 +618,18 @@
   #previewArea {
     display: none;
     flex-direction: column;
-    flex: 1;
   }
 
-  .preview-content {
-    flex: 1;
-    padding: 20px;
+  .preview-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-light);
+    padding: 20px 24px 8px;
   }
+
+  .preview-content { padding: 4px 24px 20px; }
 
   .preview-content textarea {
     width: 100%;
@@ -857,7 +640,7 @@
     color: var(--ink);
     font-family: var(--font-serif);
     font-size: 15px;
-    line-height: 32px;
+    line-height: 28px;
     resize: none;
     outline: none;
   }
@@ -890,19 +673,8 @@
     font-size: 24px;
   }
 
-  .success-text {
-    font-size: 15px;
-    color: var(--ink);
-    margin-bottom: 6px;
-    font-family: var(--font-serif);
-  }
-
-  .success-filename {
-    color: var(--accent-red);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    margin-bottom: 28px;
-  }
+  .success-text { font-size: 15px; color: var(--ink); margin-bottom: 6px; font-family: var(--font-serif); }
+  .success-date { color: var(--ink-light); font-family: var(--font-mono); font-size: 11px; margin-bottom: 28px; }
 
   /* ── Toast ── */
   .toast {
@@ -923,14 +695,8 @@
     box-shadow: 0 4px 16px var(--shadow-toast);
   }
 
-  .toast.show {
-    transform: translateX(-50%) translateY(0);
-  }
-
-  .toast.error {
-    border-color: var(--accent-red);
-    color: var(--accent-red);
-  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { border-color: var(--accent-red); color: var(--accent-red); }
 
   /* ── Record Area (Audio Mode) ── */
   #recordArea {
@@ -959,9 +725,7 @@
     margin-bottom: 20px;
   }
 
-  .record-btn:active {
-    transform: scale(0.95);
-  }
+  .record-btn:active { transform: scale(0.95); }
 
   .record-btn.recording {
     border-color: var(--accent-red);
@@ -971,14 +735,9 @@
     animation: pulse-ring 1.5s ease-in-out infinite;
   }
 
-  [data-theme="dark"] .record-btn.recording {
-    --pulse-color: rgba(224, 122, 95, 0.25);
-  }
-
+  [data-theme="dark"] .record-btn.recording { --pulse-color: rgba(224, 122, 95, 0.25); }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .record-btn.recording {
-      --pulse-color: rgba(224, 122, 95, 0.25);
-    }
+    :root:not([data-theme="light"]) .record-btn.recording { --pulse-color: rgba(224, 122, 95, 0.25); }
   }
 
   @keyframes pulse-ring {
@@ -986,89 +745,24 @@
     50% { box-shadow: 0 0 0 16px transparent; }
   }
 
-  .record-status {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--ink-light);
-    margin-bottom: 8px;
-  }
-
-  .record-status.recording {
-    color: var(--accent-red);
-  }
-
-  .record-timer {
-    font-family: var(--font-mono);
-    font-size: 28px;
-    font-weight: 300;
-    color: var(--ink);
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-  }
-
-  .record-hint {
-    font-family: var(--font-sans);
-    font-size: 11px;
-    color: var(--ink-light);
-    margin-top: 12px;
-  }
+  .record-status { font-family: var(--font-sans); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-light); margin-bottom: 8px; }
+  .record-status.recording { color: var(--accent-red); }
+  .record-timer { font-family: var(--font-mono); font-size: 28px; font-weight: 300; color: var(--ink); letter-spacing: 0.05em; margin-bottom: 4px; }
+  .record-hint { font-family: var(--font-sans); font-size: 11px; color: var(--ink-light); margin-top: 12px; line-height: 1.5; }
 
   /* ── PWA Banner ── */
-  .pwa-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg-paper);
-    border-top: 1px solid var(--border);
-    padding: 16px 20px;
-    padding-bottom: calc(16px + var(--safe-bottom));
-    z-index: 60;
-    font-family: var(--font-sans);
-  }
-
-  .pwa-banner-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-
-  .pwa-banner-title {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .pwa-banner-close {
-    background: none;
-    border: none;
-    color: var(--ink-light);
-    font-size: 18px;
-    cursor: pointer;
-    padding: 0 4px;
-    line-height: 1;
-  }
-
-  .pwa-banner-body {
-    font-size: 12px;
-    color: var(--ink-light);
-    line-height: 1.6;
-  }
+  .pwa-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-paper); border-top: 1px solid var(--border); padding: 16px 20px; padding-bottom: calc(16px + var(--safe-bottom)); z-index: 60; font-family: var(--font-sans); }
+  .pwa-banner-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .pwa-banner-title { font-size: 12px; font-weight: 500; color: var(--ink); text-transform: uppercase; letter-spacing: 0.1em; }
+  .pwa-banner-close { background: none; border: none; color: var(--ink-light); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; }
+  .pwa-banner-body { font-size: 12px; color: var(--ink-light); line-height: 1.6; }
 
   /* ── Reduced Motion ── */
   @media (prefers-reduced-motion: reduce) {
-    .spinner { animation: none; border-top-color: var(--accent-red); }
+    .spinner { animation: none; }
     .record-btn.recording { animation: none; }
     .toast { transition-duration: 0.01s; }
-    .pin-dot, .toggle-track, .toggle-track::after,
-    .custom-select-trigger::after, .advanced-toggle .arrow {
-      transition-duration: 0.01s;
-    }
+    .screen { transition-duration: 0.01s; }
   }
 
   /* ── Utilities ── */
@@ -1077,163 +771,62 @@
 </head>
 <body>
 
-<!-- Texture Overlay -->
 <div class="texture-overlay"></div>
-
-<!-- Toast -->
 <div id="toast" class="toast"></div>
 
-<!-- Lock Screen -->
-<div id="lockScreen">
+<!-- Onboarding -->
+<div id="setupScreen" class="screen">
   <h1>Sotto</h1>
-  <p>Enter PIN</p>
-  <div class="pin-input" role="status" aria-live="polite" aria-label="PIN entry">
-    <div class="pin-dot" data-i="0"></div>
-    <div class="pin-dot" data-i="1"></div>
-    <div class="pin-dot" data-i="2"></div>
-    <div class="pin-dot" data-i="3"></div>
-  </div>
-  <div class="numpad" role="group" aria-label="Number pad">
-    <button aria-label="1" onclick="pinPress('1')">1</button>
-    <button aria-label="2" onclick="pinPress('2')">2</button>
-    <button aria-label="3" onclick="pinPress('3')">3</button>
-    <button aria-label="4" onclick="pinPress('4')">4</button>
-    <button aria-label="5" onclick="pinPress('5')">5</button>
-    <button aria-label="6" onclick="pinPress('6')">6</button>
-    <button aria-label="7" onclick="pinPress('7')">7</button>
-    <button aria-label="8" onclick="pinPress('8')">8</button>
-    <button aria-label="9" onclick="pinPress('9')">9</button>
-    <button class="fn" aria-label="Clear PIN" onclick="pinClear()">Clear</button>
-    <button aria-label="0" onclick="pinPress('0')">0</button>
-    <button class="fn" aria-label="Delete last digit" onclick="pinDelete()">Delete</button>
-  </div>
-</div>
+  <p class="subtitle">A quiet place for your thoughts.<br>Let's get you set up.</p>
 
-<!-- Onboarding Screen -->
-<div id="setupScreen">
-  <h1>Welcome</h1>
-  <p class="subtitle">Let's set up your space. Everything can be adjusted later.</p>
-
-  <!-- PIN -->
-  <div class="section-title">Appearance</div>
-  <div class="field">
-    <label>Theme</label>
-    <div class="custom-select" id="setupTheme" data-value="auto">
-      <div class="custom-select-trigger">Auto (follow system)</div>
-      <div class="custom-select-options">
-        <div class="custom-select-option selected" data-value="auto">Auto (follow system)</div>
-        <div class="custom-select-option" data-value="light">Light</div>
-        <div class="custom-select-option" data-value="dark">Dark</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="section-divider">
-
-  <div class="section-title">Security</div>
-  <div class="field">
-    <label>Set a 4-digit PIN</label>
-    <input type="password" id="setupPin" inputmode="numeric" maxlength="4" placeholder="••••" pattern="[0-9]*">
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- Input Mode -->
-  <div class="section-title">Input Mode</div>
-  <div class="field">
-    <div class="toggle-row">
-      <div>
-        <div class="toggle-label">Record your voice</div>
-        <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
-      </div>
-      <label class="toggle-switch">
-        <input type="checkbox" id="setupAudioMode" onchange="onAudioModeToggle('setup')">
-        <span class="toggle-track"></span>
-      </label>
-    </div>
-    <div class="hint">When off, you type or use your own voice tools. When on, the app records and transcribes for you.</div>
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- API Keys -->
-  <div class="section-title">API Keys</div>
-  <div class="field">
-    <label>AI Service</label>
-    <div class="custom-select" id="setupProvider" data-value="anthropic">
-      <div class="custom-select-trigger">Anthropic (Claude)</div>
-      <div class="custom-select-options">
-        <div class="custom-select-option selected" data-value="anthropic">Anthropic (Claude)</div>
-        <div class="custom-select-option" data-value="openai">OpenAI (GPT)</div>
-        <div class="custom-select-option" data-value="gemini">Google (Gemini)</div>
-      </div>
-    </div>
-    <div class="hint">Used to organize your journal entries</div>
-  </div>
-  <div class="field">
-    <label>API Key</label>
-    <input type="password" id="setupLlmKey" placeholder="sk-..." autocomplete="off">
-    <div class="hint">Stays on your device. Only shared with your chosen provider.</div>
-  </div>
-  <div class="field" id="setupWhisperKeyField" style="display:none">
-    <label>OpenAI Key (for voice transcription)</label>
-    <input type="password" id="setupWhisperKey" placeholder="sk-..." autocomplete="off">
-    <div class="hint">Needed for voice transcription. If you chose OpenAI above, the same key is used.</div>
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- Vault -->
-  <div class="section-title">Obsidian Vault</div>
-  <div class="field">
-    <label>Vault Name</label>
-    <input type="text" id="setupVaultName" value="reflection-vault" placeholder="reflection-vault">
-    <div class="hint">The exact name of your Obsidian vault</div>
-  </div>
-  <div class="field">
-    <label>Where to save entries</label>
-    <input type="text" id="setupEntryPath" value="entries/YYYY/" placeholder="entries/YYYY/">
-    <div class="hint">The year updates automatically.</div>
-  </div>
-
-  <hr class="section-divider">
-
-  <!-- Journal Prompts -->
-  <div class="section-title">Journal Prompts</div>
-  <div class="field">
-    <label>Your guiding questions</label>
-    <textarea id="setupReflectionPrompt" rows="4" placeholder="One question per line, e.g.&#10;What did I do today?&#10;What went well / not well?&#10;What did I learn?">What did I do today?
-What went well / not well?
-What did I learn?
-What's on my mind for tomorrow?</textarea>
-    <div class="hint">Shown before you start journaling, to help you think about what to say. One per line.</div>
-  </div>
-
-  <!-- Advanced -->
-  <button class="advanced-toggle" onclick="toggleAdvanced('setup', event)">
-    <span class="arrow">&#9654;</span> Advanced Settings
-  </button>
-  <div id="setupAdvanced" class="advanced-body">
+  <div class="setup-section">
     <div class="field">
-      <label>Custom Instructions</label>
-      <div class="template-btns">
-        <button class="template-btn" onclick="loadTemplate('setup', 'zh')">Chinese Template</button>
-        <button class="template-btn" onclick="loadTemplate('setup', 'en')">English Template</button>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Record your voice</div>
+          <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="setupAudioMode" onchange="onAudioModeToggle('setup')">
+          <span class="toggle-track"></span>
+        </label>
       </div>
-      <textarea id="setupSystemPrompt" rows="10" placeholder="Instructions for how AI should organize your journal..."></textarea>
-      <div class="hint">Controls how the AI organizes your journal entries. Leave blank to use the default.</div>
     </div>
   </div>
 
-  <div style="height: 16px"></div>
-  <button class="btn btn-primary" onclick="completeSetup()">Get Started</button>
-  <div style="height: 24px"></div>
+  <hr class="section-divider">
+
+  <div class="setup-section">
+    <div class="field">
+      <label>AI Service</label>
+      <div class="custom-select" id="setupProvider" data-value="anthropic">
+        <div class="custom-select-trigger">Anthropic (Claude)</div>
+        <div class="custom-select-options">
+          <div class="custom-select-option selected" data-value="anthropic">Anthropic (Claude)</div>
+          <div class="custom-select-option" data-value="openai">OpenAI (GPT)</div>
+          <div class="custom-select-option" data-value="gemini">Google (Gemini)</div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>API Key</label>
+      <input type="password" id="setupLlmKey" placeholder="sk-..." autocomplete="off">
+      <div class="hint">Stays on your device. Only shared with your chosen provider.</div>
+    </div>
+    <div class="field" id="setupWhisperKeyField" style="display:none">
+      <label>OpenAI Key (for voice transcription)</label>
+      <input type="password" id="setupWhisperKey" placeholder="sk-..." autocomplete="off">
+      <div class="hint">Needed for voice transcription. If you chose OpenAI above, the same key is used.</div>
+    </div>
+  </div>
+
+  <button class="btn btn-primary" onclick="completeSetup()">Begin</button>
 </div>
 
 <!-- Settings Page -->
-<div id="settingsPage">
+<div id="settingsPage" class="screen">
   <div class="settings-header">
-    <button class="back-btn" onclick="hideSettings()">
+    <button class="back-btn" onclick="hideSettings()" aria-label="Back">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
     </button>
     <h2>Settings</h2>
@@ -1255,7 +848,6 @@ What's on my mind for tomorrow?</textarea>
 
   <hr class="section-divider">
 
-  <!-- Input Mode -->
   <div class="section-title">Input Mode</div>
   <div class="field">
     <div class="toggle-row">
@@ -1272,10 +864,9 @@ What's on my mind for tomorrow?</textarea>
 
   <hr class="section-divider">
 
-  <!-- API Keys -->
-  <div class="section-title">API Keys</div>
+  <div class="section-title">AI Service</div>
   <div class="field">
-    <label>AI Service</label>
+    <label>Provider</label>
     <div class="custom-select" id="settingsProvider" data-value="anthropic">
       <div class="custom-select-trigger">Anthropic (Claude)</div>
       <div class="custom-select-options">
@@ -1297,7 +888,6 @@ What's on my mind for tomorrow?</textarea>
 
   <hr class="section-divider">
 
-  <!-- Vault -->
   <div class="section-title">Obsidian Vault</div>
   <div class="field">
     <label>Vault Name</label>
@@ -1311,33 +901,24 @@ What's on my mind for tomorrow?</textarea>
 
   <hr class="section-divider">
 
-  <!-- Journal Prompts -->
   <div class="section-title">Journal Prompts</div>
   <div class="field">
     <label>Your guiding questions</label>
     <textarea id="settingsReflectionPrompt" rows="4" placeholder="One question per line"></textarea>
-    <div class="hint">Shown before you start journaling, to help you think about what to say. One per line.</div>
+    <div class="hint">Shown before you start journaling. One per line.</div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- PIN -->
-  <div class="section-title">Security</div>
-  <div class="field">
-    <label>Change PIN (leave blank to keep current)</label>
-    <input type="password" id="settingsPin" inputmode="numeric" maxlength="4" placeholder="New 4-digit PIN" pattern="[0-9]*">
-  </div>
-
-  <!-- Advanced -->
   <button class="advanced-toggle" onclick="toggleAdvanced('settings', event)">
-    <span class="arrow">&#9654;</span> Advanced Settings
+    <span class="arrow">&#9654;</span> Advanced
   </button>
   <div id="settingsAdvanced" class="advanced-body">
     <div class="field">
       <label>Custom Instructions</label>
       <div class="template-btns">
-        <button class="template-btn" onclick="loadTemplate('settings', 'zh')">Chinese Template</button>
-        <button class="template-btn" onclick="loadTemplate('settings', 'en')">English Template</button>
+        <button class="template-btn" onclick="loadTemplate('settings', 'zh')">Chinese</button>
+        <button class="template-btn" onclick="loadTemplate('settings', 'en')">English</button>
       </div>
       <textarea id="settingsSystemPrompt" rows="10" placeholder="Instructions for how AI should organize your journal..."></textarea>
     </div>
@@ -1352,29 +933,24 @@ What's on my mind for tomorrow?</textarea>
 </div>
 
 <!-- Main App -->
-<div id="mainApp">
+<div id="mainApp" class="screen">
   <div class="app-header">
-    <div>
-      <div class="date-large" id="todayDateLarge"></div>
-      <div class="meta" id="todayMeta"></div>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="showSettings()" title="Settings" aria-label="Settings">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      </button>
-    </div>
+    <button class="icon-btn" onclick="showSettings()" title="Settings" aria-label="Settings">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
   </div>
 
-  <div class="pillars">
-    <div class="pillars-title">Think about...</div>
-    <div class="pillar-tags" id="pillarTags"></div>
+  <!-- Pillar Questions (Hero) -->
+  <div class="pillars-hero" id="pillarsHero">
+    <div class="pillars-greeting" id="pillarsGreeting"></div>
+    <div class="pillar-questions" id="pillarQuestions"></div>
   </div>
   <div class="pillars-divider"></div>
 
-  <!-- Input State -->
+  <!-- Input State (Text Mode) -->
   <div id="inputArea" class="input-area">
-    <textarea id="journalInput" placeholder="What's on your mind tonight?&#10;&#10;Just say whatever comes to mind. I'll organize it for you."></textarea>
-    <div class="char-count"><span id="charCount">0</span> chars</div>
+    <textarea id="journalInput" placeholder="What's on your mind?"></textarea>
+    <div class="char-count" id="charCountWrap"><span id="charCount">0</span> chars</div>
   </div>
 
   <!-- Record State (Audio Mode) -->
@@ -1385,7 +961,7 @@ What's on my mind for tomorrow?</textarea>
     </button>
     <div class="record-timer" id="recordTimer">0:00</div>
     <div class="record-status" id="recordStatus">Tap to speak</div>
-    <div class="record-hint">Speak naturally. Don't worry about organizing — I'll handle that.</div>
+    <div class="record-hint">Speak naturally — I'll organize it for you.</div>
   </div>
 
   <!-- Processing State -->
@@ -1395,19 +971,18 @@ What's on my mind for tomorrow?</textarea>
   </div>
 
   <!-- Preview State -->
-  <div id="previewArea">
+  <div id="previewArea" class="state-area">
+    <div class="preview-label">Review before saving</div>
     <div class="preview-content"><textarea id="previewContent"></textarea></div>
   </div>
 
-  <!-- Footer: changes based on state -->
+  <!-- Footers -->
   <div id="inputFooter" class="input-footer">
-    <button class="btn btn-primary" id="submitBtn" onclick="submitReflection()" disabled>
-      Organize & Save
-    </button>
+    <button class="btn btn-primary" id="submitBtn" onclick="submitReflection()" disabled>Organize</button>
   </div>
 
   <div id="previewFooter" class="preview-footer hidden">
-    <button class="btn btn-secondary" onclick="backToEdit()">Back to Edit</button>
+    <button class="btn btn-secondary" onclick="backToEdit()">Back</button>
     <button class="btn btn-primary" onclick="saveToObsidian()">Save to Obsidian</button>
   </div>
 
@@ -1415,8 +990,8 @@ What's on my mind for tomorrow?</textarea>
   <div id="successArea" class="processing hidden">
     <div class="success-check">&#10003;</div>
     <p class="success-text">Saved to Obsidian!</p>
-    <p class="success-filename" id="successFilename"></p>
-    <button class="btn btn-ghost" onclick="resetAll()">Journal Again</button>
+    <p class="success-date" id="successDate"></p>
+    <button class="btn btn-ghost" onclick="resetAll()">Done</button>
   </div>
 </div>
 
@@ -1424,17 +999,11 @@ What's on my mind for tomorrow?</textarea>
 // ── Theme ──
 function applyTheme(choice) {
   setConfig('theme', choice);
-  if (choice === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  } else if (choice === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
+  if (choice === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  else if (choice === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  else document.documentElement.removeAttribute('data-theme');
   const isDark = choice === 'dark' || (choice === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   document.querySelector('meta[name="theme-color"]').content = isDark ? '#2A2520' : '#F9F8F4';
-  // Sync both custom dropdowns
-  setCustomSelect('setupTheme', choice);
   setCustomSelect('settingsTheme', choice);
 }
 
@@ -1444,48 +1013,33 @@ function setCustomSelect(id, value) {
   if (!el) return;
   el.dataset.value = value;
   const trigger = el.querySelector('.custom-select-trigger');
-  const options = el.querySelectorAll('.custom-select-option');
-  options.forEach(opt => {
+  el.querySelectorAll('.custom-select-option').forEach(opt => {
     opt.classList.toggle('selected', opt.dataset.value === value);
-    if (opt.dataset.value === value) {
-      trigger.textContent = opt.textContent;
-    }
+    if (opt.dataset.value === value) trigger.textContent = opt.textContent;
   });
 }
 
 document.addEventListener('click', function(e) {
-  // Toggle dropdown open/close
   const trigger = e.target.closest('.custom-select-trigger');
   if (trigger) {
     const select = trigger.parentElement;
-    // Close all other dropdowns first
-    document.querySelectorAll('.custom-select.open').forEach(s => {
-      if (s !== select) s.classList.remove('open');
-    });
+    document.querySelectorAll('.custom-select.open').forEach(s => { if (s !== select) s.classList.remove('open'); });
     select.classList.toggle('open');
     e.stopPropagation();
     return;
   }
-  // Handle option click
   const option = e.target.closest('.custom-select-option');
   if (option) {
     const select = option.closest('.custom-select');
     const value = option.dataset.value;
     select.classList.remove('open');
     setCustomSelect(select.id, value);
-    // Fire the change action
-    if (select.id === 'setupTheme' || select.id === 'settingsTheme') {
-      applyTheme(value);
-    }
-    if (select.id === 'setupProvider') {
-      onProviderChange('setup');
-    }
-    if (select.id === 'settingsProvider') {
-      onProviderChange('settings');
+    if (select.id === 'settingsTheme') applyTheme(value);
+    if (select.id === 'setupProvider' || select.id === 'settingsProvider') {
+      onProviderChange(select.id.replace('Provider', '').replace('setup', 'setup').replace('settings', 'settings'));
     }
     return;
   }
-  // Click outside — close all
   document.querySelectorAll('.custom-select.open').forEach(s => s.classList.remove('open'));
 });
 
@@ -1497,21 +1051,19 @@ document.addEventListener('click', function(e) {
 })();
 
 // ── State ──
-let pinBuffer = '';
 let currentMarkdown = '';
 let currentFilename = '';
-let currentTitle = '';
 
 // ── Default Prompts ──
 const SYSTEM_PROMPT_ZH = `你是用户的日记整理助手。你的任务是把用户用语音输入的原始内容整理成结构清晰的日记。
 
 ## 最重要的规则
 
-**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用用户说过的话来组织日记。如果用户只说了两句话，日记就应该只有两句话的内容。不要为了让日记"看起来更完整"而编造任何细节、感受、或描述。宁可短，也不能多。
+**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用用户说过的话来组织日记。如果用户只说了两句话，日记就应该只有两句话的内容。宁可短，也不能多。
 
 ## 输出格式
 
-你的输出必须是纯 markdown。frontmatter 中的日期必须严格使用下面给定的值，不要自己推算：
+你的输出必须是纯 markdown。frontmatter 中的日期必须严格使用下面给定的值：
 
 ---
 date: {date}
@@ -1528,9 +1080,9 @@ title: "简短标题，用顿号分隔几个关键词"
 
 1. **日期**：必须使用上面给出的 date 值
 2. **标题**：用顿号连接 2-3 个今天的关键词
-3. **小节**：根据内容自然分段，每段一个小标题。如果内容很少，1-2 个小节就够了
-4. **语言**：保持用户本人的语言风格，不要美化、不要鸡汤
-5. **忠实原文**：只整理结构和修正语音输入的错别字，不改写、不润色、不扩写
+3. **小节**：根据内容自然分段。内容很少就 1-2 个小节
+4. **语言**：保持用户本人的语言风格，不要美化
+5. **忠实原文**：只整理结构和修正错别字，不改写、不扩写
 6. **不要加任何用户没说的内容**
 
 只输出 markdown，不要加任何解释。`;
@@ -1539,31 +1091,31 @@ const SYSTEM_PROMPT_ZH_APPEND = `你是用户的日记追加助手。用户今�
 
 ## 最重要的规则
 
-**严禁添加、扩写、或推断任何原文中没有的内容。** 你只能用用户说过的话来组织内容。如果用户只说了一句话，输出就应该只有一句话。宁可短，也不能多。
+**严禁添加、扩写、或推断任何原文中没有的内容。** 宁可短，也不能多。
 
 ## 输出格式
 
-只输出新的小节，不要输出 frontmatter（---date/title---），不要输出日期行。直接从 ## 小节标题开始。
+只输出新的小节，不要输出 frontmatter，不要输出日期行。直接从 ## 小节标题开始。
 
 ## 整理规则
 
 1. **不要输出 frontmatter 和日期**，直接从 ## 开始
 2. **小节**：根据内容分段，内容少就 1 个小节
 3. **语言**：保持用户本人的语言风格
-4. **忠实原文**：只整理结构和修正错别字，不改写、不润色、不扩写
+4. **忠实原文**：只整理结构和修正错别字
 5. **不要加任何用户没说的内容**
 
 只输出 markdown，不要加任何解释。`;
 
-const SYSTEM_PROMPT_EN = `You are a journal organization assistant. Your task is to organize the user's raw voice-input content into a well-structured journal entry.
+const SYSTEM_PROMPT_EN = `You are a journal organization assistant. Organize the user's raw voice-input content into a well-structured journal entry.
 
 ## Most Important Rule
 
-**Never add, expand, or infer any content the user didn't say.** You can only use what they said to organize the journal. If they only said two sentences, the journal should only contain two sentences. Better short than fabricated.
+**Never add, expand, or infer any content the user didn't say.** If they only said two sentences, the journal should only contain two sentences. Better short than fabricated.
 
 ## Output Format
 
-Your output must be pure markdown. The date in frontmatter must strictly use the given values:
+Pure markdown. Use the given date values exactly:
 
 ---
 date: {date}
@@ -1578,43 +1130,38 @@ Content...
 
 ## Rules
 
-1. **Date**: Must use the provided date values, do not guess
-2. **Title**: Connect 2-3 keywords from today's entry
-3. **Sections**: Naturally divide content. If there's little content, 1-2 sections is enough
-4. **Language**: Keep the user's original language and tone — do not embellish
-5. **Faithful to original**: Only organize structure and fix typos. Do not rewrite or expand
+1. **Date**: Use the provided date values exactly
+2. **Title**: 2-3 keywords from today's entry
+3. **Sections**: Naturally divide content. Little content = 1-2 sections
+4. **Language**: Keep the user's original language and tone
+5. **Faithful**: Only organize structure and fix typos
 6. **Never add anything the user didn't say**
 
 Output only markdown, no explanations.`;
 
-const SYSTEM_PROMPT_EN_APPEND = `You are a journal append assistant. The user already wrote a journal entry today and wants to add more.
+const SYSTEM_PROMPT_EN_APPEND = `You are a journal append assistant. The user already wrote today and wants to add more.
 
 ## Most Important Rule
 
-**Never add, expand, or infer any content the user didn't say.** If they only said one sentence, the output should only be one sentence. Better short than fabricated.
+**Never add, expand, or infer any content the user didn't say.** Better short than fabricated.
 
 ## Output Format
 
-Only output new sections. Do NOT output frontmatter (---date/title---) or date line. Start directly with ## Section Title.
+Only output new sections. No frontmatter, no date line. Start with ## Section Title.
 
 ## Rules
 
-1. **No frontmatter or date** — start directly with ##
-2. **Sections**: Divide by content. If short, just 1 section
-3. **Language**: Keep the user's original tone
-4. **Faithful**: Only organize and fix typos. Do not rewrite or expand
+1. **No frontmatter or date** — start with ##
+2. **Sections**: Divide by content. Short = 1 section
+3. **Language**: Keep original tone
+4. **Faithful**: Only organize and fix typos
 5. **Never add anything the user didn't say**
 
 Output only markdown, no explanations.`;
 
-// ── Config Helpers ──
-function getConfig(key, fallback) {
-  return localStorage.getItem('reflection_' + key) || fallback;
-}
-
-function setConfig(key, value) {
-  localStorage.setItem('reflection_' + key, value);
-}
+// ── Config ──
+function getConfig(key, fallback) { return localStorage.getItem('reflection_' + key) || fallback; }
+function setConfig(key, value) { localStorage.setItem('reflection_' + key, value); }
 
 // ── Utilities ──
 function toast(msg, isError = false) {
@@ -1626,48 +1173,37 @@ function toast(msg, isError = false) {
 
 function getToday() {
   const d = new Date();
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, '0');
-  const dd = String(d.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function getTodayDisplay() {
   const d = new Date();
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
-function getTodayLargeDisplay() {
+function getGreeting() {
   const d = new Date();
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return `${months[d.getMonth()]} ${d.getDate()}`;
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
-function getTodayMeta() {
-  const d = new Date();
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const dayOfYear = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 86400000);
-  return `${days[d.getDay()]} — No. ${String(dayOfYear).padStart(3, '0')} — ${d.getFullYear()}`;
+// ── Screen Transitions ──
+function showScreen(id) {
+  document.querySelectorAll('.screen.active').forEach(s => {
+    s.classList.remove('active');
+    s.style.display = 'none';
+  });
+  const screen = document.getElementById(id);
+  screen.style.display = 'flex';
+  // Trigger reflow then fade in
+  screen.offsetHeight;
+  screen.classList.add('active');
 }
 
-async function hashPin(pin) {
-  if (crypto.subtle) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(pin + '_reflection_salt');
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-  let h = 0;
-  const str = pin + '_reflection_salt';
-  for (let i = 0; i < str.length; i++) {
-    h = ((h << 5) - h + str.charCodeAt(i)) | 0;
-  }
-  return 'fallback_' + Math.abs(h).toString(16);
-}
-
-// ── Audio Mode / Provider Toggle Logic ──
+// ── Toggle Logic ──
 function onAudioModeToggle(prefix) {
   const isAudio = document.getElementById(prefix + 'AudioMode').checked;
   const providerEl = document.getElementById(prefix + 'Provider');
@@ -1684,12 +1220,9 @@ function onProviderChange(prefix) {
 function updateWhisperKeyVisibility(prefix, isAudio, provider) {
   const field = document.getElementById(prefix + 'WhisperKeyField');
   if (!field) return;
-  // Show Whisper key field if audio mode is on AND provider is NOT OpenAI
-  // (If provider is OpenAI, the LLM key is used for both)
   field.style.display = (isAudio && provider !== 'openai') ? 'block' : 'none';
 }
 
-// ── Advanced Settings Toggle ──
 function toggleAdvanced(prefix, e) {
   const btn = e.currentTarget;
   const body = document.getElementById(prefix + 'Advanced');
@@ -1697,132 +1230,84 @@ function toggleAdvanced(prefix, e) {
   body.classList.toggle('open');
 }
 
-// ── Template Loading ──
 function loadTemplate(prefix, lang) {
   const textarea = document.getElementById(prefix + 'SystemPrompt');
-  if (lang === 'zh') {
-    textarea.value = SYSTEM_PROMPT_ZH;
-  } else {
-    textarea.value = SYSTEM_PROMPT_EN;
-  }
+  textarea.value = lang === 'zh' ? SYSTEM_PROMPT_ZH : SYSTEM_PROMPT_EN;
 }
 
-// ── PIN Lock ──
+// ── Init ──
 function initApp() {
-  const stored = localStorage.getItem('reflection_pin_hash');
-  if (!stored) {
-    document.getElementById('lockScreen').style.display = 'none';
-    document.getElementById('setupScreen').style.display = 'flex';
-    // Provider change is handled by custom-select click handler
+  const hasKey = getConfig('llm_key', '');
+  if (!hasKey) {
+    showScreen('setupScreen');
+  } else {
+    showMainApp();
   }
-}
-
-async function pinPress(digit) {
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += digit;
-
-  document.querySelectorAll('.pin-dot').forEach((dot, i) => {
-    dot.classList.toggle('filled', i < pinBuffer.length);
-  });
-
-  if (pinBuffer.length === 4) {
-    const hash = await hashPin(pinBuffer);
-    const stored = localStorage.getItem('reflection_pin_hash');
-    if (hash === stored) {
-      document.getElementById('lockScreen').style.display = 'none';
-      showMainApp();
-    } else {
-      document.querySelectorAll('.pin-dot').forEach(d => {
-        d.classList.remove('filled');
-        d.classList.add('error');
-      });
-      setTimeout(() => {
-        document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-        pinBuffer = '';
-      }, 500);
-    }
-  }
-}
-
-function pinClear() {
-  pinBuffer = '';
-  document.querySelectorAll('.pin-dot').forEach(d => {
-    d.classList.remove('filled', 'error');
-  });
-}
-
-function pinDelete() {
-  pinBuffer = pinBuffer.slice(0, -1);
-  document.querySelectorAll('.pin-dot').forEach((dot, i) => {
-    dot.classList.toggle('filled', i < pinBuffer.length);
-  });
 }
 
 // ── Onboarding ──
-async function completeSetup() {
-  try {
-    const pin = document.getElementById('setupPin').value;
-    const llmKey = document.getElementById('setupLlmKey').value.trim();
-    const provider = document.getElementById('setupProvider').dataset.value;
-    const isAudio = document.getElementById('setupAudioMode').checked;
+function completeSetup() {
+  const llmKey = document.getElementById('setupLlmKey').value.trim();
+  const provider = document.getElementById('setupProvider').dataset.value;
+  const isAudio = document.getElementById('setupAudioMode').checked;
 
-    if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
-      toast('Please enter a 4-digit PIN', true);
-      return;
-    }
-    if (!llmKey || llmKey.length < 10) {
-      toast("API key doesn't look right. Check and try again.", true);
-      return;
-    }
-
-    // If audio mode and provider isn't OpenAI, check Whisper key
-    if (isAudio && provider !== 'openai') {
-      const whisperKey = document.getElementById('setupWhisperKey').value.trim();
-      if (!whisperKey || whisperKey.length < 10) {
-        toast("OpenAI key for voice transcription doesn't look right. Check and try again.", true);
-        return;
-      }
-      setConfig('whisper_key', whisperKey);
-    }
-
-    const hash = await hashPin(pin);
-    setConfig('pin_hash', hash);
-    setConfig('llm_provider', provider);
-    setConfig('llm_key', llmKey);
-    setConfig('input_mode', isAudio ? 'audio' : 'text');
-    setConfig('vault_name', document.getElementById('setupVaultName').value.trim() || 'reflection-vault');
-    setConfig('entry_path', document.getElementById('setupEntryPath').value.trim() || 'entries/YYYY/');
-    setConfig('reflection_prompt', document.getElementById('setupReflectionPrompt').value.trim());
-
-    const sysPrompt = document.getElementById('setupSystemPrompt').value.trim();
-    if (sysPrompt) {
-      setConfig('system_prompt', sysPrompt);
-    }
-
-    // Migrate old key name if needed
-    localStorage.removeItem('reflection_api_key');
-
-    document.getElementById('setupScreen').style.display = 'none';
-    showMainApp();
-    toast("You're all set.");
-  } catch (err) {
-    toast('Something went wrong:' + err.message, true);
+  if (!llmKey || llmKey.length < 10) {
+    toast("API key doesn't look right. Check and try again.", true);
+    return;
   }
+
+  if (isAudio && provider !== 'openai') {
+    const whisperKey = document.getElementById('setupWhisperKey').value.trim();
+    if (!whisperKey || whisperKey.length < 10) {
+      toast("OpenAI key for voice transcription doesn't look right.", true);
+      return;
+    }
+    setConfig('whisper_key', whisperKey);
+  }
+
+  setConfig('llm_provider', provider);
+  setConfig('llm_key', llmKey);
+  setConfig('input_mode', isAudio ? 'audio' : 'text');
+
+  // Defaults for settings not shown in onboarding
+  if (!getConfig('vault_name', '')) setConfig('vault_name', 'reflection-vault');
+  if (!getConfig('entry_path', '')) setConfig('entry_path', 'entries/YYYY/');
+  if (!getConfig('reflection_prompt', '')) {
+    setConfig('reflection_prompt', "What did I do today?\nWhat went well / not well?\nWhat did I learn?\nWhat's on my mind for tomorrow?");
+  }
+
+  showMainApp();
+  toast("You're all set.");
 }
 
 // ── Main App ──
 function showMainApp() {
-  document.getElementById('mainApp').style.display = 'flex';
-  document.getElementById('todayDateLarge').textContent = getTodayLargeDisplay();
-  document.getElementById('todayMeta').textContent = getTodayMeta();
+  showScreen('mainApp');
 
-  renderPillarTags();
+
+  // Greeting + pillar questions
+  document.getElementById('pillarsGreeting').textContent = getGreeting();
+  renderPillarQuestions();
   applyInputMode();
 
   const textarea = document.getElementById('journalInput');
   textarea.addEventListener('input', () => {
-    document.getElementById('charCount').textContent = textarea.value.length;
+    const len = textarea.value.length;
+    document.getElementById('charCount').textContent = len;
+    document.getElementById('charCountWrap').classList.toggle('visible', len > 0);
     document.getElementById('submitBtn').disabled = textarea.value.trim().length < 10;
+  });
+}
+
+function renderPillarQuestions() {
+  const prompt = getConfig('reflection_prompt', "What did I do today?\nWhat went well / not well?\nWhat did I learn?\nWhat's on my mind for tomorrow?");
+  const container = document.getElementById('pillarQuestions');
+  container.innerHTML = '';
+  prompt.split('\n').filter(l => l.trim()).forEach(line => {
+    const el = document.createElement('div');
+    el.className = 'pillar-question';
+    el.textContent = line.trim();
+    container.appendChild(el);
   });
 }
 
@@ -1833,23 +1318,11 @@ function applyInputMode() {
   document.getElementById('recordArea').style.display = isAudio ? 'flex' : 'none';
 }
 
-function renderPillarTags() {
-  const prompt = getConfig('reflection_prompt', 'What did I do today?\nWhat went well / not well?\nWhat did I learn?\nWhat\'s on my mind for tomorrow?');
-  const container = document.getElementById('pillarTags');
-  container.innerHTML = '';
-  prompt.split('\n').filter(line => line.trim()).forEach(line => {
-    const tag = document.createElement('span');
-    tag.className = 'pillar-tag';
-    tag.textContent = line.trim();
-    container.appendChild(tag);
-  });
-}
-
-// ── Settings Page ──
+// ── Settings ──
 function showSettings() {
   document.getElementById('mainApp').style.display = 'none';
+  document.getElementById('mainApp').classList.remove('active');
 
-  // Fill fields from localStorage
   setCustomSelect('settingsTheme', getConfig('theme', 'auto'));
   document.getElementById('settingsAudioMode').checked = getConfig('input_mode', 'text') === 'audio';
   setCustomSelect('settingsProvider', getConfig('llm_provider', 'anthropic'));
@@ -1859,29 +1332,25 @@ function showSettings() {
   document.getElementById('settingsEntryPath').value = getConfig('entry_path', 'entries/YYYY/');
   document.getElementById('settingsReflectionPrompt').value = getConfig('reflection_prompt', '');
   document.getElementById('settingsSystemPrompt').value = getConfig('system_prompt', '');
-  document.getElementById('settingsPin').value = '';
 
-  // Update conditional visibility
   onAudioModeToggle('settings');
-
-  document.getElementById('settingsPage').style.display = 'flex';
+  showScreen('settingsPage');
 }
 
 function hideSettings() {
-  document.getElementById('settingsPage').style.display = 'none';
-  document.getElementById('mainApp').style.display = 'flex';
+  showScreen('mainApp');
 
-  // Reapply input mode (may have changed)
+  document.getElementById('pillarsGreeting').textContent = getGreeting();
+  renderPillarQuestions();
   applyInputMode();
 
-  // Reset advanced section
   const advBtn = document.querySelector('#settingsPage .advanced-toggle');
   const advBody = document.getElementById('settingsAdvanced');
   if (advBtn) advBtn.classList.remove('open');
   if (advBody) advBody.classList.remove('open');
 }
 
-async function saveSettings() {
+function saveSettings() {
   const llmKey = document.getElementById('settingsLlmKey').value.trim();
   const provider = document.getElementById('settingsProvider').dataset.value;
   const isAudio = document.getElementById('settingsAudioMode').checked;
@@ -1894,7 +1363,7 @@ async function saveSettings() {
   if (isAudio && provider !== 'openai') {
     const whisperKey = document.getElementById('settingsWhisperKey').value.trim();
     if (!whisperKey || whisperKey.length < 10) {
-      toast("OpenAI key for voice transcription doesn't look right. Check and try again.", true);
+      toast("OpenAI key for voice transcription doesn't look right.", true);
       return;
     }
     setConfig('whisper_key', whisperKey);
@@ -1906,147 +1375,71 @@ async function saveSettings() {
   setConfig('vault_name', document.getElementById('settingsVaultName').value.trim() || 'reflection-vault');
   setConfig('entry_path', document.getElementById('settingsEntryPath').value.trim() || 'entries/YYYY/');
   setConfig('reflection_prompt', document.getElementById('settingsReflectionPrompt').value.trim());
+  setConfig('system_prompt', document.getElementById('settingsSystemPrompt').value.trim());
 
-  const sysPrompt = document.getElementById('settingsSystemPrompt').value.trim();
-  setConfig('system_prompt', sysPrompt);
-
-  // PIN change
-  const newPin = document.getElementById('settingsPin').value;
-  if (newPin) {
-    if (newPin.length !== 4 || !/^\d{4}$/.test(newPin)) {
-      toast('PIN must be 4 digits', true);
-      return;
-    }
-    const hash = await hashPin(newPin);
-    setConfig('pin_hash', hash);
-  }
-
-  renderPillarTags();
+  renderPillarQuestions();
   hideSettings();
   toast('Settings saved');
 }
 
-// ── Multi-Provider API Calls ──
+// ── Multi-Provider API ──
 function getSystemPrompt(isAppend) {
   const customPrompt = getConfig('system_prompt', '');
   const todayStr = getToday();
   const todayDisplay = getTodayDisplay();
 
   if (customPrompt) {
-    // Replace placeholders in custom prompt
-    let prompt = customPrompt
-      .replace(/\{date\}/g, todayStr)
-      .replace(/\{display_date\}/g, todayDisplay);
-    // For append, modify the custom prompt
-    if (isAppend) {
-      prompt += '\n\nIMPORTANT: The user already wrote today. Only output new ## sections. Do NOT output frontmatter or date line.';
-    }
+    let prompt = customPrompt.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
+    if (isAppend) prompt += '\n\nIMPORTANT: The user already wrote today. Only output new ## sections. Do NOT output frontmatter or date line.';
     return prompt;
   }
 
-  // Default prompts based on language detection
-  // Check if reflection prompt has Chinese characters to guess language
   const reflectionPrompt = getConfig('reflection_prompt', '');
   const hasChinese = /[\u4e00-\u9fff]/.test(reflectionPrompt);
 
   if (hasChinese) {
-    if (isAppend) {
-      return SYSTEM_PROMPT_ZH_APPEND;
-    }
-    return SYSTEM_PROMPT_ZH.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
-  } else {
-    if (isAppend) {
-      return SYSTEM_PROMPT_EN_APPEND;
-    }
-    return SYSTEM_PROMPT_EN.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
+    return isAppend ? SYSTEM_PROMPT_ZH_APPEND : SYSTEM_PROMPT_ZH.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
   }
+  return isAppend ? SYSTEM_PROMPT_EN_APPEND : SYSTEM_PROMPT_EN.replace(/\{date\}/g, todayStr).replace(/\{display_date\}/g, todayDisplay);
 }
 
 async function callLLM(systemPrompt, userMessage) {
   const provider = getConfig('llm_provider', 'anthropic');
   const apiKey = getConfig('llm_key', '');
-
-  if (provider === 'anthropic') {
-    return callAnthropic(apiKey, systemPrompt, userMessage);
-  } else if (provider === 'openai') {
-    return callOpenAI(apiKey, systemPrompt, userMessage);
-  } else if (provider === 'gemini') {
-    return callGemini(apiKey, systemPrompt, userMessage);
-  }
+  if (provider === 'anthropic') return callAnthropic(apiKey, systemPrompt, userMessage);
+  if (provider === 'openai') return callOpenAI(apiKey, systemPrompt, userMessage);
+  if (provider === 'gemini') return callGemini(apiKey, systemPrompt, userMessage);
   throw new Error('Unknown provider: ' + provider);
 }
 
 async function callAnthropic(apiKey, systemPrompt, userMessage) {
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 4096,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }]
-    })
+    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 4096, system: systemPrompt, messages: [{ role: 'user', content: userMessage }] })
   });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error?.message || `Anthropic API error ${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.content[0].text;
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `Anthropic error ${r.status}`); }
+  return (await r.json()).content[0].text;
 }
 
 async function callOpenAI(apiKey, systemPrompt, userMessage) {
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage }
-      ],
-      max_tokens: 4096
-    })
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMessage }], max_tokens: 4096 })
   });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(err.error?.message || `OpenAI API error ${response.status}`);
-  }
-
-  const data = await response.json();
-  return data.choices[0].message.content;
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `OpenAI error ${r.status}`); }
+  return (await r.json()).choices[0].message.content;
 }
 
 async function callGemini(apiKey, systemPrompt, userMessage) {
-  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: [{ role: 'user', parts: [{ text: userMessage }] }],
-      generationConfig: { maxOutputTokens: 4096 }
-    })
+    body: JSON.stringify({ system_instruction: { parts: [{ text: systemPrompt }] }, contents: [{ role: 'user', parts: [{ text: userMessage }] }], generationConfig: { maxOutputTokens: 4096 } })
   });
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    const msg = err.error?.message || `Gemini API error ${response.status}`;
-    throw new Error(msg);
-  }
-
-  const data = await response.json();
-  return data.candidates[0].content.parts[0].text;
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `Gemini error ${r.status}`); }
+  return (await r.json()).candidates[0].content.parts[0].text;
 }
 
 // ── Audio Recording ──
@@ -2056,146 +1449,87 @@ let recordingStartTime = null;
 let recordingTimerInterval = null;
 
 function getWhisperKey() {
-  const provider = getConfig('llm_provider', 'anthropic');
-  if (provider === 'openai') {
-    return getConfig('llm_key', '');
-  }
-  return getConfig('whisper_key', '');
+  return getConfig('llm_provider', 'anthropic') === 'openai' ? getConfig('llm_key', '') : getConfig('whisper_key', '');
 }
 
 async function toggleRecording() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    stopRecording();
-  } else {
-    startRecording();
-  }
+  if (mediaRecorder && mediaRecorder.state === 'recording') stopRecording();
+  else startRecording();
 }
 
 async function startRecording() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     audioChunks = [];
-
-    // Use webm on most browsers, mp4 on Safari
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
-      ? 'audio/webm;codecs=opus'
-      : 'audio/mp4';
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/mp4';
     mediaRecorder = new MediaRecorder(stream, { mimeType });
-
-    mediaRecorder.ondataavailable = (e) => {
-      if (e.data.size > 0) audioChunks.push(e.data);
-    };
-
+    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
     mediaRecorder.onstop = () => {
       stream.getTracks().forEach(t => t.stop());
       clearInterval(recordingTimerInterval);
-      const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType });
-      processAudioRecording(audioBlob);
+      processAudioRecording(new Blob(audioChunks, { type: mediaRecorder.mimeType }));
     };
+    mediaRecorder.start(1000);
 
-    mediaRecorder.start(1000); // collect in 1s chunks
-
-    // Update UI
-    const btn = document.getElementById('recordBtn');
-    const status = document.getElementById('recordStatus');
-    btn.classList.add('recording');
-    status.classList.add('recording');
-    status.textContent = "Recording... tap when you're done";
+    document.getElementById('recordBtn').classList.add('recording');
+    document.getElementById('recordStatus').classList.add('recording');
+    document.getElementById('recordStatus').textContent = "Recording... tap when you're done";
     document.getElementById('micIcon').style.display = 'none';
     document.getElementById('stopIcon').style.display = 'block';
 
-    // Timer
     recordingStartTime = Date.now();
     recordingTimerInterval = setInterval(updateRecordTimer, 1000);
     updateRecordTimer();
-
   } catch (err) {
-    if (err.name === 'NotAllowedError') {
-      toast('Microphone is blocked. Allow access in your browser to record.', true);
-    } else {
-      toast('Could not start recording: ' + err.message, true);
-    }
+    toast(err.name === 'NotAllowedError' ? 'Microphone is blocked. Allow access in your browser to record.' : 'Could not start recording: ' + err.message, true);
   }
 }
 
-function stopRecording() {
-  if (mediaRecorder && mediaRecorder.state === 'recording') {
-    mediaRecorder.stop();
-  }
-}
+function stopRecording() { if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop(); }
 
 function updateRecordTimer() {
   const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
-  const mins = Math.floor(elapsed / 60);
-  const secs = String(elapsed % 60).padStart(2, '0');
-  document.getElementById('recordTimer').textContent = `${mins}:${secs}`;
+  document.getElementById('recordTimer').textContent = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
 }
 
 function resetRecordUI() {
-  const btn = document.getElementById('recordBtn');
-  const status = document.getElementById('recordStatus');
-  btn.classList.remove('recording');
-  status.classList.remove('recording');
-  status.textContent = 'Tap to speak';
+  document.getElementById('recordBtn').classList.remove('recording');
+  document.getElementById('recordStatus').classList.remove('recording');
+  document.getElementById('recordStatus').textContent = 'Tap to speak';
   document.getElementById('micIcon').style.display = 'block';
   document.getElementById('stopIcon').style.display = 'none';
   document.getElementById('recordTimer').textContent = '0:00';
 }
 
 async function processAudioRecording(audioBlob) {
-  // Hide record area, show processing
   document.getElementById('recordArea').style.display = 'none';
   document.getElementById('processingArea').style.display = 'flex';
   document.querySelector('#processingArea p').textContent = 'Listening...';
 
   const whisperKey = getWhisperKey();
-  if (!whisperKey) {
-    toast('No OpenAI key found. Add one in Settings.', true);
-    backToInput();
-    return;
-  }
+  if (!whisperKey) { toast('No OpenAI key found. Add one in Settings.', true); backToInput(); return; }
 
   try {
-    // Step 1: Transcribe with Whisper
     const ext = audioBlob.type.includes('mp4') ? 'mp4' : 'webm';
     const formData = new FormData();
     formData.append('file', audioBlob, `recording.${ext}`);
     formData.append('model', 'gpt-4o-mini-transcribe');
 
-    const transcribeResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${whisperKey}` },
-      body: formData
+    const r = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      method: 'POST', headers: { 'Authorization': `Bearer ${whisperKey}` }, body: formData
     });
+    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error?.message || `Whisper error ${r.status}`); }
+    const text = (await r.json()).text;
+    if (!text || text.trim().length < 5) { toast("Couldn't catch that. Try speaking a bit louder or longer.", true); backToInput(); return; }
 
-    if (!transcribeResponse.ok) {
-      const err = await transcribeResponse.json().catch(() => ({}));
-      throw new Error(err.error?.message || `Whisper API error ${transcribeResponse.status}`);
-    }
-
-    const transcribeData = await transcribeResponse.json();
-    const transcribedText = transcribeData.text;
-
-    if (!transcribedText || transcribedText.trim().length < 5) {
-      toast("Couldn't catch that. Try speaking a bit louder or longer.", true);
-      backToInput();
-      return;
-    }
-
-    // Step 2: Send to LLM for organization
     document.querySelector('#processingArea p').textContent = 'Organizing your thoughts...';
-    await organizeAndPreview(transcribedText);
-
-  } catch (err) {
-    toast(err.message, true);
-    backToInput();
-  }
+    await organizeAndPreview(text);
+  } catch (err) { toast(err.message, true); backToInput(); }
 }
 
 function backToInput() {
   document.getElementById('processingArea').style.display = 'none';
-  const isAudio = getConfig('input_mode', 'text') === 'audio';
-  if (isAudio) {
+  if (getConfig('input_mode', 'text') === 'audio') {
     resetRecordUI();
     document.getElementById('recordArea').style.display = 'flex';
   } else {
@@ -2207,69 +1541,46 @@ function backToInput() {
 // ── AI Integration ──
 async function organizeAndPreview(text) {
   const todayStr = getToday();
-  const lastWriteDate = getConfig('last_write_date', '');
-  const isAppend = (lastWriteDate === todayStr);
-
+  const isAppend = getConfig('last_write_date', '') === todayStr;
   const systemPrompt = getSystemPrompt(isAppend);
-  const userMessage = `以下是我今天记录的内容，请帮我整理成日记：\n\n${text}`;
 
   try {
-    currentMarkdown = await callLLM(systemPrompt, userMessage);
+    currentMarkdown = await callLLM(systemPrompt, `以下是我今天记录的内容，请帮我整理成日记：\n\n${text}`);
     currentFilename = `${todayStr}.md`;
-
-    if (isAppend) {
-      currentMarkdown = '\n\n' + currentMarkdown;
-      const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
-      currentTitle = titleMatch ? titleMatch[1] : '';
-    } else {
-      const titleMatch = currentMarkdown.match(/title:\s*"(.+?)"/);
-      currentTitle = titleMatch ? titleMatch[1] : 'Journal';
-    }
-
+    if (isAppend) currentMarkdown = '\n\n' + currentMarkdown;
     showPreview();
-  } catch (err) {
-    toast(err.message, true);
-    backToInput();
-  }
+  } catch (err) { toast(err.message, true); backToInput(); }
 }
 
 async function submitReflection() {
   const input = document.getElementById('journalInput').value.trim();
   if (input.length < 10) return;
-
-  const apiKey = getConfig('llm_key', '');
-  if (!apiKey) {
-    toast('No API key found. Add one in Settings.', true);
-    return;
-  }
+  if (!getConfig('llm_key', '')) { toast('No API key found. Add one in Settings.', true); return; }
 
   document.getElementById('inputArea').style.display = 'none';
   document.getElementById('inputFooter').style.display = 'none';
   document.getElementById('processingArea').style.display = 'flex';
   document.querySelector('#processingArea p').textContent = 'Organizing your thoughts...';
-
   await organizeAndPreview(input);
 }
 
 function showPreview() {
   document.getElementById('processingArea').style.display = 'none';
-  document.getElementById('previewArea').style.display = 'flex';
+  const preview = document.getElementById('previewArea');
+  preview.classList.add('fading');
+  preview.style.display = 'flex';
   document.getElementById('previewFooter').classList.remove('hidden');
   const ta = document.getElementById('previewContent');
   ta.value = currentMarkdown;
-  autoResizeTextarea(ta);
-}
-
-function autoResizeTextarea(ta) {
-  // Fallback for browsers without field-sizing: content
   if (!CSS.supports('field-sizing', 'content')) {
     ta.style.height = 'auto';
     ta.style.height = ta.scrollHeight + 'px';
-    ta.addEventListener('input', () => {
-      ta.style.height = 'auto';
-      ta.style.height = ta.scrollHeight + 'px';
-    });
+    ta.addEventListener('input', () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; });
   }
+  // Fade in after a frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => preview.classList.remove('fading'));
+  });
 }
 
 function backToEdit() {
@@ -2279,59 +1590,47 @@ function backToEdit() {
   backToInput();
 }
 
-// ── File Save via Obsidian URL Scheme ──
 function saveToObsidian() {
   const today = getToday();
   const year = today.slice(0, 4);
-  const lastWriteDate = getConfig('last_write_date', '');
-  const isAppend = (lastWriteDate === today);
-
   const vaultName = getConfig('vault_name', 'reflection-vault');
-  const entryPathPattern = getConfig('entry_path', 'entries/YYYY/');
-  const entryPath = entryPathPattern.replace('YYYY', year);
-  const notePath = `${entryPath}${today}`;
-
+  const entryPath = getConfig('entry_path', 'entries/YYYY/').replace('YYYY', year);
   const finalMarkdown = document.getElementById('previewContent').value;
 
-  const obsidianUrl = `obsidian://new?vault=${encodeURIComponent(vaultName)}`
-    + `&file=${encodeURIComponent(notePath)}`
-    + `&content=${encodeURIComponent(finalMarkdown)}`
-    + '&append=true';
-
-  window.location.href = obsidianUrl;
-
+  window.location.href = `obsidian://new?vault=${encodeURIComponent(vaultName)}&file=${encodeURIComponent(entryPath + today)}&content=${encodeURIComponent(finalMarkdown)}&append=true`;
   setConfig('last_write_date', today);
-
-  setTimeout(() => showSuccess(), 800);
+  setTimeout(showSuccess, 800);
 }
+
+let successTimer = null;
 
 function showSuccess() {
   document.getElementById('previewArea').style.display = 'none';
   document.getElementById('previewFooter').classList.add('hidden');
   document.getElementById('successArea').classList.remove('hidden');
   document.getElementById('successArea').style.display = 'flex';
-  document.getElementById('successFilename').textContent = currentFilename;
+  document.getElementById('successDate').textContent = getTodayDisplay();
+  // Auto-return after 4 seconds
+  successTimer = setTimeout(resetAll, 4000);
 }
 
 function resetAll() {
+  if (successTimer) { clearTimeout(successTimer); successTimer = null; }
   document.getElementById('journalInput').value = '';
   document.getElementById('charCount').textContent = '0';
+  document.getElementById('charCountWrap').classList.remove('visible');
   document.getElementById('submitBtn').disabled = true;
   document.getElementById('successArea').classList.add('hidden');
   document.getElementById('successArea').style.display = 'none';
   resetRecordUI();
   currentMarkdown = '';
   currentFilename = '';
-  currentTitle = '';
   backToEdit();
 }
 
-// ── PWA: Request persistent storage ──
-if (navigator.storage && navigator.storage.persist) {
-  navigator.storage.persist();
-}
+// ── PWA ──
+if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
-// ── Add to Home Screen prompt ──
 function checkStandalone() {
   const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
   if (!isStandalone && !localStorage.getItem('reflection_dismiss_pwa')) {
@@ -2340,23 +1639,12 @@ function checkStandalone() {
       const banner = document.createElement('div');
       banner.id = 'pwaBanner';
       banner.className = 'pwa-banner';
-      banner.innerHTML = `
-        <div class="pwa-banner-header">
-          <div class="pwa-banner-title">Add to Home Screen</div>
-          <button class="pwa-banner-close" onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')">×</button>
-        </div>
-        <div class="pwa-banner-body">
-          ${isIOS
-            ? 'Tap the share button at the bottom of Safari, then <strong>Add to Home Screen</strong>'
-            : 'Add this app to your home screen from your browser menu.'}
-        </div>
-      `;
+      banner.innerHTML = `<div class="pwa-banner-header"><div class="pwa-banner-title">Add to Home Screen</div><button class="pwa-banner-close" onclick="document.getElementById('pwaBanner').remove();localStorage.setItem('reflection_dismiss_pwa','1')">×</button></div><div class="pwa-banner-body">${isIOS ? 'Tap the share button at the bottom of Safari, then <strong>Add to Home Screen</strong>' : 'Add this app to your home screen from your browser menu.'}</div>`;
       document.body.appendChild(banner);
     }, 2000);
   }
 }
 
-// ── Init ──
 initApp();
 checkStandalone();
 </script>
