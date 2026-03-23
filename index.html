@@ -520,7 +520,8 @@
     transition: all 0.15s;
   }
 
-  .icon-btn:active { background: var(--bg-surface-dim); }
+  .icon-btn:hover { transform: translateY(-1px); }
+  .icon-btn:active { background: var(--bg-surface-dim); transform: translateY(0); }
 
   /* ── Pillars (Hero) ── */
   .pillars-hero {
@@ -643,6 +644,7 @@
     color: var(--ink-light);
     font-size: var(--text-sm);
     letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
   }
 
   /* ── Preview ── */
@@ -696,9 +698,28 @@
     font-weight: 300;
     color: var(--ink);
     margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
 
-  .success-date { color: var(--ink-light); font-family: var(--font-mono); font-size: var(--text-xs); margin-bottom: 32px; }
+  .success-date {
+    color: var(--ink-light);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin-bottom: 32px;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.3s;
+  }
+
+  .success-visible .success-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .success-visible .success-date {
+    opacity: 1;
+  }
 
   /* ── Toast (Paper Note style) ── */
   .toast {
@@ -794,6 +815,7 @@
     .record-btn.recording { animation: none; }
     .toast { transition-duration: 0.01s; }
     .screen { transition-duration: 0.01s; }
+    .success-text, .success-date { transition-duration: 0.01s; transition-delay: 0s; opacity: 1; transform: none; }
   }
 
   /* ── Utilities ── */
@@ -1188,6 +1210,34 @@ Only output new sections. No frontmatter, no date line. Start with ## Section Ti
 
 Output only markdown, no explanations.`;
 
+// ── Processing Messages ──
+const PROCESSING_MESSAGES = [
+  'Organizing...',
+  'Reading through...',
+  'Finding the thread...',
+  'Shaping your thoughts...',
+  'Almost there...',
+];
+let processingMsgInterval = null;
+
+function startProcessingMessages() {
+  const el = document.querySelector('#processingArea p');
+  let i = 0;
+  el.textContent = PROCESSING_MESSAGES[0];
+  processingMsgInterval = setInterval(() => {
+    i = Math.min(i + 1, PROCESSING_MESSAGES.length - 1);
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = PROCESSING_MESSAGES[i];
+      el.style.opacity = '1';
+    }, 200);
+  }, 3000);
+}
+
+function stopProcessingMessages() {
+  if (processingMsgInterval) { clearInterval(processingMsgInterval); processingMsgInterval = null; }
+}
+
 // ── Config ──
 function getConfig(key, fallback) { return localStorage.getItem('reflection_' + key) || fallback; }
 function setConfig(key, value) { localStorage.setItem('reflection_' + key, value); }
@@ -1561,12 +1611,13 @@ async function processAudioRecording(audioBlob) {
     const text = (await r.json()).text;
     if (!text || text.trim().length < 5) { toast("Couldn't catch that. Try speaking a bit louder or longer.", true); backToInput(); return; }
 
-    document.querySelector('#processingArea p').textContent = 'Organizing...';
+    startProcessingMessages();
     await organizeAndPreview(text);
   } catch (err) { toast(err.message, true); backToInput(); }
 }
 
 function backToInput() {
+  stopProcessingMessages();
   document.getElementById('processingArea').style.display = 'none';
   if (getConfig('input_mode', 'text') === 'audio') {
     resetRecordUI();
@@ -1599,11 +1650,12 @@ async function submitReflection() {
   document.getElementById('inputArea').style.display = 'none';
   document.getElementById('inputFooter').style.display = 'none';
   document.getElementById('processingArea').style.display = 'flex';
-  document.querySelector('#processingArea p').textContent = 'Organizing...';
+  startProcessingMessages();
   await organizeAndPreview(input);
 }
 
 function showPreview() {
+  stopProcessingMessages();
   document.getElementById('processingArea').style.display = 'none';
   const preview = document.getElementById('previewArea');
   preview.classList.add('fading');
@@ -1644,9 +1696,14 @@ function saveToObsidian() {
 function showSuccess() {
   document.getElementById('previewArea').style.display = 'none';
   document.getElementById('previewFooter').classList.add('hidden');
-  document.getElementById('successArea').classList.remove('hidden');
-  document.getElementById('successArea').style.display = 'flex';
+  const area = document.getElementById('successArea');
+  area.classList.remove('hidden', 'success-visible');
+  area.style.display = 'flex';
   document.getElementById('successDate').textContent = getTodayDisplay();
+  // Staggered fade-in
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => area.classList.add('success-visible'));
+  });
 }
 
 function resetAll() {
@@ -1654,6 +1711,7 @@ function resetAll() {
   document.getElementById('charCount').textContent = '0';
   document.getElementById('charCountWrap').classList.remove('visible');
   document.getElementById('submitBtn').disabled = true;
+  document.getElementById('successArea').classList.remove('success-visible');
   document.getElementById('successArea').classList.add('hidden');
   document.getElementById('successArea').style.display = 'none';
   resetRecordUI();
