@@ -615,12 +615,15 @@
   }
 
   .input-footer {
+    position: sticky;
+    bottom: 0;
     padding: 16px 20px;
     border-top: 1px solid var(--border);
     display: flex;
     gap: 12px;
     padding-bottom: calc(16px + var(--safe-bottom));
     background: var(--bg-paper);
+    z-index: 5;
   }
 
   .input-footer .btn {
@@ -693,12 +696,15 @@
   }
 
   .preview-footer {
+    position: sticky;
+    bottom: 0;
     padding: 16px 20px;
     border-top: 1px solid var(--border);
     display: flex;
     gap: 12px;
     padding-bottom: calc(16px + var(--safe-bottom));
     background: var(--bg-paper);
+    z-index: 5;
   }
 
   .preview-footer .btn { flex: 1; }
