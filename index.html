@@ -990,7 +990,7 @@
   <div class="section-title">Obsidian Vault</div>
   <div class="field">
     <label>Vault Name</label>
-    <input type="text" id="settingsVaultName" placeholder="reflection-vault">
+    <input type="text" id="settingsVaultName" placeholder="Sotto">
   </div>
   <div class="field">
     <label>Where to save entries</label>
@@ -1424,7 +1424,7 @@ function completeSetup() {
   setConfig('input_mode', isAudio ? 'audio' : 'text');
 
   // Defaults for settings not shown in onboarding
-  if (!getConfig('vault_name', '')) setConfig('vault_name', 'reflection-vault');
+  if (!getConfig('vault_name', '')) setConfig('vault_name', 'Sotto');
   if (!getConfig('entry_path', '')) setConfig('entry_path', 'entries/YYYY/');
   if (!getConfig('reflection_prompt', '')) {
     setConfig('reflection_prompt', DEFAULT_REFLECTION_PROMPT);
@@ -1482,7 +1482,7 @@ function showSettings() {
   setCustomSelect('settingsProvider', getConfig('llm_provider', 'anthropic'));
   document.getElementById('settingsLlmKey').value = getConfig('llm_key', '');
   document.getElementById('settingsWhisperKey').value = getConfig('whisper_key', '');
-  document.getElementById('settingsVaultName').value = getConfig('vault_name', 'reflection-vault');
+  document.getElementById('settingsVaultName').value = getConfig('vault_name', 'Sotto');
   document.getElementById('settingsEntryPath').value = getConfig('entry_path', 'entries/YYYY/');
   document.getElementById('settingsReflectionPrompt').value = getConfig('reflection_prompt', '');
   document.getElementById('settingsSystemPrompt').value = getConfig('system_prompt', '');
@@ -1526,7 +1526,7 @@ function saveSettings() {
   setConfig('llm_provider', provider);
   setConfig('llm_key', llmKey);
   setConfig('input_mode', isAudio ? 'audio' : 'text');
-  setConfig('vault_name', document.getElementById('settingsVaultName').value.trim() || 'reflection-vault');
+  setConfig('vault_name', document.getElementById('settingsVaultName').value.trim() || 'Sotto');
   setConfig('entry_path', document.getElementById('settingsEntryPath').value.trim() || 'entries/YYYY/');
   setConfig('reflection_prompt', document.getElementById('settingsReflectionPrompt').value.trim());
   setConfig('system_prompt', document.getElementById('settingsSystemPrompt').value.trim());
@@ -1597,6 +1597,20 @@ async function callGemini(apiKey, systemPrompt, userMessage) {
   return (await r.json()).candidates[0].content.parts[0].text;
 }
 
+// ── Screen Wake Lock ──
+let wakeLockSentinel = null;
+
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try { wakeLockSentinel = await navigator.wakeLock.request('screen'); }
+    catch (e) { /* user denied or not supported — ignore */ }
+  }
+}
+
+function releaseWakeLock() {
+  if (wakeLockSentinel) { wakeLockSentinel.release(); wakeLockSentinel = null; }
+}
+
 // ── Audio Recording ──
 let mediaRecorder = null;
 let audioChunks = [];
@@ -1625,6 +1639,7 @@ async function startRecording() {
       processAudioRecording(new Blob(audioChunks, { type: mediaRecorder.mimeType }));
     };
     mediaRecorder.start(1000);
+    await requestWakeLock();
 
     document.getElementById('recordBtn').classList.add('recording');
     document.getElementById('recordStatus').classList.add('recording');
@@ -1640,7 +1655,10 @@ async function startRecording() {
   }
 }
 
-function stopRecording() { if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop(); }
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+  releaseWakeLock();
+}
 
 function updateRecordTimer() {
   const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
@@ -1750,7 +1768,7 @@ function backToEdit() {
 function saveToObsidian() {
   const today = getToday();
   const year = today.slice(0, 4);
-  const vaultName = getConfig('vault_name', 'reflection-vault');
+  const vaultName = getConfig('vault_name', 'Sotto');
   const entryPath = getConfig('entry_path', 'entries/YYYY/').replace('YYYY', year);
   const finalMarkdown = document.getElementById('previewContent').value;
 
