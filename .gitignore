@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Development notes
+CLAUDE.md
+HANDOFF.md
+SETUP.md
+COPY-AUDIT.md
+reflection-app.md
+typography-critique.md
+
+# Design explorations
+design-*.html
+sidebar-style-options.html
+
+# Source icons (exported sizes are in icons/)
+sotto-icon-*.png
