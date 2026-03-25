@@ -1,0 +1,420 @@
+/*
+ * Sotto — Obsidian Daily Note Theme
+ *
+ * NO THEME REQUIRED. Overrides Obsidian's native --color-base-* variables.
+ * Warm paper white (#F9F8F4) + dark ink (#2C3333) + red accent (#D64545)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500;700&family=Space+Mono&display=swap');
+
+/* ══════════════════════════════════════════
+   Foundation: color-base scale
+
+   Obsidian uses --color-base-00 (bg) → --color-base-100 (fg)
+   We remap the entire scale to warm paper tones.
+   ══════════════════════════════════════════ */
+
+/* —— Works in BOTH light and dark mode —— */
+.theme-light,
+.theme-dark {
+  /* Background scale: warm whites → warm grays */
+  --color-base-00: #F9F8F4 !important;   /* main editor bg */
+  --color-base-05: #F5F3EE !important;
+  --color-base-10: #E8E5DE !important;   /* sidebar bg — deeper warm */
+  --color-base-20: #E8E5DE !important;   /* hover bg */
+  --color-base-25: #E0DDD5 !important;   /* active bg */
+  --color-base-30: #D5D1C8 !important;   /* borders light */
+  --color-base-35: #C8C4BA !important;
+  --color-base-40: #B5B0A5 !important;   /* borders medium */
+  --color-base-50: #9A9488 !important;   /* faint text */
+  --color-base-60: #7A756A !important;   /* muted text */
+  --color-base-70: #5C584F !important;   /* secondary text */
+  --color-base-100: #2C3333 !important;  /* normal text (ink) */
+
+  /* Accent: muted warm red for UI elements (toggles, buttons) */
+  --color-accent: #B5766E !important;
+  --color-accent-1: #B5766E !important;
+  --color-accent-2: #A06A63 !important;
+
+  /* Accent HSL for Obsidian's internal computations */
+  --accent-h: 7 !important;
+  --accent-s: 30% !important;
+  --accent-l: 57% !important;
+
+  /* Text */
+  --text-normal: #2C3333 !important;
+  --text-muted: #7A756A !important;
+  --text-faint: #9A9488 !important;
+  --text-on-accent: #FFFFFF !important;
+
+  /* Backgrounds */
+  --background-primary: #F9F8F4 !important;
+  --background-primary-alt: #F0EEE8 !important;
+  --background-secondary: #F0EEE8 !important;
+  --background-secondary-alt: #E8E5DE !important;
+  --background-modifier-hover: rgba(44, 51, 51, 0.04) !important;
+  --background-modifier-active-hover: rgba(44, 51, 51, 0.08) !important;
+  --background-modifier-border: #D5D1C8 !important;
+  --background-modifier-border-hover: #C8C4BA !important;
+  --background-modifier-border-focus: #B5766E !important;
+
+  /* Interactive */
+  --interactive-normal: #F0EEE8 !important;
+  --interactive-hover: #E8E5DE !important;
+  --interactive-accent: #B5766E !important;
+  --interactive-accent-hover: #A06A63 !important;
+
+  /* Links */
+  --link-color: #D64545 !important;
+  --link-color-hover: #C03D3D !important;
+  --link-external-color: #D64545 !important;
+  --link-external-color-hover: #C03D3D !important;
+
+  /* Tags */
+  --tag-color: #D64545 !important;
+  --tag-background: rgba(214, 69, 69, 0.1) !important;
+
+  /* Headings */
+  --h1-color: #2C3333 !important;
+  --h2-color: #7A756A !important;
+  --h3-color: #2C3333 !important;
+  --h4-color: #2C3333 !important;
+  --h5-color: #7A756A !important;
+  --h6-color: #7A756A !important;
+  --bold-color: #2C3333 !important;
+  --italic-color: #2C3333 !important;
+
+  /* Code */
+  --code-normal: #D64545 !important;
+  --code-background: rgba(44, 51, 51, 0.05) !important;
+
+  /* Misc */
+  --blockquote-border-color: #D64545 !important;
+  --hr-color: rgba(214, 69, 69, 0.25) !important;
+  --checkbox-color: #D64545 !important;
+
+  /* Title bar */
+  --titlebar-background: #F0EEE8 !important;
+  --titlebar-background-focused: #F0EEE8 !important;
+
+  /* Tab */
+  --tab-text-color-focused-active: #2C3333 !important;
+
+  /* Nav */
+  --nav-item-color-active: #D64545 !important;
+  --nav-item-background-active: rgba(214, 69, 69, 0.1) !important;
+}
+
+/* ══════════════════════════════════════════
+   Typography
+   ══════════════════════════════════════════ */
+body {
+  --font-text-override: 'Noto Serif SC', 'Inter', serif !important;
+  --font-monospace-override: 'Space Mono', monospace !important;
+  --font-text: 'Noto Serif SC', 'Inter', serif !important;
+  --default-font: 'Noto Serif SC', 'Inter', serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════
+   Headings
+   ══════════════════════════════════════════ */
+
+/* Inline title (filename): hidden, replaced by formatted date in content */
+.inline-title {
+  display: none !important;
+}
+
+/* Formatted date label (added as a paragraph with class via HTML in md) */
+.date-label {
+  font-family: 'Space Mono', monospace !important;
+  font-size: 10px !important;
+  font-weight: 400 !important;
+  color: #9A9488 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 4px !important;
+}
+
+/* H1 (title): large serif below the date */
+.markdown-reading-view h1,
+.markdown-preview-view h1,
+.cm-header-1 {
+  font-family: 'Noto Serif SC', serif !important;
+  font-weight: 300 !important;
+  font-size: 26px !important;
+  letter-spacing: -0.3px !important;
+  line-height: 1.4 !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+/* H2: Serif bold, smaller than H1 for clear hierarchy */
+h2,
+.markdown-reading-view h2,
+.markdown-source-view h2,
+.cm-header-2,
+.HyperMD-header-2,
+.cm-s-obsidian .cm-header-2 {
+  font-family: 'Noto Serif SC', 'Georgia', serif !important;
+  font-weight: 700 !important;
+  font-size: 17px !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+}
+
+/* HR: tight spacing, no gap before next section */
+.markdown-reading-view hr,
+.markdown-preview-view hr {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+/* H3: red left border */
+.markdown-reading-view h3,
+.cm-header-3 {
+  font-family: 'Inter', sans-serif !important;
+  padding-left: 12px !important;
+  border-left: 2px solid #D64545 !important;
+}
+
+/* ══════════════════════════════════════════
+   Metadata — Space Mono
+   ══════════════════════════════════════════ */
+.metadata-container {
+  font-family: 'Space Mono', monospace !important;
+}
+
+/* ══════════════════════════════════════════
+   Blockquote — Sotto callout
+   ══════════════════════════════════════════ */
+.markdown-reading-view blockquote {
+  background: rgba(214, 69, 69, 0.06) !important;
+  border-left: 3px solid #D64545 !important;
+  border-radius: 0 4px 4px 0;
+  padding: 14px 16px !important;
+}
+
+/* ══════════════════════════════════════════
+   Tags / Nav — Inter
+   ══════════════════════════════════════════ */
+.tag {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Sidebar: Mono index style (Variation F) */
+.nav-folder-title {
+  font-family: 'Space Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #5C584F !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+.nav-file-title {
+  font-family: 'Space Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  color: #7A756A !important;
+}
+.nav-file-title.is-active {
+  color: #D64545 !important;
+}
+
+/* ══════════════════════════════════════════
+   List markers
+   ══════════════════════════════════════════ */
+.markdown-reading-view li::marker {
+  color: #D64545 !important;
+}
+
+/* ══════════════════════════════════════════
+   Selection
+   ══════════════════════════════════════════ */
+::selection {
+  background: rgba(214, 69, 69, 0.15) !important;
+}
+
+/* ══════════════════════════════════════════
+   Scrollbar
+   ══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D5D1C8; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #B5B0A5; }
+
+/* ══════════════════════════════════════════
+   Option F+C: Page shadow + horizontal ruled lines
+   ══════════════════════════════════════════ */
+
+/* Page shadow — floating paper feel */
+.workspace-leaf-content[data-type="markdown"] .view-content {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06) !important;
+}
+
+/* Properties: hidden globally (see end of file) */
+
+/* ══════════════════════════════════════════
+   Sidebar — slightly deeper warm tone (#E8E5DE)
+   ══════════════════════════════════════════ */
+.workspace-split.mod-left-split,
+.workspace-split.mod-left-split .workspace-leaf-content,
+.workspace-split.mod-right-split,
+.workspace-split.mod-right-split .workspace-leaf-content {
+  background-color: #E8E5DE !important;
+}
+
+/* Tab header bar matches sidebar tone */
+.workspace-tab-header-container {
+  background-color: #E8E5DE !important;
+}
+
+/* Sidebar file list: subtle separator from content */
+.workspace-split.mod-left-split {
+  border-right: 1px solid #D5D1C8 !important;
+}
+.workspace-split.mod-right-split {
+  border-left: 1px solid #D5D1C8 !important;
+}
+
+/* ══════════════════════════════════════════
+   Dataview Calendar — warm paper style
+   Override the Svelte CSS variables that
+   Dataview defines on .container
+   ══════════════════════════════════════════ */
+
+#calendar-container {
+  --color-background-heading: transparent !important;
+  --color-background-day: transparent !important;
+  --color-background-weekend: transparent !important;
+  --color-background-weeknum: transparent !important;
+  --color-dot: #D64545 !important;
+  --color-arrow: #9A9488 !important;
+  --color-button: #9A9488 !important;
+  --color-text-title: #2C3333 !important;
+  --color-text-heading: #9A9488 !important;
+  --color-text-day: #5C584F !important;
+  --color-text-today: #D64545 !important;
+  --color-text-weeknum: #9A9488 !important;
+}
+
+/* Table borders: faint warm lines instead of heavy default */
+#calendar-container table.calendar {
+  border-collapse: collapse !important;
+}
+#calendar-container table.calendar th,
+#calendar-container table.calendar td {
+  border: none !important;
+  border-bottom: 1px solid rgba(44, 51, 51, 0.06) !important;
+}
+#calendar-container table.calendar thead th {
+  font-family: 'Space Mono', monospace !important;
+  border-bottom: 1px solid rgba(44, 51, 51, 0.1) !important;
+}
+
+/* Day cells: use serif font */
+#calendar-container .day {
+  font-family: 'Noto Serif SC', serif !important;
+  font-weight: 300 !important;
+}
+
+/* Nav bar: centered, printed calendar style (D) + serif font (E) */
+#calendar-container .nav {
+  justify-content: center !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  margin-bottom: 1.2em !important;
+}
+#calendar-container .nav .title {
+  font-family: 'Noto Serif SC', serif !important;
+  font-weight: 300 !important;
+  font-size: 1.8em !important;
+  letter-spacing: 1px !important;
+}
+#calendar-container .nav .month {
+  font-weight: 400 !important;
+}
+#calendar-container .nav .year {
+  color: #B5766E !important;
+}
+#calendar-container .nav .right-nav {
+  margin-left: 0 !important;
+  margin-top: 6px !important;
+}
+#calendar-container .nav .title {
+  border: none !important;
+  border-left: none !important;
+  padding-left: 0 !important;
+}
+
+/* Today: red circle outline (E) */
+#calendar-container .day.today {
+  position: relative !important;
+}
+#calendar-container .day.today::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 30px !important;
+  height: 30px !important;
+  border: 1.5px solid rgba(214, 69, 69, 0.4) !important;
+  border-radius: 50% !important;
+  pointer-events: none !important;
+}
+
+/* Adjacent month days: softer */
+#calendar-container .adjacent-month {
+  opacity: 0.2 !important;
+}
+
+/* Remove bottom border on last row */
+#calendar-container table.calendar tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* ══════════════════════════════════════════
+   Calendar page: hide title, heading, properties
+   ══════════════════════════════════════════ */
+.calendar-view .inline-title {
+  display: none !important;
+}
+/* (metadata-container already hidden globally) */
+/* H1 in reading view */
+.calendar-view .markdown-reading-view h1,
+.calendar-view .markdown-preview-view h1,
+.calendar-view .markdown-rendered h1 {
+  display: none !important;
+}
+/* H1 in live preview / source mode */
+.calendar-view .cm-header-1,
+.calendar-view .HyperMD-header-1 {
+  display: none !important;
+}
+/* Catch-all: any h1 inside the calendar-view page */
+.calendar-view h1:not(.inline-title) {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════
+   Diary entries: hide properties
+   ══════════════════════════════════════════ */
+.metadata-container {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════
+   Page transition: gentle fade-in
+   ══════════════════════════════════════════ */
+@keyframes sotto-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.workspace-leaf-content[data-type="markdown"] .view-content {
+  animation: sotto-fade-in 0.3s ease-out;
+}
+
