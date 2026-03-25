@@ -2,7 +2,7 @@
 
 A client-side journaling app. Speak or type your thoughts, AI organizes them into a structured journal entry, and save directly to your Obsidian vault.
 
-**Live:** [reflection.zheng-yao.com](https://reflection.zheng-yao.com)
+**Live:** [sotto.zheng-yao.com](https://sotto.zheng-yao.com)
 
 ## How It Works
 
@@ -19,7 +19,7 @@ Everything runs in the browser. No backend, no database, no account. Your API ke
 **Required:**
 
 - **Obsidian** installed on the same device ([obsidian.md](https://obsidian.md)). The app saves entries using Obsidian's `obsidian://new` URL scheme, so Obsidian needs to be present to receive them.
-- **An Obsidian vault** with a folder for entries (e.g. `entries/2026/`). You can configure the vault name and entry path in the app's settings.
+- **An Obsidian vault** — see [Vault Setup](#vault-setup) below.
 - **An API key** from one of these providers:
   - [Anthropic](https://console.anthropic.com/) (Claude) — or
   - [OpenAI](https://platform.openai.com/) (GPT)
@@ -27,6 +27,29 @@ Everything runs in the browser. No backend, no database, no account. Your API ke
 **Optional (for voice mode):**
 
 - **An OpenAI API key** for voice transcription. If you already chose OpenAI as your LLM provider, the same key is used. If you use Anthropic for the LLM, you'll need a separate OpenAI key for transcription.
+
+## Vault Setup
+
+This repo includes a `vault-template/` folder — a ready-to-use Obsidian vault with the Sotto theme, a calendar view, and an all-entries index.
+
+**Quick setup:**
+
+1. Copy the `vault-template/` folder to wherever you keep your vaults (e.g. your iCloud or local Documents folder)
+2. Rename it to `Sotto` (or any name you like — just update the vault name in the app's settings to match)
+3. In Obsidian, choose **Open folder as vault** and select the folder
+4. Obsidian will ask you to **Trust author and enable plugins** — click Trust. This enables the Dataview plugin, which powers the Calendar and All Entries pages.
+
+That's it. The CSS theme and Dataview plugin are pre-configured and will load automatically.
+
+**What's included:**
+
+- `All Entries.md` — a table of all your journal entries, sorted by date
+- `Calendar.md` — a calendar view showing which days have entries
+- `entries/` — where your journal entries will be saved
+- `.obsidian/snippets/sotto-daily.css` — the Sotto visual theme (warm paper tones, serif typography)
+- `.obsidian/plugins/dataview/` — the Dataview plugin (pre-installed)
+
+> **Note:** The vault name defaults to `Sotto` in the app. If you rename the vault, go to the app's Settings and update the vault name to match.
 
 ## Self-Hosting
 
