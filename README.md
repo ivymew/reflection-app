@@ -6,13 +6,13 @@ A client-side journaling app. Speak or type your thoughts, AI organizes them int
 
 ## How It Works
 
-1. Open the app on your phone (or desktop)
+1. Open the app on your phone
 2. Type or dictate what happened today
 3. AI organizes your raw thoughts into a clean journal entry
 4. Review and edit the result
 5. Tap save — the entry goes straight into your Obsidian vault
 
-Everything runs in the browser. No backend, no database, no account. Your API key and PIN stay in localStorage on your device. AI calls go directly from your browser to the API provider.
+Everything runs in the browser. No backend, no database, no account. Your API key stays in localStorage on your device. AI calls go directly from your browser to the API provider.
 
 ## Prerequisites
 
@@ -21,8 +21,9 @@ Everything runs in the browser. No backend, no database, no account. Your API ke
 - **Obsidian** installed on the same device ([obsidian.md](https://obsidian.md)). The app saves entries using Obsidian's `obsidian://new` URL scheme, so Obsidian needs to be present to receive them.
 - **An Obsidian vault** — see [Vault Setup](#vault-setup) below.
 - **An API key** from one of these providers:
-  - [Anthropic](https://console.anthropic.com/) (Claude) — or
+  - [Anthropic](https://console.anthropic.com/) (Claude)
   - [OpenAI](https://platform.openai.com/) (GPT)
+  - [Google](https://aistudio.google.com/apikey) (Gemini)
 
 **Optional (for voice mode):**
 
@@ -51,6 +52,17 @@ That's it. The CSS theme and Dataview plugin are pre-configured and will load au
 
 > **Note:** The vault name defaults to `Sotto` in the app. If you rename the vault, go to the app's Settings and update the vault name to match.
 
+## Install on iPhone
+
+Sotto is a PWA (Progressive Web App) — you can add it to your home screen and use it like a native app.
+
+1. Open [sotto.zheng-yao.com](https://sotto.zheng-yao.com) in Safari
+2. Tap the **Share** button (the square with an arrow)
+3. Scroll down and tap **Add to Home Screen**
+4. Tap **Add**
+
+The app will appear on your home screen with the Sotto icon. It opens full-screen without Safari's address bar.
+
 ## Self-Hosting
 
 The entire app is a single `index.html` file with no build step and no dependencies. To host it yourself:
@@ -63,6 +75,6 @@ Or just open `index.html` locally in a browser. It works over `file://` too, tho
 ## Privacy
 
 - All data stays on your device (localStorage)
-- API calls go directly from your browser to Anthropic/OpenAI — no intermediary server
+- API calls go directly from your browser to Anthropic/OpenAI/Google — no intermediary server
 - Journal entries are saved locally to your Obsidian vault, not to any cloud service
 - This repo contains zero tracking, analytics, or telemetry
