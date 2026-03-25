@@ -1684,12 +1684,6 @@ async function processAudioRecording(audioBlob) {
 
   try {
     const ext = audioBlob.type.includes('mp4') ? 'mp4' : 'webm';
-    const duration = recordingStartTime ? Math.floor((Date.now() - recordingStartTime) / 1000) : 0;
-    const sizeMB = (audioBlob.size / (1024 * 1024)).toFixed(2);
-    const durationStr = `${Math.floor(duration / 60)}:${String(duration % 60).padStart(2, '0')}`;
-    toast(`DEBUG: ${sizeMB} MB, ${durationStr}, ${audioChunks.length} chunks, ${ext}`);
-    console.log('[Sotto Debug]', { size: audioBlob.size, sizeMB, duration, chunks: audioChunks.length, mimeType: audioBlob.type });
-
     const formData = new FormData();
     formData.append('file', audioBlob, `recording.${ext}`);
     formData.append('model', 'gpt-4o-mini-transcribe');
