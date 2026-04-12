@@ -18,16 +18,22 @@ Everything runs in the browser. No backend, no database, no account. Your API ke
 
 **Required:**
 
-- **Obsidian** installed on the same device ([obsidian.md](https://obsidian.md)). The app saves entries using Obsidian's `obsidian://new` URL scheme, so Obsidian needs to be present to receive them.
+- **Obsidian** installed on the device you use the app on ([obsidian.md](https://obsidian.md)). The app saves entries using Obsidian's `obsidian://new` URL scheme, so Obsidian needs to be present to receive them.
 - **An Obsidian vault** — see [Vault Setup](#vault-setup) below.
 - **An API key** from one of these providers:
   - [Anthropic](https://console.anthropic.com/) (Claude)
   - [OpenAI](https://platform.openai.com/) (GPT)
   - [Google](https://aistudio.google.com/apikey) (Gemini)
 
+**Recommended setup:**
+
+- **Obsidian on desktop** — needed for initial vault setup. You'll import the vault template folder on your computer, then sync it to your phone.
+- **Obsidian on your phone** — for daily use with the app.
+- **iCloud sync** — keeps the vault in sync between desktop and phone. Both Obsidian apps should be pointed at the same iCloud folder.
+
 **Optional (for voice mode):**
 
-- **An OpenAI API key** for voice transcription. If you already chose OpenAI as your LLM provider, the same key is used. If you use Anthropic for the LLM, you'll need a separate OpenAI key for transcription.
+- **An OpenAI API key** for voice transcription. If you already chose OpenAI as your LLM provider, the same key is used. If you use another LLM provider, you'll need a separate OpenAI key for transcription.
 
 ## Vault Setup
 

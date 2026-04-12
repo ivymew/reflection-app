@@ -883,7 +883,7 @@
       <div class="toggle-row">
         <div>
           <div class="toggle-label">Record your voice</div>
-          <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
+          <div class="toggle-sublabel">Turn off to type or use your own dictation tool instead</div>
         </div>
         <label class="toggle-switch">
           <input type="checkbox" id="setupAudioMode" onchange="onAudioModeToggle('setup')">
@@ -952,7 +952,7 @@
     <div class="toggle-row">
       <div>
         <div class="toggle-label">Record your voice</div>
-        <div class="toggle-sublabel">Disable if you prefer to transcribe elsewhere</div>
+        <div class="toggle-sublabel">Turn off to type or use your own dictation tool instead</div>
       </div>
       <label class="toggle-switch">
         <input type="checkbox" id="settingsAudioMode" onchange="onAudioModeToggle('settings')">
@@ -1308,27 +1308,36 @@ function toast(msg, isError = false) {
   setTimeout(() => el.className = 'toast', 2500);
 }
 
-function getToday() {
+// Before 8 AM, treat it as the previous day — late-night journals belong to yesterday
+function getEffectiveDate() {
   const d = new Date();
+  if (d.getHours() < 8) {
+    d.setDate(d.getDate() - 1);
+  }
+  return d;
+}
+
+function getToday() {
+  const d = getEffectiveDate();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function getTodayDisplay() {
-  const d = new Date();
+  const d = getEffectiveDate();
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
 function getGreeting() {
-  const d = new Date();
+  const d = getEffectiveDate();
   const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   return `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}`;
 }
 
 function getDateLabel() {
-  const d = new Date();
+  const d = getEffectiveDate();
   const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
   const months = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
   return `${days[d.getDay()]} — ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
